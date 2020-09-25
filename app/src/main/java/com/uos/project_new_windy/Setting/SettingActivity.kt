@@ -2,6 +2,7 @@ package com.uos.project_new_windy.Setting
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.uos.project_new_windy.R
 
 class SettingActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

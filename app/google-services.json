@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1013729099324",
+    "firebase_url": "https://project-new-windy.firebaseio.com",
+    "project_id": "project-new-windy",
+    "storage_bucket": "project-new-windy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1013729099324:android:68065503bf95a6c80bcd39",
+        "android_client_info": {
+          "package_name": "com.uos.project_new_windy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1013729099324-2aujdk49gkgdc27lncc4rsh7mdtk0gdu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.uos.project_new_windy",
+            "certificate_hash": "9ab1ec7bb9b64e216366f1a497f7e6ca74079684"
+          }
+        },
+        {
+          "client_id": "1013729099324-04qe451dmrje1olu94449v9p6mg66vkf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8WvCugsRMtU2b-HN_Jwh2w6gaIG_dioY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1013729099324-04qe451dmrje1olu94449v9p6mg66vkf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

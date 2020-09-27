@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 29
@@ -64,6 +65,7 @@ dependencies {
 
     //okhttp
     implementation 'com.squareup.okhttp3:okhttp:3.4.1'
+
 
     //gson
     implementation 'com.google.code.gson:gson:2.8.6'

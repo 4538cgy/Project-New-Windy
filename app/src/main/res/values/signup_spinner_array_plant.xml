@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="plant">
+        <item>배추</item>
+        <item>무</item>
+        <item>당근</item>
+        <item>배</item>
+        <item>감자</item>
+        <item>고구마</item>
+        <item>땅콩</item>
+    </string-array>
+</resources>

@@ -6,4 +6,96 @@
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
 
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activity_sign_up_edittext_phonenumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="핸드폰 번호"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_search_address_button_auth_to_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="인증 요청"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activity_sign_up_edittext_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="이름"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/activity_search_address_button_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="주소 검색"
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/activity_sign_up_edittext_detail_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="상세 주소"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <Spinner
+            android:id="@+id/activity_sign_up_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/activity_sign_up_button_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="동의하고 회원정보 저장"
+            />
+        <Button
+            android:id="@+id/activity_sign_up_button_later"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="동의하고 나중에 저장"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="본인은 만 14세 이상이며, 신바람의 이용약관, 개인정보 수집 및 이용 내용을 확인하였음을 동의합니다."
+            />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

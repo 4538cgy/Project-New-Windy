@@ -57,6 +57,12 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
+        //main으로 이동
+        activity_sign_up_button_later.setOnClickListener {
+            startActivity(Intent(this,MainActivity::class.java))
+            finish()
+        }
+
     }
 
 

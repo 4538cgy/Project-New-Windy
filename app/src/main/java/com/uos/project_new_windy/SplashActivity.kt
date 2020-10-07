@@ -10,6 +10,8 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import java.security.MessageDigest
 
 class SplashActivity : AppCompatActivity() {
@@ -27,4 +29,6 @@ class SplashActivity : AppCompatActivity() {
 
 
     }
+
+
 }

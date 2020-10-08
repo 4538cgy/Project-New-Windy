@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.uos.project_new_windy.Policy.PolicyActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
 
@@ -61,6 +62,11 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         activity_sign_up_button_later.setOnClickListener {
             startActivity(Intent(this,MainActivity::class.java))
             finish()
+        }
+
+        //이용약관 보러가기
+        activity_sign_up_textview.setOnClickListener {
+            startActivity(Intent(this,PolicyActivity::class.java))
         }
 
     }

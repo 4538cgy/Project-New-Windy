@@ -8,6 +8,12 @@ import androidx.fragment.app.Fragment
 import com.uos.project_new_windy.R
 
 class UserFragment : Fragment() {
+
+
+    companion object{
+        var PICK_PROFILE_FROM_ALBUM = 10
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

@@ -13,30 +13,32 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".Policy.PolicyActivity"></activity>
         <activity android:name=".SearchAddressActivity" />
         <activity android:name=".Navigation.AddContentActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Setting.SettingActivity" />
-        <activity android:name=".LobbyActivity" />
-        <activity android:name=".SplashActivity">
+        <activity android:name=".LobbyActivity" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity android:name=".SplashActivity">
+
         </activity>
         <activity android:name=".MainActivity" />
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/push_icon"/>
+            android:resource="@drawable/push_icon" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
-            android:resource="@color/colorAccent"/>
-
+            android:resource="@color/colorAccent" />
     </application>
 
 </manifest>

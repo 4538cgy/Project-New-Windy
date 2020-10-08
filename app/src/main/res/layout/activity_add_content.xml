@@ -6,4 +6,67 @@
     android:layout_height="match_parent"
     tools:context=".Navigation.AddContentActivity">
 
+
+    <LinearLayout
+        android:layout_margin="8dp"
+        android:id="@+id/activity_add_content_layout_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+
+        android:gravity="right"
+        >
+        <Button
+            android:id="@+id/activity_add_content_button_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="게시글 올리기"
+            />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/activity_add_content_edittext_content"
+        app:layout_constraintTop_toBottomOf="@+id/activity_add_content_layout_top"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="top"
+        android:hint="hello"
+        android:scrollbars="vertical"
+        android:background="@android:color/transparent"
+        android:layout_margin="12dp"
+        />
+
+
+    <Button
+        android:id="@+id/activity_add_content_button_add_photo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/activity_add_content_recycler_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/activity_add_content_recycler_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:text="addPhoto"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_add_content_recycler_photo"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/activity_add_content_button_add_photo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        />
+
+
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -92,6 +92,7 @@
             />
 
         <TextView
+            android:id="@+id/activity_sign_up_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="본인은 만 14세 이상이며, 신바람의 이용약관, 개인정보 수집 및 이용 내용을 확인하였음을 동의합니다."

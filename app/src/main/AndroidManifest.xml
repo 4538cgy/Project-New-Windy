@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".Policy.PolicyActivity"></activity>
         <activity android:name=".SearchAddressActivity" />
-        <activity android:name=".Navigation.AddContentActivity" />
+        <activity android:name=".Fragment.AddContentActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Setting.SettingActivity" />

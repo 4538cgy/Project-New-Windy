@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation
+package com.uos.project_new_windy.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,19 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.uos.project_new_windy.R
 
-class UserFragment : Fragment() {
-
-
-    companion object{
-        var PICK_PROFILE_FROM_ALBUM = 10
-    }
-
+class GridFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
+        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_grid, container, false)
 
 
         return view

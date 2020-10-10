@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation
+package com.uos.project_new_windy.Fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater

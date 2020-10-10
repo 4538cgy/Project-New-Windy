@@ -28,7 +28,7 @@ class UserFragment : Fragment() {
 
 
     companion object{
-        var PICK_PROFILE_FROM_ALBUM = 10
+        var PICK_PROFILE_FROM_ALBUM = 101
     }
 
     override fun onCreateView(
@@ -56,7 +56,7 @@ class UserFragment : Fragment() {
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
         }
-        //getProfileImage()
+        getProfileImage()
         return fragmentView
     }
 

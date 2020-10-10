@@ -14,6 +14,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.uos.project_new_windy.Fragment.UserFragment
 import com.uos.project_new_windy.Policy.PolicyActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
@@ -45,6 +46,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             items
         )
 
+
+
         //스피너에 어댑터 세팅
         activity_sign_up_spinner.adapter = spinnerAdapter
 
@@ -60,13 +63,24 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         //main으로 이동
         activity_sign_up_button_later.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this,LobbyActivity::class.java))
             finish()
         }
 
         //이용약관 보러가기
         activity_sign_up_textview.setOnClickListener {
             startActivity(Intent(this,PolicyActivity::class.java))
+        }
+
+        //프로필 이미지 추가 리스너
+        activity_sign_up_circleimageview.setOnClickListener {
+            var photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent,
+                UserFragment.PICK_PROFILE_FROM_ALBUM
+            )
+            Log.d(" 회원가입 액티비티" , "인텐트 시작")
+
         }
 
     }
@@ -89,8 +103,13 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
                 }
 
+                UserFragment.PICK_PROFILE_FROM_ALBUM -> {
+                    activity_sign_up_circleimageview.setImageURI(data?.data)
+                }
+
             }
         }
+
     }
 
 

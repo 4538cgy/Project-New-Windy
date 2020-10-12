@@ -68,7 +68,7 @@ class UserFragment : Fragment() {
                 return@addSnapshotListener
 
             if (documentSnapshot.data != null){
-                var url = documentSnapshot?.data!!["images"]
+                var url = documentSnapshot?.data!!["contents"]
                 Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.fragment_user_circle_imageview!!)
             }
         }
@@ -81,7 +81,7 @@ class UserFragment : Fragment() {
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
 
         init {
-            firestore?.collection("images")?.whereEqualTo("uid",uid)?.addSnapshotListener{
+            firestore?.collection("contents")?.whereEqualTo("uid",uid)?.addSnapshotListener{
                     querySnapshot, firebaseFirestoreException ->
                 //Sometimes, this code return null of querySnapshot when it signout
                 if(querySnapshot == null) return@addSnapshotListener

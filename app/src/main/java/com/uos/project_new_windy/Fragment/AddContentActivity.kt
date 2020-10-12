@@ -34,7 +34,9 @@ class AddContentActivity : AppCompatActivity() {
     var auth : FirebaseAuth? = null
     var firestore : FirebaseFirestore ? = null
     var imageUriList : ArrayList<Uri> = arrayListOf()
+    //이미지 갯수 체크를 위한 변수
     var count: Int = 0;
+    var imageDownLoadUriList : ArrayList<String> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,33 +84,24 @@ class AddContentActivity : AppCompatActivity() {
             uploadPhoto(imageUriList[count])
         }else if(imageUriList.size == 0){
             //사진을 제외한 컨텐츠 내용만 Firestore에 업로드
+            uploadContentDetail()
         }else if(count == imageUriList.size){
             //컨텐츠 내용 Firestore에 업로드
+            uploadContentDetail()
 
         }
 
 
     }
 
+    fun uploadContentDetail(){
 
-
-    fun uploadPhoto(uri : Uri){
-        var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
-
-        var storageRef = storage?.reference?.child("contents")?.child(imageFileName)
-        storageRef?.putFile(uri)?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
-
-            return@continueWithTask storageRef.downloadUrl
-        }?.addOnSuccessListener { uri ->
-
-            count ++
-            contentUpload()
-            /*
-                if (imageUriList.lastOrNull() != null){
                     var contentDTO = ContentDTO()
 
-                    contentDTO.imageUrl = uri.toString()
+
+
+
+                    contentDTO.imageDownLoadUrlList = this.imageDownLoadUriList
 
                     contentDTO.uid = auth?.currentUser?.uid
 
@@ -123,10 +116,29 @@ class AddContentActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK)
 
                     finish()
-                }
 
-             */
 
+
+    }
+
+
+    fun uploadPhoto(uri : Uri){
+        var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
+
+        var storageRef = storage?.reference?.child("contents")?.child(imageFileName)
+        storageRef?.putFile(uri)?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
+
+            return@continueWithTask storageRef.downloadUrl
+        }?.addOnSuccessListener { uri ->
+
+            count ++
+            imageDownLoadUriList.add(uri.toString())
+
+            imageDownLoadUriList.forEach {i ->
+                Log.d("URI 리스트으으으으으" , i.toString())
+            }
+            contentUpload()
 
         }
     }

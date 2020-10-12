@@ -1,7 +1,10 @@
 package com.uos.project_new_windy.Fragment
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +17,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.Model.ContentDTO
 import com.uos.project_new_windy.R
+import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment() {
@@ -39,6 +44,8 @@ class UserFragment : Fragment() {
         //프라그먼트에 뷰 연결
         fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
 
+
+
         //각종 변수 초기화
         uid = arguments?.getString("destinationUid")
         firestore = FirebaseFirestore.getInstance()
@@ -56,22 +63,47 @@ class UserFragment : Fragment() {
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
         }
-        getProfileImage()
+
         return fragmentView
     }
 
+    override fun onResume() {
+        super.onResume()
+        getProfileImage()
+    }
+
     fun getProfileImage(){
+
+
+        //미리 들고있던 Profile Image Url을 Glide로 먼저 삽입
+
+        
+        //프로필 이미지 변경 요청이 이뤄지면 firestore에서 Url 을 가져온뒤 Profile 이미지 변수에 저장 후 Glide에 가져오기
+
+
+        //AppCompatDialog를 이미지가 변경되는 동안 출력되게 하기
+
         firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener{
 
                 documentSnapshot, firebaseFirestoreException ->
-            if (documentSnapshot == null)
-                return@addSnapshotListener
 
-            if (documentSnapshot.data != null){
-                var url = documentSnapshot?.data!!["contents"]
-                Glide.with(activity!!).load(url).apply(RequestOptions().circleCrop()).into(fragmentView?.fragment_user_circle_imageview!!)
+
+            if (documentSnapshot?.data != null){
+                var url = documentSnapshot?.data!!["image"]
+
+                Log.d("프로필 이미지 url = \n",url.toString())
+                Glide.with(activity!!.applicationContext)
+                    .load(url)
+                    .apply(
+                        RequestOptions().centerCrop()
+                    )
+                    .error(R.drawable.btn_signin_google)
+                    .into(fragmentView?.fragment_user_circle_imageview!!)
+                LobbyActivity.progressDialog?.dismiss()
             }
         }
+
+
     }
 
 
@@ -113,6 +145,7 @@ class UserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
+
             Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageView)
         }
 

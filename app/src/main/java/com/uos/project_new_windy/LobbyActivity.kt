@@ -2,10 +2,13 @@ package com.uos.project_new_windy
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.ProgressBar
+import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.gms.tasks.Task
@@ -19,6 +22,11 @@ import com.uos.project_new_windy.Fragment.*
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+
+    companion object{
+        var progressDialog : AppCompatDialog ? = null
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lobby)
@@ -76,7 +84,13 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
+
         if(requestCode == UserFragment.PICK_PROFILE_FROM_ALBUM && resultCode == Activity.RESULT_OK){
+
+            progressDialog = AppCompatDialog(this)
+            progressDialog!!.setTitle("프로필 이미지를 저장 중입니다. 잠시만 기다려주세요.")
+            progressDialog!!.show()
+
             var imageUri = data?.data
             var uid = FirebaseAuth.getInstance().currentUser?.uid
             var storageRef = FirebaseStorage.getInstance().reference.child("userProfileImages").child(uid!!)
@@ -86,6 +100,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 var map = HashMap<String,Any>()
                 map["image"] = uri.toString()
                 FirebaseFirestore.getInstance().collection("profileImages").document(uid).set(map)
+
+
             }
         }
     }

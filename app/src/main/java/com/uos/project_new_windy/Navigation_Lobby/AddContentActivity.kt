@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Fragment
+package com.uos.project_new_windy.Navigation_Lobby
 
 import android.app.Activity
 import android.content.Intent
@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import bolts.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
@@ -99,7 +98,7 @@ class AddContentActivity : AppCompatActivity() {
                     var contentDTO = ContentDTO()
 
 
-
+                    contentDTO.title = activity_add_content_edittext_title.text.toString()
 
                     contentDTO.imageDownLoadUrlList = this.imageDownLoadUriList
 

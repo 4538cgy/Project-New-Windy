@@ -1,8 +1,6 @@
-package com.uos.project_new_windy.Fragment
+package com.uos.project_new_windy.Navigation_Lobby
 
-import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -62,6 +60,16 @@ class UserFragment : Fragment() {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+        }
+
+        //fragment_user_textview_history_content 눌렀을때 이벤트
+        fragmentView?.fragment_user_textview_history_content?.setOnClickListener {
+
+        }
+
+        //fragment_user_textview_history_view 눌렀을때 이벤트
+        fragmentView?.fragment_user_textview_history_view?.setOnClickListener {
+
         }
 
         return fragmentView

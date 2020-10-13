@@ -14,7 +14,7 @@ import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
-import com.uos.project_new_windy.Fragment.UserFragment
+import com.uos.project_new_windy.Navigation_Lobby.UserFragment
 import com.uos.project_new_windy.Policy.PolicyActivity
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit

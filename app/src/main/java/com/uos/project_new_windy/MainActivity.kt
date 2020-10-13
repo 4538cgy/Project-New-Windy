@@ -1,16 +1,10 @@
 package com.uos.project_new_windy
 
-import android.app.Activity
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.UploadTask
-import com.uos.project_new_windy.Fragment.UserFragment
 import com.uos.project_new_windy.Util.FcmPush
 import kotlinx.android.synthetic.main.activity_main.*
 

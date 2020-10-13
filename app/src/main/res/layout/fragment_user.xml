@@ -106,7 +106,7 @@
     <LinearLayout
         android:id="@+id/fragment_user_linearlayout_tab_group"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@+id/fragment_user_relativelayout_usergroup"
         app:layout_constraintBottom_toTopOf="@+id/fragment_user_recyclerview"
@@ -118,7 +118,7 @@
             android:id="@+id/fragment_user_textview_history_content"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="0.5"
             android:text="올린 게시글"
             android:gravity="center"
             android:textSize="16dp"
@@ -129,21 +129,13 @@
             android:id="@+id/fragment_user_textview_history_view"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="5"
+            android:layout_weight="0.5"
             android:text="최근 본 글"
             android:gravity="center"
             android:textSize="16dp"
             android:textColor="#000000"
             android:textStyle="bold"
             />
-
-        <ImageView
-            android:id="@+id/imageview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

@@ -2,6 +2,7 @@ package com.uos.project_new_windy.Navigation_Lobby
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
@@ -44,6 +46,7 @@ class DetailViewFragment : Fragment() {
 
         var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
         var contentUidList: ArrayList<String> = arrayListOf()
+        var contentCommentSize : ArrayList<Int> = arrayListOf()
 
         init {
             firestore?.collection("contents")?.orderBy("timestamp")
@@ -58,13 +61,36 @@ class DetailViewFragment : Fragment() {
                         var item = snapshot.toObject(ContentDTO::class.java)
                         contentDTOs.add(item!!)
                         contentUidList.add(snapshot.id)
+
+
+
+                        firestore?.collection("contents")?.document(snapshot.id)
+                            ?.collection("comments")?.orderBy("timestamp")
+                            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                                System.out.println("끄에에에에에에엨")
+                                System.out.println("쿼리스탭샷의 크기" + querySnapshot?.documents?.size.toString())
+                                Log.d("쿼리스냅샷 크기이이이", querySnapshot?.documents?.size.toString())
+
+
+
+                            }
+
+                        System.out.println("끄에에에에에에엨"+snapshot.id)
+                        System.out.println("쿼리 스탭샷 크기"+querySnapshot.documents.size)
+
                     }
 
                     notifyDataSetChanged()
                 }
 
 
+
+
+
+
         }
+
+
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             var view =
@@ -79,25 +105,48 @@ class DetailViewFragment : Fragment() {
 
             var viewholder = (holder as CustomViewHolder).itemView
 
+            //프로필 이미지
+            firestore?.collection("profileImages")?.document(contentDTOs[position].uid!!)
+                ?.get()?.addOnCompleteListener { task ->
 
-            //userId
+                    if (task.isSuccessful)
+                    {
+                        var url = task.result!!["image"]
+                        Glide.with(holder.itemView.context)
+                            .load(url)
+                            .apply(RequestOptions().circleCrop()).into(viewholder.item_detail_circleImageview_profile)
+                    }
+
+                }
+
+            //유저 아이디 [ 닉네임으로 교체 요망 ]
             viewholder.item_detail_textview_user_name.text = contentDTOs!![position].userId
 
-            //Image
-            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageUrl)
-                .into(viewholder.item_detail_circleImageview_profile)
+            //리스트의 첫번째 사진
+            Glide.with(holder.itemView.context).load(contentDTOs!![position].imageDownLoadUrlList?.get(0))
+                .into(viewholder.item_detail_imageview_content)
 
-            //Explain content
+
+            //제목
+            viewholder.item_detail_textview_title.text = contentDTOs!![position].title
+
+            //내용
             viewholder.item_detail_textview_explain_content.text = contentDTOs!![position].explain
 
-            //likes
+            //좋아요 갯수
             viewholder.item_detail_textview_like_count.text =
                 "Likes" + contentDTOs!![position].favoriteCount
 
 
-            //THIS CODE IS WHEN THE BUTTON IS CLICKED
+            //시간
+            viewholder.item_detail_textview_time.text = contentDTOs!![position].time
+
+
+
+
+            //좋아요 버튼 이벤트 처리
             viewholder.item_detail_imagebutton_like.setOnClickListener {
-                favoriteEvent(position)
+
             }
 
 
@@ -111,7 +160,7 @@ class DetailViewFragment : Fragment() {
                 viewholder.item_detail_imagebutton_like.setImageResource(R.drawable.ic_favorite_border)
             }
 
-            //tHIS CODE IS WHEN THE profile image is clicked
+            //프로필 이미지 클릭시
             viewholder.item_detail_circleImageview_profile.setOnClickListener {
 
                 var fragment = UserFragment()
@@ -134,48 +183,7 @@ class DetailViewFragment : Fragment() {
         }
 
 
-        fun favoriteEvent(position: Int) {
 
-            var tsDoc = firestore?.collection("images")?.document(contentUidList[position])
-            firestore?.runTransaction { transaction ->
-
-
-                var contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
-
-                if (contentDTO!!.favorites.containsKey(uid)) {
-                    //When the button is clicked
-                    contentDTO?.favoriteCount = contentDTO?.favoriteCount - 1
-                    contentDTO?.favorites.remove(uid)
-
-
-                } else {
-                    //When the button is not clicked
-                    contentDTO?.favoriteCount = contentDTO?.favoriteCount + 1
-                    contentDTO?.favorites[uid!!] = true
-
-                    favoriteAlarm(contentDTOs[position].uid!!)
-                }
-                transaction.set(tsDoc, contentDTO)
-
-
-            }
-
-
-        }
-
-        fun favoriteAlarm(destinationUid: String) {
-            var alarmDTO = AlarmDTO()
-            alarmDTO.destinationUid = destinationUid
-            alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
-            alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
-            alarmDTO.kind = 0
-            alarmDTO.timestamp = System.currentTimeMillis()
-            FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-
-            var message =
-                FirebaseAuth.getInstance()?.currentUser?.email + getString(R.string.alarm_favorite)
-            FcmPush.instance.sendMessage(destinationUid, "HowlInstgram", message)
-        }
 
 
         override fun getItemCount(): Int {

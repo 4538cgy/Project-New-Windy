@@ -18,6 +18,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.Model.ContentDTO
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.Util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
 import java.text.SimpleDateFormat
@@ -104,11 +105,15 @@ class AddContentActivity : AppCompatActivity() {
 
                     contentDTO.uid = auth?.currentUser?.uid
 
+                    contentDTO.commentCount = 0
+
                     contentDTO.userId = auth?.currentUser?.email
 
                     contentDTO.explain = activity_add_content_edittext_content.text.toString()
 
                     contentDTO.timestamp = System.currentTimeMillis()
+
+                    contentDTO.time = TimeUtil().getTime()
 
                     firestore?.collection("contents")?.document()?.set(contentDTO)
 
@@ -122,7 +127,8 @@ class AddContentActivity : AppCompatActivity() {
 
 
     fun uploadPhoto(uri : Uri){
-        var timestamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        //var timestamp = SimpleDateFormat("yy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))
+        var timestamp = TimeUtil().getTime()
         var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
 
         var storageRef = storage?.reference?.child("contents")?.child(imageFileName)

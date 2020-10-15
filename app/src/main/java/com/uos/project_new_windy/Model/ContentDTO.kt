@@ -10,6 +10,8 @@ data class ContentDTO(
     var uid : String ? = null,
     var userId : String ? = null,
     var timestamp : Long ? = null,
+    var time : String ? = null,
+    var commentCount : Int ? = null,
     var favoriteCount : Int = 0,
     var favorites: MutableMap<String,Boolean> = HashMap()
 
@@ -19,7 +21,8 @@ data class ContentDTO(
         var uid : String ? = null,
         var userId : String ? = null,
         var comment : String ? = null,
-        var timestamp : Long ? = null
+        var timestamp : Long ? = null,
+        var time : String ? = null
 
     )
 

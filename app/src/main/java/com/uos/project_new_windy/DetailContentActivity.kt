@@ -6,6 +6,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -16,6 +19,7 @@ import com.uos.project_new_windy.Navigation_Lobby.CommentActivity
 import com.uos.project_new_windy.Navigation_Lobby.UserFragment
 import kotlinx.android.synthetic.main.activity_detail_content.*
 import kotlinx.android.synthetic.main.item_detail.view.*
+import kotlinx.android.synthetic.main.item_image_list.*
 
 class DetailContentActivity : AppCompatActivity() {
 
@@ -58,19 +62,26 @@ class DetailContentActivity : AppCompatActivity() {
                 }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            var view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_list)
+           var view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_list,parent,false)
+            return CustomViewHolder(view)
         }
 
+        inner class CustomViewHolder(var view: View) : RecyclerView.ViewHolder(view) {
+
+        }
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            TODO("Not yet implemented")
+
+            var viewHolder = (holder as CustomViewHolder).itemView
+
+            Glide.with(viewHolder.context).load(contentDTOs[position].imageDownLoadUrlList!![position]).apply(RequestOptions().centerCrop()).into(item_image_list_imageview)
+
         }
 
         override fun getItemCount(): Int {
-            TODO("Not yet implemented")
+            return contentDTOs.size
         }
 
 
-    }
 
 
 

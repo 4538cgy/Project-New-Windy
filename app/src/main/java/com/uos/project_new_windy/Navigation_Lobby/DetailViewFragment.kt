@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.Model.AlarmDTO
 import com.uos.project_new_windy.Model.ContentDTO
 import com.uos.project_new_windy.R
@@ -111,6 +112,18 @@ class DetailViewFragment : Fragment() {
 
             //유저 아이디 [ 닉네임으로 교체 요망 ]
             viewholder.item_detail_textview_user_name.text = contentDTOs!![position].userId
+
+            viewholder.setOnClickListener {
+
+                i ->
+
+
+                var intent = Intent(i.context, DetailContentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
+                startActivity(intent)
+
+            }
 
             //리스트의 첫번째 사진
             Glide.with(holder.itemView.context).load(contentDTOs!![position].imageDownLoadUrlList?.get(0))

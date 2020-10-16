@@ -13,14 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Navigation_Lobby.CommentActivity"></activity>
+        <activity android:name=".DetailContentActivity"></activity>
+        <activity android:name=".Navigation_Lobby.CommentActivity" />
         <activity android:name=".Policy.PolicyActivity" />
         <activity android:name=".SearchAddressActivity" />
         <activity android:name=".Navigation_Lobby.AddContentActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".Setting.SettingActivity" />
-        <activity android:name=".LobbyActivity"></activity>
+        <activity android:name=".LobbyActivity" />
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -139,7 +139,7 @@ class DetailViewFragment : Fragment() {
 
             //좋아요 버튼 이벤트 처리
             viewholder.item_detail_imagebutton_like.setOnClickListener {
-
+                favoriteEvent(position)
             }
 
 
@@ -184,11 +184,32 @@ class DetailViewFragment : Fragment() {
         }
 
         fun favoriteEvent(position: Int){
+            var tsDoc = firestore?.collection("contents")?.document(contentUidList[position])
+            firestore?.runTransaction {
 
+                transition ->
+
+                var contentDTO = transition.get(tsDoc!!).toObject(ContentDTO::class.java)
+
+                if(contentDTO!!.favorites.containsKey(uid))
+                {
+                    //when the button is clicked
+                    contentDTO?.favoriteCount = contentDTO?.favoriteCount - 1
+                    contentDTO?.favorites.remove(uid)
+                }else{
+                    //when the button is not clicked
+                    contentDTO?.favoriteCount = contentDTO?.favoriteCount + 1
+                    contentDTO?.favorites[uid!!] = true
+
+                    favoriteAlarm(contentDTOs[position].uid!!)
+                }
+                transition.set(tsDoc,contentDTO)
+
+            }
         }
 
         fun favoriteAlarm(destinationUid : String){
-            
+
         }
 
     }

@@ -64,19 +64,9 @@ class DetailViewFragment : Fragment() {
 
 
 
-                        firestore?.collection("contents")?.document(snapshot.id)
-                            ?.collection("comments")?.orderBy("timestamp")
-                            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                                System.out.println("끄에에에에에에엨")
-                                System.out.println("쿼리스탭샷의 크기" + querySnapshot?.documents?.size.toString())
-                                Log.d("쿼리스냅샷 크기이이이", querySnapshot?.documents?.size.toString())
 
 
 
-                            }
-
-                        System.out.println("끄에에에에에에엨"+snapshot.id)
-                        System.out.println("쿼리 스탭샷 크기"+querySnapshot.documents.size)
 
                     }
 
@@ -142,6 +132,9 @@ class DetailViewFragment : Fragment() {
             viewholder.item_detail_textview_time.text = contentDTOs!![position].time
 
 
+            //댓글 갯수
+            viewholder.item_detail_textview_comment_count.text = contentDTOs!![position].commentCount.toString()
+
 
 
             //좋아요 버튼 이벤트 처리
@@ -188,6 +181,14 @@ class DetailViewFragment : Fragment() {
 
         override fun getItemCount(): Int {
             return contentDTOs.size
+        }
+
+        fun favoriteEvent(position: Int){
+
+        }
+
+        fun favoriteAlarm(destinationUid : String){
+            
         }
 
     }

@@ -35,6 +35,8 @@ class CommentActivity : AppCompatActivity() {
         contentUid = intent.getStringExtra("contentUid")
         destinationUid = intent.getStringExtra("destinationUid")
 
+        firestore = FirebaseFirestore.getInstance()
+
         activity_comment_recycler.adapter = CommentRecyclerViewAdapter()
         activity_comment_recycler.layoutManager = LinearLayoutManager(this)
 
@@ -53,37 +55,63 @@ class CommentActivity : AppCompatActivity() {
                     task ->
                     System.out.println("댓글 작성 완료")
                     if (task.isSuccessful) {
-                        commentCountAdd()
+
+                        System.out.println("태스크 종료!!!!!!!!!!!!!!!!!!")
+                        System.out.println("콘텐츠 아이디" + contentUid)
+                        commentCountTest()
                     }
                     System.out.println("댓글 카운트 증가 완료")
 
 
                 }
-            System.out.println("댓글 카운트 증가 시작1")
-            var tsDoc = firestore?.collection("contents")?.document(contentUid!!)
-
-            firestore?.runTransaction {
-                    transaction ->
-
-                System.out.println("댓글 카운트 증가 시작2")
-                var contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
-
-                contentDTO?.commentCount!! + 1
 
 
-                transaction.set(tsDoc,contentDTO)
-            }
 
         }
 
     }
 
-    fun commentCountAdd(){
+    fun commentCountTest(){
+        
+        System.out.println("commentCountTest 시작")
+        val tsDoc = firestore?.collection("contents")?.document(contentUid!!)
 
+        firestore?.runTransaction {
+            transition ->
+
+            val snapshot = transition.get(tsDoc!!).toObject(ContentDTO::class.java)
+
+            val newComment =  snapshot?.commentCount!! + 1
+
+
+            transition.update(tsDoc,"commentCount",newComment)
+
+        }?.addOnCompleteListener {
+          System.out.println("트랙잰션 업데이트 성공 !!!!!!!!!!!!!!!!")
+        }?.addOnFailureListener {
+            i ->
+            System.out.println("트랜잭션 업데이트 실패 : " + i.toString())
+        }
 
     }
 
 
+    fun commentCountAdd(){
+        var tsDoc = firestore?.collection("contents")?.document(contentUid!!)
+
+        firestore?.runTransaction {
+                transaction ->
+
+            System.out.println("댓글 카운트 증가 시작2")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentDTO::class.java)
+
+            contentDTO?.commentCount!! + 1
+
+
+            transaction.set(tsDoc,contentDTO)
+
+        }?.addOnCompleteListener { System.out.println("트랜잭션 정상 실행 완료") }
+    }
 
     inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 

@@ -66,6 +66,7 @@
 
         <TextView
             android:id="@+id/activity_detail_content_textview_comment_count"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"
@@ -79,6 +80,7 @@
 
         <TextView
             android:id="@+id/activity_detail_content_textview_favorite_count"
+            android:layout_marginHorizontal="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="0"

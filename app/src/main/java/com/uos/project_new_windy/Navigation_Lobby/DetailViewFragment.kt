@@ -121,6 +121,10 @@ class DetailViewFragment : Fragment() {
                 var intent = Intent(i.context, DetailContentActivity::class.java)
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)
+                intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
+                intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
+                intent.putExtra("contentTime",contentDTOs!![position].time)
+
                 startActivity(intent)
 
             }

@@ -15,11 +15,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.Model.ContentDTO
 import com.uos.project_new_windy.R
 import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
+import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class UserFragment : Fragment() {
 
@@ -119,6 +121,7 @@ class UserFragment : Fragment() {
     inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
         var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+        var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
             firestore?.collection("contents")?.whereEqualTo("uid",uid)?.addSnapshotListener{
@@ -129,7 +132,11 @@ class UserFragment : Fragment() {
                 //Get data
                 for(snapshot in querySnapshot.documents){
                     contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                    contentUidList.add(snapshot.id)
+
                 }
+
+                System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
                 fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
                 notifyDataSetChanged()
             }
@@ -153,8 +160,23 @@ class UserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
+             Glide.with(holder.itemView.context).load(contentDTOs[position].imageDownLoadUrlList?.get(0)).apply(RequestOptions().centerCrop()).into(imageView)
+           // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
+           // Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
 
-            Glide.with(holder.itemView.context).load(contentDTOs[position].imageUrl).apply(RequestOptions().centerCrop()).into(imageView)
+
+            imageView.setOnClickListener {
+                     i ->
+                var intent = Intent(i.context, DetailContentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
+                intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
+                intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
+                intent.putExtra("contentTime",contentDTOs!![position].time)
+
+                startActivity(intent)
+
+            }
         }
 
 

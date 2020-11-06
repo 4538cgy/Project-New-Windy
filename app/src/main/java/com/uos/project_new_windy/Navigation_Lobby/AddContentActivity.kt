@@ -132,6 +132,7 @@ class AddContentActivity : AppCompatActivity() {
         var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
 
         var storageRef = storage?.reference?.child("contents")?.child(imageFileName)
+
         storageRef?.putFile(uri)?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
 
             return@continueWithTask storageRef.downloadUrl

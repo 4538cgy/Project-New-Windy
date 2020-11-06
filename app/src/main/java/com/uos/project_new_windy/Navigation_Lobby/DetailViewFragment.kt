@@ -19,6 +19,7 @@ import com.uos.project_new_windy.Model.AlarmDTO
 import com.uos.project_new_windy.Model.ContentDTO
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.Util.FcmPush
+import kotlinx.android.synthetic.main.fragment_detail.*
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 import kotlinx.android.synthetic.main.item_detail.view.*
 
@@ -36,6 +37,21 @@ class DetailViewFragment : Fragment() {
 
         firestore = FirebaseFirestore.getInstance()
         uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        view.fragment_detail_textview_buys.setOnClickListener {
+            //구매 게시글 리스트로 초기화
+
+        }
+
+        view.fragment_detail_textview_sales.setOnClickListener {
+            //판매 게시글 리스트로 초기화
+            
+        }
+
+        view.fragment_detail_textview_all.setOnClickListener {
+            //전체 게시글 출력
+
+        }
 
         view.fragment_detail_recycler.adapter = DetailViewRecyclerViewAdapter()
         view.fragment_detail_recycler.layoutManager = LinearLayoutManager(activity)
@@ -73,7 +89,6 @@ class DetailViewFragment : Fragment() {
 
                     notifyDataSetChanged()
                 }
-
 
 
 

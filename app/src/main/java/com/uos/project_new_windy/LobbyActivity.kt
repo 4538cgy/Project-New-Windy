@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDialog
@@ -55,7 +56,10 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
             }
             R.id.action_photo -> {
                 if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    var popupMenu = PopupMenu(this, currentFocus)
+                    // var popupMenu = PopupMenu(this, currentFocus)
+                    var view =  LayoutInflater.from(this).inflate(R.layout.activity_lobby,null , false)
+
+                    var popupMenu = PopupMenu(this,view )
 
                     menuInflater.inflate(R.menu.post_select_menu, popupMenu.menu)
 

@@ -201,7 +201,11 @@ class DetailContentActivity : AppCompatActivity() {
 
              */
             Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
+            viewHolder.item_image_list_imageview.setOnClickListener {
+                i ->
 
+                Log.d("클릭완료",position.toString())
+            }
 
 
         }

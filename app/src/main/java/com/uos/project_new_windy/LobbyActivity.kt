@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -54,7 +55,25 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
             }
             R.id.action_photo -> {
                 if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    startActivity(Intent(this,AddContentActivity::class.java))
+                    var popupMenu = PopupMenu(this, currentFocus)
+
+                    menuInflater.inflate(R.menu.post_select_menu, popupMenu.menu)
+
+                    popupMenu.setOnMenuItemClickListener {
+                        i ->
+                        when(i.itemId)
+                        {
+                            R.id.normal_post ->
+                                System.out.println("일반 게시글")
+                            R.id.buy_post ->
+                                System.out.println("구매 게시글")
+                            R.id.sell_post ->
+                                System.out.println("판매 게시글")
+                        }
+                        false
+                    }
+
+                    //startActivity(Intent(this,AddContentActivity::class.java))
                 }
                 return true
             }

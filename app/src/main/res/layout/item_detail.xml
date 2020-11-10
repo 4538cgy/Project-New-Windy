@@ -2,6 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="12dp"
+    android:background="@drawable/background_round_white"
+    android:elevation="6dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -9,9 +12,8 @@
         android:id="@+id/item_detail_linearLayout"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/item_detail_imageview_content"
-        android:layout_width="match_parent"
+        app:layout_constraintRight_toLeftOf="@+id/item_detail_imagebutton_post_menu"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
@@ -40,11 +42,24 @@
 
     </LinearLayout>
 
+    <ImageButton
+        android:padding="8dp"
+        android:id="@+id/item_detail_imagebutton_post_menu"
+        android:layout_width="50dp"
+        android:layout_height="0dp"
+        android:src="@drawable/ic_post_menu_option"
+        android:scaleType="centerCrop"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@+id/item_detail_linearLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/item_detail_linearLayout"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/item_detail_linearLayout"
+        />
+
 
     <ImageView
         app:layout_constraintTop_toBottomOf="@+id/item_detail_linearLayout"
-        app:layout_constraintBottom_toTopOf="@+id/item_detail_linearLayout2"
-        android:id="@+id/item_detail_imageview_content"
+         android:id="@+id/item_detail_imageview_content"
         android:src="@drawable/ic_launcher_background"
         android:scaleType="fitXY"
         android:layout_width="match_parent"
@@ -58,16 +73,19 @@
         android:id="@+id/item_detail_linearLayout2"
         android:gravity="center_vertical"
         app:layout_constraintTop_toBottomOf="@id/item_detail_imageview_content"
-        app:layout_constraintBottom_toTopOf="@+id/item_detail_textview_explain_content"
-        android:layout_width="match_parent"
+         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
+
         >
         <ImageButton
             android:id="@+id/item_detail_imagebutton_like"
             android:layout_marginHorizontal="4dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:src="@drawable/ic_like_heart_before"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
             />
 
         <TextView
@@ -83,6 +101,9 @@
             android:layout_marginHorizontal="4dp"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:src="@drawable/ic_comment_icon"
+            android:scaleType="centerCrop"
+            android:background="@android:color/transparent"
             />
         <TextView
             android:id="@+id/item_detail_textview_comment_count"

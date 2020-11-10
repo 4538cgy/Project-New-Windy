@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sell_post"
+        android:title="판매 게시글 작성" />
+    <item
+        android:id="@+id/buy_post"
+        android:title="구매 게시글 작성" />
+    <item
+        android:id="@+id/normal_post"
+        android:title="일반 게시글 작성" />
+</menu>

@@ -99,7 +99,7 @@ class AddContentActivity : AppCompatActivity() {
                     var contentDTO = ContentDTO()
 
 
-                    contentDTO.title = activity_add_content_edittext_title.text.toString()
+                    //contentDTO.title = activity_add_content_edittext_title.text.toString()
 
                     contentDTO.imageDownLoadUrlList = this.imageDownLoadUriList
 

@@ -19,6 +19,8 @@
 
         android:gravity="right"
         >
+
+        <!--
         <EditText
             android:id="@+id/activity_add_content_edittext_title"
             android:layout_weight="0.9"
@@ -26,6 +28,7 @@
             android:layout_height="match_parent"
             android:hint="제목"
             />
+            -->
 
         <Button
             android:layout_weight="0.1"

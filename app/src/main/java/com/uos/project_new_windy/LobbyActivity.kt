@@ -1,6 +1,7 @@
 package com.uos.project_new_windy
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -11,14 +12,18 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.uos.project_new_windy.BottomSheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.Navigation_Lobby.*
 import kotlinx.android.synthetic.main.activity_lobby.*
+import androidx.fragment.app.FragmentManager as FragmentManager1
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -56,26 +61,10 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
             }
             R.id.action_photo -> {
                 if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
-                    // var popupMenu = PopupMenu(this, currentFocus)
-                    var view =  LayoutInflater.from(this).inflate(R.layout.activity_lobby,null , false)
 
-                    var popupMenu = PopupMenu(this,view )
+                    val bottomSheetDialog : BottomSheetDialogWriteCategory = BottomSheetDialogWriteCategory()
 
-                    menuInflater.inflate(R.menu.post_select_menu, popupMenu.menu)
-
-                    popupMenu.setOnMenuItemClickListener {
-                        i ->
-                        when(i.itemId)
-                        {
-                            R.id.normal_post ->
-                                System.out.println("일반 게시글")
-                            R.id.buy_post ->
-                                System.out.println("구매 게시글")
-                            R.id.sell_post ->
-                                System.out.println("판매 게시글")
-                        }
-                        false
-                    }
+                    bottomSheetDialog.show(supportFragmentManager,"lol")
 
                     //startActivity(Intent(this,AddContentActivity::class.java))
                 }

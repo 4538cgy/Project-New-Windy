@@ -5,6 +5,7 @@ import android.net.Uri
 data class ContentDTO(
     var title : String ? = null,
     var explain : String ? = null,
+    var postCategory : String ? = null,
     var imageDownLoadUrlList : ArrayList<String> ? = null,
     val imageUrl : String ? = null,
     var uid : String ? = null,

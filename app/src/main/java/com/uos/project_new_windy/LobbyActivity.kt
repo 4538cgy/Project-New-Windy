@@ -9,6 +9,7 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -16,10 +17,13 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
+import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
+
+    lateinit var binding : ActivityLobbyBinding
 
     companion object{
         var progressDialog : AppCompatDialog ? = null
@@ -27,8 +31,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lobby)
-
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_lobby)
+        binding.lobbyactivity = this@LobbyActivity
 
         bottom_navigtaion.setOnNavigationItemSelectedListener(this)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)

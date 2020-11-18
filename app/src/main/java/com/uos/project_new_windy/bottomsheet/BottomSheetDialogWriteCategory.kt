@@ -11,7 +11,9 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.BottomSheetSelectCategoryBinding
+import com.uos.project_new_windy.navigationlobby.AddBuyContentActivity
 import com.uos.project_new_windy.navigationlobby.AddContentActivity
+import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
 import java.lang.ClassCastException
 
 class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
@@ -56,10 +58,22 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
 
     fun groupClick(view : View){
 
+
+
         when(view.id){
-            binding.bottomSheetSelectCategoryViewgroup1.id -> startActivity(Intent(binding.bottomsheet?.context,AddContentActivity::class.java))
-            binding.bottomSheetSelectCategoryViewgroup2.id -> startActivity(Intent(binding.bottomsheet?.context,AddContentActivity::class.java))
-            binding.bottomSheetSelectCategoryViewgroup3.id -> startActivity(Intent(binding.bottomsheet?.context,AddContentActivity::class.java))
+
+            binding.bottomSheetSelectCategoryViewgroupSell.id -> {
+                startActivity(Intent(binding.bottomsheet?.context,AddSellContentActivity::class.java))
+                System.out.println("클릭되어씀1")
+            }
+            binding.bottomSheetSelectCategoryViewgroupBuy.id -> {
+                startActivity(Intent(binding.bottomsheet?.context,AddBuyContentActivity::class.java))
+                System.out.println("클릭되어씀2")
+            }
+            binding.bottomSheetSelectCategoryViewgroupNormal.id -> {
+                startActivity(Intent(binding.bottomsheet?.context, AddContentActivity::class.java))
+                System.out.println("클릭되어씀3")
+            }
 
 
         }

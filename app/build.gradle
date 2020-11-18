@@ -3,12 +3,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
-
+apply plugin: 'kotlin-kapt'
 
 
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
+
+    buildFeatures{
+        dataBinding = true
+    }
 
     defaultConfig {
         applicationId "com.uos.project_new_windy"
@@ -90,5 +94,8 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    //dataBinding
+    kapt 'com.android.databinding:compiler:3.5.0'
 
 }

@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uos.project_new_windy.Model.AlarmDTO
+import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.R
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
 import kotlinx.android.synthetic.main.item_comment.view.*

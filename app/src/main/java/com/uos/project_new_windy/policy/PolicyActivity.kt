@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Policy
+package com.uos.project_new_windy.policy
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

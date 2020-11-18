@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
-import com.uos.project_new_windy.Navigation_Lobby.DetailActivityRecyclerViewAdapter.BuyViewRecyclerViewAdapter
-import com.uos.project_new_windy.Navigation_Lobby.DetailActivityRecyclerViewAdapter.DetailViewRecyclerViewAdapter
-import com.uos.project_new_windy.Navigation_Lobby.DetailActivityRecyclerViewAdapter.SellViewRecyclerViewAdapter
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.BuyViewRecyclerViewAdapter
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.DetailViewRecyclerViewAdapter
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.SellViewRecyclerViewAdapter
 import com.uos.project_new_windy.R
 import kotlinx.android.synthetic.main.fragment_detail.view.*
 

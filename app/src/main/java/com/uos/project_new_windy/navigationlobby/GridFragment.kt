@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import android.os.Bundle
 import android.view.LayoutInflater

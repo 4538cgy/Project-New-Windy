@@ -1,9 +1,9 @@
-package com.uos.project_new_windy.Util
+package com.uos.project_new_windy.util
 
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.gson.Gson
 import com.squareup.okhttp.*
-import com.uos.project_new_windy.Model.PushDTO
+import com.uos.project_new_windy.model.PushDTO
 import java.io.IOException
 
 class FcmPush {

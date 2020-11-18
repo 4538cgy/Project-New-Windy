@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Util
+package com.uos.project_new_windy.util
 
 import java.text.SimpleDateFormat
 import java.util.*

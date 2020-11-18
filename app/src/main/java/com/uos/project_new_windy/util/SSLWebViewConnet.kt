@@ -1,8 +1,7 @@
-package com.uos.project_new_windy.Util
+package com.uos.project_new_windy.util
 
 import android.net.http.SslError
 import android.webkit.SslErrorHandler
-import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 

@@ -1,29 +1,23 @@
 package com.uos.project_new_windy
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
-import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import com.uos.project_new_windy.BottomSheet.BottomSheetDialogWriteCategory
-import com.uos.project_new_windy.Navigation_Lobby.*
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
+import com.uos.project_new_windy.navigationlobby.*
 import kotlinx.android.synthetic.main.activity_lobby.*
-import androidx.fragment.app.FragmentManager as FragmentManager1
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 

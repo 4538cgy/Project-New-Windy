@@ -1,18 +1,11 @@
 package com.uos.project_new_windy
 
-import android.app.Activity
-import android.content.Intent
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,16 +13,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.uos.project_new_windy.Model.ContentDTO
-import com.uos.project_new_windy.Navigation_Lobby.CommentActivity
-import com.uos.project_new_windy.Navigation_Lobby.UserFragment
+import com.uos.project_new_windy.model.ContentDTO
 import kotlinx.android.synthetic.main.activity_detail_content.*
 import kotlinx.android.synthetic.main.item_comment.view.*
-import kotlinx.android.synthetic.main.item_detail.view.*
-import kotlinx.android.synthetic.main.item_image_list.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
-import java.net.URL
 
 class DetailContentActivity : AppCompatActivity() {
 

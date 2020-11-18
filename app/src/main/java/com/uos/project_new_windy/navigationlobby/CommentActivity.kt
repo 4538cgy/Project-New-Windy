@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -11,15 +11,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
-import com.uos.project_new_windy.Model.ContentDTO
+import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
-import com.uos.project_new_windy.Util.TimeUtil
-import kotlinx.android.synthetic.main.activity_add_content.view.*
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
-import java.sql.DatabaseMetaData
-import java.text.SimpleDateFormat
 
 class CommentActivity : AppCompatActivity() {
 

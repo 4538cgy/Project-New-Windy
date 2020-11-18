@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
 import android.content.Intent
@@ -16,13 +16,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import com.uos.project_new_windy.Model.ContentDTO
+import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
-import com.uos.project_new_windy.Util.TimeUtil
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class AddContentActivity : AppCompatActivity() {

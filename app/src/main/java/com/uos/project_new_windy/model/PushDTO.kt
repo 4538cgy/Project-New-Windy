@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Model
+package com.uos.project_new_windy.model
 
 data class PushDTO(
 

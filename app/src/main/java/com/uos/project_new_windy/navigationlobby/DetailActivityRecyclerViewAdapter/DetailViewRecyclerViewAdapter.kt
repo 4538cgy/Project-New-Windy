@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby.DetailActivityRecyclerViewAdapter
+package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,9 +13,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
-import com.uos.project_new_windy.Model.ContentDTO
-import com.uos.project_new_windy.Navigation_Lobby.CommentActivity
-import com.uos.project_new_windy.Navigation_Lobby.UserFragment
+import com.uos.project_new_windy.model.ContentDTO
+import com.uos.project_new_windy.navigationlobby.CommentActivity
+import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.R
 import kotlinx.android.synthetic.main.item_detail.view.*
 

@@ -1,6 +1,4 @@
-package com.uos.project_new_windy.Model
-
-import android.net.Uri
+package com.uos.project_new_windy.model
 
 data class ContentDTO(
     var title : String ? = null,

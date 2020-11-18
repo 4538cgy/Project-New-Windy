@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.Navigation_Lobby
+package com.uos.project_new_windy.navigationlobby
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,11 +17,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
-import com.uos.project_new_windy.Model.ContentDTO
+import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
-import kotlinx.android.synthetic.main.fragment_user.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
-import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class UserFragment : Fragment() {
 

@@ -15,8 +15,7 @@ import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapt
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.SellViewRecyclerViewAdapter
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.FragmentDetailBinding
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.ContentNormalRecyclerViewAdapter
-import kotlinx.android.synthetic.main.fragment_detail.view.*
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentNormalRecyclerViewAdapter
 
 class DetailViewFragment : Fragment() {
 

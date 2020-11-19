@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter
+package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
 import android.util.Log
@@ -54,7 +54,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context) : Recycler
 
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentNormalRecyclerViewAdapterViewHolder {
         val binding = ItemRecyclerNormalBinding.inflate(LayoutInflater.from(context),parent,false)
         return ContentNormalRecyclerViewAdapterViewHolder(binding)
     }

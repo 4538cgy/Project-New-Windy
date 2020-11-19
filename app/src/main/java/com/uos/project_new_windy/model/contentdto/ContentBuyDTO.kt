@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.model.contentdto
 
 data class ContentBuyDTO(
+    //이건 어디를 참고해야하오?
     var data : String ? = null,
     //이미지 목록
     var imageDownLoadUrlList : ArrayList<String> ? = null,

@@ -77,8 +77,11 @@ class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView
             }
 
         //사진
+        /*
         Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+         */
     }
 
     override fun getItemCount(): Int = contentBuyDTO.size

@@ -80,11 +80,12 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 android:id="@+id/activity_add_sell_content_imagebutton_addphoto"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
                 android:src="@drawable/ic_add_photo"
                 android:background="@android:color/transparent"
                 android:scaleType="centerInside"
+                android:padding="8dp"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_add_sell_content_recycler_photo"

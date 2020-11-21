@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -18,6 +19,9 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
+import com.uos.project_new_windy.databinding.ActivityAddContentBinding
+import com.uos.project_new_windy.navigationlobby.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
@@ -36,10 +40,13 @@ class AddContentActivity : AppCompatActivity() {
     var count: Int = 0;
     var imageDownLoadUriList : ArrayList<String> = arrayListOf()
 
+    lateinit var binding : ActivityAddContentBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add_content)
-
+        //setContentView(R.layout.activity_add_content)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_add_content)
+        binding.addnormalcontent = this@AddContentActivity
 
 
         //파이어베이스 초기화
@@ -54,22 +61,38 @@ class AddContentActivity : AppCompatActivity() {
 
 
         //리사이클러뷰 추가
-        activity_add_content_recycler_photo.adapter = AddContentActivityRecyclerViewAdapter()
-        activity_add_content_recycler_photo.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        //activity_add_content_recycler_photo.adapter = AddContentActivityRecyclerViewAdapter()
+        //activity_add_content_recycler_photo.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
+        binding.activityAddContentRecyclerPhoto.adapter = AddNormalContentActivityRecyclerViewAdapter(this,imageUriList)
+        binding.activityAddContentRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
         //이미지 추가 이벤트
+        /*
         activity_add_content_button_add_photo.setOnClickListener {
             addPhoto()
 
         }
 
+         */
+
+        binding.activityAddContentButtonAddPhoto.setOnClickListener {
+            addPhoto()
+        }
+
 
 
         //이미지 업로드 이벤트 추가
+        /*
         activity_add_content_button_upload.setOnClickListener {
             contentUpload()
 
+        }
+
+         */
+
+        binding.activityAddContentButtonUpload.setOnClickListener {
+            contentUpload()
         }
 
 
@@ -181,9 +204,10 @@ class AddContentActivity : AppCompatActivity() {
                 finish()
             }
         }
-        activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
+        //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
+        binding.activityAddContentRecyclerPhoto.adapter?.notifyDataSetChanged()
     }
-
+    /*
     inner class AddContentActivityRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
 
@@ -213,6 +237,8 @@ class AddContentActivity : AppCompatActivity() {
         }
 
     }
+
+     */
 }
 
 

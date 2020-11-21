@@ -167,6 +167,7 @@ public class SellViewRecyclerViewAdapter(var activity: LobbyActivity) : Recycler
             var intent = Intent(v.context, CommentActivity::class.java)
             intent.putExtra("contentUid", contentUidList[position])
             intent.putExtra("destinationUid", contentDTOs[position].uid)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             activity.applicationContext.startActivity(intent)
         }
 

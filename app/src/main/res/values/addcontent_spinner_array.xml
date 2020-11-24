@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="content_category">
+        <item>농기계</item>
+        <item>농산물</item>
+        <item>축산물</item>
+        <item>소모품</item>
+        <item>농지</item>
+        <item>가구</item>
+        <item>기타</item>
+    </string-array>
+</resources>

@@ -23,5 +23,6 @@ data class ContentBuyDTO(
     //카테고리
     var categoryHash: MutableMap<String,Boolean> = HashMap(),
     //핸드폰 번호
-    var phoneNumber : String ? = null
+    var phoneNumber : String ? = null,
+
 )

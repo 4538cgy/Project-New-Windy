@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.navigationlobby.AddContentActivity
+import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
-
-//자유 게시판 게시글 등록 포토 리사이클러 어댑터
-class AddNormalContentActivityRecyclerViewAdapter(var activity: AddContentActivity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AddSellContentActivityRecyclerViewAdapter (var activity: AddSellContentActivity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 

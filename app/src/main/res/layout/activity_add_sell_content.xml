@@ -110,6 +110,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
+            <!--
             <TextView
                 android:id="@+id/activity_add_sell_content_textview_category"
                 app:layout_constraintTop_toTopOf="parent"
@@ -121,17 +122,18 @@
                 android:textStyle="bold"
                 android:textColor="@color/colorBlack"
                 android:textSize="24dp"
-                app:layout_constraintRight_toLeftOf="@+id/activity_add_sell_content_imagebutton_category"
+                app:layout_constraintRight_toLeftOf="@+id/activity_add_sell_content_spinner_category"
                 />
+                -->
 
-            <ImageButton
-                android:id="@+id/activity_add_sell_content_imagebutton_category"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+            <Spinner
+                android:id="@+id/activity_add_sell_content_spinner_category"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/activity_add_sell_content_textview_category"
+                app:layout_constraintLeft_toLeftOf="parent"
                 android:layout_marginRight="16dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_baseline_arrow_drop_down_24"
@@ -163,6 +165,7 @@
                 android:paddingLeft="16dp"
                 android:background="@android:color/transparent"
                 android:layout_margin="8dp"
+                android:inputType="number"
                 />
 
 

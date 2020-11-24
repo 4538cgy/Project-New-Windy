@@ -35,7 +35,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.orderBy("timestamp")
+        firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentSellDTO.clear()
                 contentUidList.clear()
@@ -45,8 +45,14 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject(ContentSellDTO::class.java)
-                    contentSellDTO.add(item!!)
-                    contentUidList.add(snapshot.id)
+                    System.out.println("데이터들 " + item.toString())
+                    //거래완료 상품이 아니면 보여줌
+                    if (item?.checkSellComplete == false) {
+                        contentSellDTO.add(item!!)
+                        System.out.println("데이터들2" + contentSellDTO.toString())
+                        contentUidList.add(snapshot.id)
+                    }
+
 
 
 
@@ -58,6 +64,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
                 notifyDataSetChanged()
             }
+
+
         data = contentSellDTO
     }
 
@@ -97,7 +105,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         }
 
         //프로필 이미지
-        firestore?.collection("profileImages")?.document(contentSellDTO[position].uid!!)
+        firestore?.collection("profileImages")?.document(data[position].uid!!)
             ?.get()?.addOnCompleteListener { task ->
 
                 if (task.isSuccessful)
@@ -111,11 +119,16 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             }
 
         //사진
-        Glide.with(holder.itemView.context).load(contentSellDTO!![position].imageDownLoadUrlList?.get(0))
-            .into(holder.binding.itemRecyclerSellImageviewImage)
+        if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
+            Glide.with(holder.itemView.context)
+                .load(data[position].imageDownLoadUrlList?.get(position))
+                .into(holder.binding.itemRecyclerSellImageviewImage)
+        }
+
+
     }
 
-    override fun getItemCount(): Int = contentSellDTO.size
+    override fun getItemCount(): Int = data.size
 
 
 
@@ -130,12 +143,12 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
 
         System.out.println("좋아요 이벤트 ㅇㅅㅇ")
-        var tsDoc = firestore?.collection("images")?.document(contentUidList[position])
+        var tsDoc = firestore?.collection("contents")?.document("sell").collection("data")?.document(contentUidList[position])
         firestore?.runTransaction{ transaction ->
 
 
 
-
+            System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentSellDTO::class.java)
 
             if (contentDTO!!.favorites.containsKey(uid)){
@@ -143,8 +156,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
 
-
+                System.out.println("uid 존재")
             }else{
+                System.out.println("uid 미존재")
                 //When the button is not clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid!!] = true

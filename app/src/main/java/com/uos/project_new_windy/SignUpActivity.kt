@@ -159,11 +159,14 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
     //스피너 ITEM 선택 리스너
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         pickToSpinnerPlant = activity_sign_up_spinner.selectedItem.toString()
     }
 
+
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
+
 }

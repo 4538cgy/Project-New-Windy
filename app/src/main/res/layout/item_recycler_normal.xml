@@ -73,7 +73,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-
             app:layout_constraintBottom_toTopOf="@+id/item_recycler_normal_linearlayout_action"
             />
 

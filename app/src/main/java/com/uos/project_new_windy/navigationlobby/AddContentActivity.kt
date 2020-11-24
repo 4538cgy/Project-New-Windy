@@ -21,7 +21,8 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.databinding.ActivityAddContentBinding
-import com.uos.project_new_windy.navigationlobby.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
+
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.item_image_list.view.*

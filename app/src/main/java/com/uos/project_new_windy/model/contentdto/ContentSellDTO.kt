@@ -25,5 +25,7 @@ data class ContentSellDTO(
     //주소
     var address : String ? = null,
     //핸드폰 번호
-    var phoneNumber : String ? = null
+    var phoneNumber : String ? = null,
+    //좋아요 누른사람
+    var favorites: MutableMap<String,Boolean> = HashMap()
 )

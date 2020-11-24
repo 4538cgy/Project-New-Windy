@@ -82,6 +82,9 @@ class ContentNormalRecyclerViewAdapter (private val context: Context) : Recycler
         //사진
         Glide.with(holder.itemView.context).load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+
+
     }
 
 

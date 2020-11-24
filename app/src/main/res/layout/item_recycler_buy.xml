@@ -19,7 +19,7 @@
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/item_recycler_normal_const_top"
+            android:id="@+id/item_recycler_buy_const_top"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -27,8 +27,8 @@
             android:layout_height="wrap_content"
             >
             <LinearLayout
-                android:id="@+id/item_recycler_normal_linearlayout_top"
-                app:layout_constraintRight_toLeftOf="@+id/item_recycler_normal_imagebutton_option"
+                android:id="@+id/item_recycler_buy_linearlayout_top"
+                app:layout_constraintRight_toLeftOf="@+id/item_recycler_buy_imagebutton_option"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -38,7 +38,7 @@
                 android:gravity="center_vertical|left"
                 >
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/item_recycler_normal_imageview_profile"
+                    android:id="@+id/item_recycler_buy_imageview_profile"
                     android:layout_marginLeft="8dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
@@ -53,7 +53,7 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/item_recycler_normal_imagebutton_option"
+                android:id="@+id/item_recycler_buy_imagebutton_option"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_post_menu_option"
@@ -68,26 +68,25 @@
         <ImageView
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/item_recycler_normal_const_top"
+            app:layout_constraintTop_toBottomOf="@+id/item_recycler_buy_const_top"
             android:id="@+id/item_recycler_normal_imageview_image"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_normal_linearlayout_action"
+            app:layout_constraintBottom_toTopOf="@+id/item_recycler_buy_linearlayout_action"
             />
 
         <LinearLayout
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_normal_linearlayout_bottom"
-            android:id="@+id/item_recycler_normal_linearlayout_action"
+            app:layout_constraintBottom_toTopOf="@+id/item_recycler_buy_linearlayout_bottom"
+            android:id="@+id/item_recycler_buy_linearlayout_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
 
             <ImageButton
-                android:id="@+id/item_detail_imagebutton_like"
+                android:id="@+id/item_recycler_buy_imagebutton_like"
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -97,7 +96,7 @@
                 />
 
             <TextView
-                android:id="@+id/item_detail_textview_like_count"
+                android:id="@+id/item_recycler_buy_textview_like_count"
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +104,7 @@
                 />
 
             <ImageButton
-                android:id="@+id/item_detail_imagebutton_comment"
+                android:id="@+id/item_recycler_buy_imagebutton_comment"
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="35dp"
                 android:layout_height="35dp"
@@ -114,7 +113,7 @@
                 android:background="@android:color/transparent"
                 />
             <TextView
-                android:id="@+id/item_detail_textview_comment_count"
+                android:id="@+id/item_recycler_buy_textview_comment_count"
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -123,7 +122,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/item_recycler_normal_linearlayout_bottom"
+            android:id="@+id/item_recycler_buy_linearlayout_bottom"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:gravity="center"

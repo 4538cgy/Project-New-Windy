@@ -71,7 +71,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView
                     var url = task.result!!["image"]
                     Glide.with(holder.itemView.context)
                         .load(url)
-                        .apply(RequestOptions().circleCrop()).into(holder.binding.itemRecyclerNormalImageviewProfile)
+                        .apply(RequestOptions().circleCrop()).into(holder.binding.itemRecyclerBuyImageviewProfile)
                 }
 
             }

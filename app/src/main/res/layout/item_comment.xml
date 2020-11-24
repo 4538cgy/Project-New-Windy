@@ -33,6 +33,7 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_margin="8dp"
+
             />
 
         <TextView
@@ -40,7 +41,7 @@
             android:id="@+id/item_comment_textview_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="profile"
+            android:text="@{commentitem.userId}"
             />
 
         <TextView
@@ -48,7 +49,7 @@
             android:id="@+id/item_comment_textview_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="comment"
+            android:text="@{commentitem.comment}"
             />
 
 

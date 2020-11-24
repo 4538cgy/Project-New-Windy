@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
@@ -22,6 +23,8 @@ import com.uos.project_new_windy.databinding.ItemRecyclerSellBinding
 import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
+import com.uos.project_new_windy.navigationlobby.AddContentActivity
+import com.uos.project_new_windy.navigationlobby.CommentActivity
 import com.uos.project_new_windy.util.FcmPush
 
 class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder>() {
@@ -83,7 +86,12 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
         //댓글 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonComment.setOnClickListener {
-            System.out.println("어어어엌ㅋㅋ")
+            var intent = Intent(holder.itemView.context,CommentActivity::class.java)
+                intent.apply {
+                    putExtra("contentUid",contentUidList[position])
+                    putExtra("destinationUid",contentSellDTO[position].uid)
+                }
+            context.startActivity(intent)
         }
 
         //프로필 이미지 클릭
@@ -103,6 +111,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
             bottomeSheetDialog.show(fragmentManager,"dd")
         }
+        //댓글 갯수
+        //viewholder.item_detail_textview_comment_count.text = contentDTOs!![position].commentCount.toString()
+        holder.binding.itemRecyclerSellTextviewCommentCount.text = data[position].commentCount.toString()
 
         //프로필 이미지
         firestore?.collection("profileImages")?.document(data[position].uid!!)

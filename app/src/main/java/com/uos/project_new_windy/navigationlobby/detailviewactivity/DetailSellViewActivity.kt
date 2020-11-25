@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class DetailSellViewActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityDetailSellViewBindingImpl
+    lateinit var binding : ActivityDetailSellViewBinding
     var contentUid : String ? = null
     var destinationUid : String ? = null
     var commentCount : String ? = null
@@ -35,6 +35,9 @@ class DetailSellViewActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_sell_view)
         binding.activitydetailviewsell = this@DetailSellViewActivity
 
+        firestore = FirebaseFirestore.getInstance()
+
+        uid = intent.getStringExtra("uid")
         contentUid = intent.getStringExtra("contentUid")
         destinationUid = intent.getStringExtra("destinationUid")
         commentCount = intent.getStringExtra("commentCount")
@@ -52,6 +55,21 @@ class DetailSellViewActivity : AppCompatActivity() {
         //시간 초기화
         
         //프로필 이미지
+
+
+        System.out.println("프로필 이미지를 불러옵니다." + uid)
+        firestore?.collection("profileImages")?.document(uid!!)?.get()?.addOnCompleteListener {
+            task ->
+            if (task.isSuccessful)
+            {
+                System.out.println("프로필 이미지 불러오기 성공")
+                var url = task.result!!["image"]
+                Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(binding.activityDetailSellViewCircleimageviewProfile)
+
+            }
+        }
+
+
     }
     
     

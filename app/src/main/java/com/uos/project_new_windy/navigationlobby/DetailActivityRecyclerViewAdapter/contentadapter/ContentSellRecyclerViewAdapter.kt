@@ -122,9 +122,10 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             intent.apply {
                 putExtra("uid" , contentSellDTO[position].uid)
                 putExtra("postUid",contentUidList[position])
+                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
             }
-            context.startActivity(Intent(holder.itemView.context,DetailSellViewActivity::class.java))
+            context.startActivity(intent)
         }
 
         

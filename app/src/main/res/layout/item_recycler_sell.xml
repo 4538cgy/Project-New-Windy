@@ -10,12 +10,14 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_recycler_sell_const_all"
         android:background="@drawable/background_round_white"
         android:layout_margin="6dp"
         android:elevation="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
+
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout

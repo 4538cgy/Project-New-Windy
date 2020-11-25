@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".navigationlobby.detailviewactivity.DetailNormalViewActivity"></activity>
+        <activity android:name=".detailactivity.DetailSellActivity"></activity>
+        <activity android:name=".navigationlobby.detailviewactivity.DetailNormalViewActivity" />
         <activity android:name=".navigationlobby.detailviewactivity.DetailBuyViewActivity" />
         <activity android:name=".navigationlobby.detailviewactivity.DetailSellViewActivity" />
         <activity android:name=".navigationlobby.AddSellContentActivity" />

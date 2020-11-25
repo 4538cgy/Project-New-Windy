@@ -3,6 +3,7 @@ package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdap
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -25,6 +26,8 @@ import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.AddContentActivity
 import com.uos.project_new_windy.navigationlobby.CommentActivity
+import com.uos.project_new_windy.navigationlobby.UserFragment
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
 
 class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder>() {
@@ -34,6 +37,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     var contentUidList: ArrayList<String> = arrayListOf()
     var uid : String ? = null
     var data = listOf<ContentSellDTO>()
+
+
 
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -96,13 +101,30 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
         //프로필 이미지 클릭
         holder.binding.itemRecyclerSellImageviewProfile.setOnClickListener {
-
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentSellDTO[position].uid)
+            bundle.putString("userId",contentSellDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
 
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {
             favoriteEvent(position)
+        }
+
+        //아이템 자체 클릭
+        holder.binding.itemRecyclerSellConstAll.setOnClickListener {
+            var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
+            intent.apply {
+                putExtra("uid" , contentSellDTO[position].uid)
+                putExtra("postUid",contentUidList[position])
+
+            }
+            context.startActivity(Intent(holder.itemView.context,DetailSellViewActivity::class.java))
         }
 
         

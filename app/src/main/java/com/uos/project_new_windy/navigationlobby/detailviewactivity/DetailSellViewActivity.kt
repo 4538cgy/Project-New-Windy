@@ -13,13 +13,14 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBinding
+import com.uos.project_new_windy.databinding.ActivityDetailSellViewBindingImpl
 import com.uos.project_new_windy.model.ContentDTO
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class DetailSellViewActivity : AppCompatActivity() {
 
-    lateinit var binding : ActivityDetailSellViewBinding
+    lateinit var binding : ActivityDetailSellViewBindingImpl
     var contentUid : String ? = null
     var destinationUid : String ? = null
     var commentCount : String ? = null

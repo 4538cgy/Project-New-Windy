@@ -30,6 +30,8 @@ data class ContentSellDTO(
     var phoneNumber : String ? = null,
     //판매된 글 체크
     var checkSellComplete : Boolean = false,
+    //판매자 주소
+    var sellerAddress : String ? = null,
 
     //좋아요 누른사람
     var favorites: MutableMap<String,Boolean> = HashMap()

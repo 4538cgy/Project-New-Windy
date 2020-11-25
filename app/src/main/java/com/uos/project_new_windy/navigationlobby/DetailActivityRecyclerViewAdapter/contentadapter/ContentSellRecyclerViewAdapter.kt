@@ -121,7 +121,11 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
             intent.apply {
                 putExtra("uid" , contentSellDTO[position].uid)
+                putExtra("userId",contentSellDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
+                putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
+                putExtra("contentTime",contentSellDTO[position].time)
+                //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
             }

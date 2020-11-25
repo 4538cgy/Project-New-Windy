@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -27,7 +28,9 @@ class DetailSellViewActivity : AppCompatActivity() {
     var likeCount : String ? = null
     var firestore : FirebaseFirestore ? = null
     var uid : String ? = null
+    var userId : String ? = null
     var profileImageUrl : Any ? = null
+    var sellerAddress : String ? = null
     var contentTime : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,32 +40,53 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         firestore = FirebaseFirestore.getInstance()
 
+
+        userId = intent.getStringExtra("userId")
         uid = intent.getStringExtra("uid")
-        contentUid = intent.getStringExtra("contentUid")
+        contentUid = intent.getStringExtra("postUid")
         destinationUid = intent.getStringExtra("destinationUid")
         commentCount = intent.getStringExtra("commentCount")
         likeCount = intent.getStringExtra("likeCount")
         contentTime = intent.getStringExtra("contentTime")
+        sellerAddress = intent.getStringExtra("sellerAddress")
 
         //이미지 리사이클러뷰 초기화
-
+        binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
+        binding.activityDetailSellViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         //아이디 초기화
+        binding.activityDetailSellViewTextviewId.text = userId
 
         //댓글 리사이클러뷰 초기화
-
+        binding.activityDetailSellViewRecyclerComment.adapter = DetailContentCommentRecyclerViewAdapter()
+        binding.activityDetailSellViewRecyclerComment.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         //각종 버튼 초기화
 
-        //시간 초기화
+        //채팅으로 거래
+        binding.activityDetailSellViewButtonChat.setOnClickListener {
+
+        }
+
+        //찜하기
+        binding.activityDetailSellViewButtonPicking.setOnClickListener {
+
+        }
+
+        //추천
+        binding.activityDetailSellViewButtonLike.setOnClickListener {
+
+        }
         
+        //주소 초기화
+        binding.activityDetailSellViewTextviewAddress.text = sellerAddress
+
+        //시간 초기화
+        binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ contentTime.toString()
+
         //프로필 이미지
-
-
-        System.out.println("프로필 이미지를 불러옵니다." + uid)
         firestore?.collection("profileImages")?.document(uid!!)?.get()?.addOnCompleteListener {
             task ->
             if (task.isSuccessful)
             {
-                System.out.println("프로필 이미지 불러오기 성공")
                 var url = task.result!!["image"]
                 Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(binding.activityDetailSellViewCircleimageviewProfile)
 
@@ -134,6 +158,18 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         init {
 
+            firestore?.collection("contents")?.document("sell")?.collection("data")?.document(contentUid!!)
+                ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                    contentDTOs.clear()
+
+                    if(documentSnapshot == null)
+                        return@addSnapshotListener
+
+                    //querySnapshot["imageDownLoadUrlList"]
+                    contentImageList = documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
+                    contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
+                }
+            /*
             firestore?.collection("contents")?.document(contentUid!!)
                 ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                     contentDTOs.clear()
@@ -146,6 +182,8 @@ class DetailSellViewActivity : AppCompatActivity() {
                     contentDTOs.add(querySnapshot.toObject(ContentDTO::class.java)!!)
 
                 }
+
+             */
             notifyDataSetChanged()
         }
 

@@ -54,6 +54,7 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/activity_detail_sell_view_textview_id"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -61,6 +62,7 @@
                         android:text="nickname" />
 
                     <TextView
+                        android:id="@+id/activity_detail_sell_view_textview_address"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_weight="1"
@@ -132,6 +134,7 @@
                     android:background="@color/colorGray" />
 
                 <TextView
+                    android:id="@+id/activity_detail_sell_view_textview_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="right"
@@ -150,18 +153,21 @@
                 app:layout_constraintTop_toBottomOf="@+id/activity_detail_sell_view_textview_bar">
 
                 <Button
+                    android:id="@+id/activity_detail_sell_view_button_chat"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="채팅으로 거래" />
 
                 <Button
+                    android:id="@+id/activity_detail_sell_view_button_like"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="이 글을 추천" />
 
                 <Button
+                    android:id="@+id/activity_detail_sell_view_button_picking"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -191,6 +197,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_detail_sell_view_recycler_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="16dp"

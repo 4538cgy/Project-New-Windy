@@ -11,8 +11,8 @@ data class ChatDTO(
 
      */
 
-    var users: Map<String,Boolean> = HashMap(),
-    var comments : Map<String,Comment> = HashMap()
+    var users: MutableMap<String,Boolean> = HashMap(),
+    var comments : MutableMap<String,Comment> = HashMap()
 
 ) {
     data class Comment (

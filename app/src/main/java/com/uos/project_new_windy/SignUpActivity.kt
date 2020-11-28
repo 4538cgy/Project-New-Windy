@@ -8,14 +8,21 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
 import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCallbacks
+import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ServerTimestamp
+import com.uos.project_new_windy.databinding.ActivitySignUpBinding
+import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.policy.PolicyActivity
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
 
@@ -30,9 +37,14 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     val mCallback: OnVerificationStateChangedCallbacks? = null
     val mResendToken: ForceResendingToken? = null
 
+    lateinit var binding : ActivitySignUpBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
+        binding.activitysignup = this@SignUpActivity
 
         //파이어베이스 auth 초기화
         mAuth = FirebaseAuth.getInstance()
@@ -49,30 +61,66 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
 
         //스피너에 어댑터 세팅
-        activity_sign_up_spinner.adapter = spinnerAdapter
-
+        //activity_sign_up_spinner.adapter = spinnerAdapter
+        binding.activitySignUpSpinner.adapter = spinnerAdapter
 
         //sms 인증 요청
+        /*
         activity_search_address_button_auth_to_phone.setOnClickListener {
             AutoRecieveThePhoneVerifyCode()
         }
+
+         */
+
+        binding.activitySearchAddressButtonAuthToPhone.setOnClickListener {
+            AutoRecieveThePhoneVerifyCode()
+        }
         //주소 요청
+        /*
         activity_search_address_button_address.setOnClickListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
-        //main으로 이동
+         */
+
+        binding.activitySearchAddressButtonAddress.setOnClickListener {
+            startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
+        }
+
+        //main으로 이동 - 저장안하고 다음에 회원 정보 입력하기
+        /*
         activity_sign_up_button_later.setOnClickListener {
             startActivity(Intent(this,LobbyActivity::class.java))
             finish()
         }
 
+         */
+
+        binding.activitySignUpButtonLater.setOnClickListener {
+            startActivity(Intent(this,LobbyActivity::class.java))
+            finish()
+        }
+
+        //동의하고 회원 정보 입력하기
+
+        binding.activitySignUpButtonAccept.setOnClickListener {
+            saveData()
+        }
+
         //이용약관 보러가기
+        /*
         activity_sign_up_textview.setOnClickListener {
             startActivity(Intent(this,PolicyActivity::class.java))
         }
 
+         */
+
+        binding.activitySignUpTextview.setOnClickListener {
+            startActivity(Intent(this,PolicyActivity::class.java))
+        }
+
         //프로필 이미지 추가 리스너
+        /*
         activity_sign_up_circleimageview.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
@@ -81,6 +129,19 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             )
             Log.d(" 회원가입 액티비티" , "인텐트 시작")
 
+        }
+
+
+         */
+         */
+
+        binding.activitySignUpCircleimageview.setOnClickListener {
+            var photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            startActivityForResult(photoPickerIntent,
+                UserFragment.PICK_PROFILE_FROM_ALBUM
+            )
+            Log.d(" 회원가입 액티비티" , "인텐트 시작")
         }
 
     }
@@ -161,12 +222,43 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     //스피너 ITEM 선택 리스너
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        pickToSpinnerPlant = activity_sign_up_spinner.selectedItem.toString()
+        //pickToSpinnerPlant = activity_sign_up_spinner.selectedItem.toString()
+        pickToSpinnerPlant = binding.activitySignUpSpinner.selectedItem.toString()
     }
 
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
+    }
+
+    fun saveData(){
+        var userModel = UserModel()
+
+        //주소
+        userModel.address = binding.activitySearchAddressButtonAddress.text.toString()
+        //상세주소
+        userModel.addressDetail = binding.activitySignUpEdittextDetailAddress.text.toString()
+        //선호하는 작물
+        userModel.favoriteCategory = pickToSpinnerPlant.toString()
+        //핸드폰 번호
+        userModel.phoneNumber = binding.activitySignUpEdittextPhonenumber.text.toString()
+        //핸드폰 시간
+        userModel.time = TimeUtil().getTime().toString()
+        //서버 시간
+        userModel.timeStamp = FieldValue.serverTimestamp()
+        //유저 uid
+        userModel.uid = FirebaseAuth.getInstance().currentUser?.uid
+        //유저 닉네임
+        //userModel.userName =
+
+        FirebaseFirestore.getInstance().collection("userInfo").document(FirebaseAuth.getInstance().currentUser?.uid!!).set(userModel)
+            .addOnSuccessListener {
+                System.out.println("유저 정보 저장 성공")
+
+                //메인으로 이동하게 startActivity 작성해주세요.
+            }.addOnFailureListener {
+                System.out.println("유저 정보 저장 실패")
+            }
     }
 
 }

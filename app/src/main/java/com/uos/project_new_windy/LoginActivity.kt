@@ -51,6 +51,7 @@ class LoginActivity : AppCompatActivity() {
 
         //회원가입
         activity_login_sign_up.setOnClickListener {
+
             startActivity(Intent(this,SignUpActivity::class.java))
             finish()
         }

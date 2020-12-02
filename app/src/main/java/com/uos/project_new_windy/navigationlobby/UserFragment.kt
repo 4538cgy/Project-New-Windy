@@ -8,17 +8,23 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.SplashActivity
+import com.uos.project_new_windy.databinding.FragmentUserBinding
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment() {
@@ -29,6 +35,9 @@ class UserFragment : Fragment() {
     var auth : FirebaseAuth ? = null
     var currentUserUid : String ? = null
 
+    var gac : GoogleApiClient ? = null
+
+    lateinit var binding : FragmentUserBinding
 
     companion object{
         var PICK_PROFILE_FROM_ALBUM = 101
@@ -40,9 +49,18 @@ class UserFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         //프라그먼트에 뷰 연결
-        fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
+        //fragmentView = LayoutInflater.from(activity).inflate(R.layout.fragment_user, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_user,container,false)
 
 
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        gac = GoogleApiClient.Builder(requireActivity())
+            .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+            .build()
 
         //각종 변수 초기화
         uid = arguments?.getString("destinationUid")
@@ -52,27 +70,76 @@ class UserFragment : Fragment() {
 
 
         //리사이클러뷰 초기화
+        /*
         fragmentView?.fragment_user_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
         fragmentView?.fragment_user_recyclerview?.layoutManager = GridLayoutManager(activity!!,3)
 
+         */
+
+        binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+        binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
+
         //프로필 이미지 변경 이벤트
+        /*
         fragmentView?.fragment_user_circle_imageview?.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
             activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
         }
+         */
+         */
+        binding.fragmentUserCircleImageview.setOnClickListener {
+            var photoPickerIntent = Intent(Intent.ACTION_PICK)
+            photoPickerIntent.type = "image/*"
+            activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+        }
+
 
         //fragment_user_textview_history_content 눌렀을때 이벤트
-        fragmentView?.fragment_user_textview_history_content?.setOnClickListener {
+        binding.fragmentUserTextviewHistoryContent.setOnClickListener {
 
         }
 
         //fragment_user_textview_history_view 눌렀을때 이벤트
-        fragmentView?.fragment_user_textview_history_view?.setOnClickListener {
+        binding.fragmentUserTextviewHistoryView.setOnClickListener {
 
         }
 
-        return fragmentView
+        
+        //현재 보고있는 화면의 유저가 내가 아닌지를 판단
+        if(!uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+             binding.accountBtnFollowSignout.text = "친구 맺기"
+        }else if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid))
+        {
+            binding.accountBtnFollowSignout.text = "로그아웃"
+
+        }
+
+
+        //팔로우&로그아웃 버튼을 눌렀을때의 이벤트
+        binding.accountBtnFollowSignout.setOnClickListener {
+            if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid))
+            {
+                //로그아웃
+                FirebaseAuth.getInstance().signOut()
+                signOut()
+            }else
+            {
+                //팔로우 이벤트
+            }
+        }
+
+        //메세지 버튼 클릭했을 때
+        binding.fragmentUserButtonMessage.setOnClickListener {
+
+        }
+
+        //신고하기  버튼 클릭했을 때
+        binding.fragmentUserButtonReport.setOnClickListener {
+
+        }
+
+        return binding.root
     }
 
     override fun onResume() {
@@ -100,6 +167,7 @@ class UserFragment : Fragment() {
                 var url = documentSnapshot?.data!!["image"]
 
                 Log.d("프로필 이미지 url = \n",url.toString())
+                /*
                 Glide.with(activity!!.applicationContext)
                     .load(url)
                     .apply(
@@ -107,6 +175,17 @@ class UserFragment : Fragment() {
                     )
                     .error(R.drawable.btn_signin_google)
                     .into(fragmentView?.fragment_user_circle_imageview!!)
+
+                 */
+
+
+                Glide.with(activity!!.applicationContext)
+                    .load(url)
+                    .apply(
+                        RequestOptions().centerCrop()
+                    )
+                    .error(R.drawable.btn_signin_google)
+                    .into(binding.fragmentUserCircleImageview)
                 LobbyActivity.progressDialog?.dismiss()
             }
         }
@@ -135,7 +214,8 @@ class UserFragment : Fragment() {
                 }
 
                 System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
-                fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
+                //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
+                binding.accountTvPostCount.text = contentDTOs.size.toString()
                 notifyDataSetChanged()
             }
         }
@@ -176,6 +256,37 @@ class UserFragment : Fragment() {
 
             }
         }
+
+
+    }
+
+    fun signOut(){
+        gac?.connect()
+
+
+
+        gac?.registerConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(bundle: Bundle?) {
+                FirebaseAuth.getInstance().signOut()
+                if (gac!!.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(gac).setResultCallback { status ->
+                        if (status.isSuccess) {
+                            Log.v("알림", "로그아웃 성공")
+                            startActivity(Intent(activity?.applicationContext,SplashActivity::class.java))
+                            activity?.finish()
+                            activity?.setResult(1)
+                        } else {
+                            activity?.setResult(0)
+                        }
+                    }
+                }
+            }
+
+            override fun onConnectionSuspended(i: Int) {
+                Log.v("알림", "Google API Client Connection Suspended")
+                activity?.setResult(-1)
+            }
+        })
 
 
     }

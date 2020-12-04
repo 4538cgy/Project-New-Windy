@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.firebase.auth.FirebaseAuth
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.BottomSheetSelectCategoryBinding
 import com.uos.project_new_windy.databinding.BottomSheetSelectContentOptionBinding
@@ -22,6 +23,11 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     lateinit var bottomSheetButtonClickListener: BottomSheetButtonClickListener
     private lateinit var binding : BottomSheetSelectContentOptionBinding
 
+    var uid : String ? = null
+    var destinationUid : String ? = null
+    var postExplain : String ? = null
+    var postUid : String ? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,6 +35,14 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.bottom_sheet_select_content_option,container,false)
+
+        var bundle = arguments
+        uid = FirebaseAuth.getInstance().currentUser?.uid
+        destinationUid = bundle?.getString("destinationUid")
+        postExplain = bundle?.getString("postExplain")
+        postUid = bundle?.getString("posetUid")
+
+
 
         //val view = inflater.inflate(R.layout.bottom_sheet_select_category,container,false)
 
@@ -63,15 +77,22 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
 
 
         when(view.id){
-
+            //신고
             binding.bottomSheetSelectCategoryViewgroupSell.id -> {
-                startActivity(
-                    Intent(binding.bottomsheetcontentoption?.context,
-                        AddSellContentActivity::class.java)
-                )
+
+                var intent = Intent(binding.bottomsheetcontentoption?.context, AddSellContentActivity::class.java)
+                intent.apply {
+                    putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid)
+                    putExtra("destinationUid",destinationUid)
+                    putExtra("postExplain",postExplain)
+                    putExtra("postUid",postUid)
+                }
+                startActivity(intent)
                 System.out.println("클릭되어씀1")
             }
-            binding.bottomSheetSelectCategoryViewgroupBuy.id -> {
+
+            //삭제제
+           binding.bottomSheetSelectCategoryViewgroupBuy.id -> {
                 startActivity(
                     Intent(binding.bottomsheetcontentoption?.context,
                         AddBuyContentActivity::class.java)

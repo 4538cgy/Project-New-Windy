@@ -136,6 +136,12 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerSellImagebuttonOption.setOnClickListener {
             val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentSellDTO[position].uid)
+            bundle.putString("userId",contentSellDTO[position].userId)
+            bundle.putString("postExplain",contentSellDTO[position].productExplain)
+            bundle.putString("postUid",contentUidList[position])
+            bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }
         //댓글 갯수

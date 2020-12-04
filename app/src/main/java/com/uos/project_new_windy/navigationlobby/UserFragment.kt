@@ -19,11 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uos.project_new_windy.DetailContentActivity
-import com.uos.project_new_windy.LobbyActivity
+import com.uos.project_new_windy.*
 import com.uos.project_new_windy.model.ContentDTO
-import com.uos.project_new_windy.R
-import com.uos.project_new_windy.SplashActivity
+import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.databinding.FragmentUserBinding
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
@@ -131,12 +129,16 @@ class UserFragment : Fragment() {
 
         //메세지 버튼 클릭했을 때
         binding.fragmentUserButtonMessage.setOnClickListener {
+            var intent = Intent(binding.root.context, ChatActivity::class.java)
+            intent.putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid.toString())
+            intent.putExtra("destinationUid" , uid)
 
+            startActivity(intent)
         }
 
         //신고하기  버튼 클릭했을 때
         binding.fragmentUserButtonReport.setOnClickListener {
-
+            startActivity(Intent(binding.root.context, ReportActivity::class.java))
         }
 
         return binding.root

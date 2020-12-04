@@ -33,6 +33,9 @@ class ReportActivity : AppCompatActivity() , View.OnClickListener {
         postExplain = intent.getStringExtra("postExplain")
 
 
+        binding.activityReportButton1.setOnClickListener {
+            createReport("음란물")
+        }
 
     }
 

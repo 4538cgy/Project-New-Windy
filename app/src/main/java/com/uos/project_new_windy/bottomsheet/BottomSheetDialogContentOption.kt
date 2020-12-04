@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.ReportActivity
 import com.uos.project_new_windy.databinding.BottomSheetSelectCategoryBinding
 import com.uos.project_new_windy.databinding.BottomSheetSelectContentOptionBinding
 import com.uos.project_new_windy.navigationlobby.AddBuyContentActivity
@@ -20,7 +21,7 @@ import java.lang.ClassCastException
 
 class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
 
-    lateinit var bottomSheetButtonClickListener: BottomSheetButtonClickListener
+    lateinit var bottomSheetContentOptionButtonClickListener: BottomSheetButtonClickListener
     private lateinit var binding : BottomSheetSelectContentOptionBinding
 
     var uid : String ? = null
@@ -35,17 +36,19 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     ): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.bottom_sheet_select_content_option,container,false)
+        binding.bottomsheetcontentoption = this@BottomSheetDialogContentOption
 
         var bundle = arguments
         uid = FirebaseAuth.getInstance().currentUser?.uid
         destinationUid = bundle?.getString("destinationUid")
         postExplain = bundle?.getString("postExplain")
-        postUid = bundle?.getString("posetUid")
+        postUid = bundle?.getString("postUid")
 
-
-
-        //val view = inflater.inflate(R.layout.bottom_sheet_select_category,container,false)
-
+        if(postUid != uid){
+            // 삭제 버튼 안보이게
+            binding.bottomSheetSelectContentOptionConstDelete.visibility = View.GONE
+        }
+        
         return binding.root
 
     }
@@ -58,7 +61,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
         super.onAttach(context)
 
         try{
-            bottomSheetButtonClickListener = context as BottomSheetButtonClickListener
+            bottomSheetContentOptionButtonClickListener = context as BottomSheetButtonClickListener
 
         }catch (e : ClassCastException){
             Log.d("bottomsheet","Click listener onAttach Error")
@@ -78,9 +81,9 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
 
         when(view.id){
             //신고
-            binding.bottomSheetSelectCategoryViewgroupSell.id -> {
+            binding.bottomSheetSelectContentOptionConstReport.id -> {
 
-                var intent = Intent(binding.bottomsheetcontentoption?.context, AddSellContentActivity::class.java)
+                var intent = Intent(binding.bottomsheetcontentoption?.context, ReportActivity::class.java)
                 intent.apply {
                     putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid)
                     putExtra("destinationUid",destinationUid)
@@ -92,7 +95,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
             }
 
             //삭제제
-           binding.bottomSheetSelectCategoryViewgroupBuy.id -> {
+           binding.bottomSheetSelectContentOptionConstDelete.id -> {
                 startActivity(
                     Intent(binding.bottomsheetcontentoption?.context,
                         AddBuyContentActivity::class.java)

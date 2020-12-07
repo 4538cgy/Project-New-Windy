@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DeleteAcceptActivity">
+    <data>
+
+        <variable
+            name="activitydeleteaccept"
+            type="com.uos.project_new_windy.DeleteAcceptActivity" />
+
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="게시글이 영구적으로 삭제됩니다. \n 정말 삭제 하시겠습니까?"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
+            android:textSize="24dp"
+            />
+
+        <Button
+            android:id="@+id/activity_delete_accept_button_yes"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/activity_delete_accept_button_no"
+            android:layout_margin="16dp"
+            android:text="예"
+            android:background="@drawable/background_round_white"
+            android:textSize="24dp"
+            />
+
+        <Button
+            android:id="@+id/activity_delete_accept_button_no"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/activity_delete_accept_button_yes"
+            android:layout_margin="16dp"
+            android:text="아니오"
+            android:textSize="24dp"
+            android:background="@drawable/background_round_white"
+            android:elevation="6dp"
+            />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

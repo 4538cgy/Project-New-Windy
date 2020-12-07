@@ -22,8 +22,8 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.*
 import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.chat.ChatActivity
+import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.FragmentUserBinding
-import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment() {
 
@@ -107,10 +107,14 @@ class UserFragment : Fragment() {
         //현재 보고있는 화면의 유저가 내가 아닌지를 판단
         if(!uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
              binding.accountBtnFollowSignout.text = "친구 맺기"
+            binding.fragmentUserButtonMessage.text = "메세지 보내기"
+            binding.fragmentUserButtonReport.text = "신고하기"
+            
         }else if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid))
         {
             binding.accountBtnFollowSignout.text = "로그아웃"
-
+            binding.fragmentUserButtonMessage.text = "메세지함"
+            binding.fragmentUserButtonReport.text = "내 정보"
         }
 
 
@@ -127,6 +131,36 @@ class UserFragment : Fragment() {
             }
         }
 
+        //신고하기 or 내 정보 보기
+        binding.fragmentUserButtonReport.setOnClickListener {
+            if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+                //내 정보 액티비티 켜기
+            }else{
+                //신고하기
+                var intent = Intent(binding.root.context,ReportPostActivity::class.java)
+                intent.apply {
+                    putExtra("destinationUid" ,uid)
+                }
+                startActivity(intent)
+            }
+        }
+
+        //메세지 보내기 or 채팅리스트 열기
+        binding.fragmentUserButtonMessage.setOnClickListener {
+            if(uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+                //채팅함 열기
+                startActivity(Intent(binding.root.context,ChatRoomList::class.java))
+            }else
+            {
+                //채팅 보내기
+                var intent = Intent(binding.root.context,ChatActivity::class.java)
+                intent.apply {
+                    putExtra("destinationUid",uid)
+                }
+                startActivity(intent)
+            }
+        }
+
         //메세지 버튼 클릭했을 때
         binding.fragmentUserButtonMessage.setOnClickListener {
             var intent = Intent(binding.root.context, ChatActivity::class.java)
@@ -138,7 +172,7 @@ class UserFragment : Fragment() {
 
         //신고하기  버튼 클릭했을 때
         binding.fragmentUserButtonReport.setOnClickListener {
-            startActivity(Intent(binding.root.context, ReportActivity::class.java))
+            startActivity(Intent(binding.root.context, ReportPostActivity::class.java))
         }
 
         return binding.root

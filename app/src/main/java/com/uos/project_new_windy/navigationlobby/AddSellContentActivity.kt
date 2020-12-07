@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -74,7 +75,11 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
 
         //게시글 업로드
         binding.activityAddSellContentButtonUpload.setOnClickListener {
-            contentUpload()
+            if (imageUriList.size <= 0) {
+                Toast.makeText(this,"사진을 한장 이상 포함해주세요." ,Toast.LENGTH_LONG).show()
+            }else {
+                contentUpload()
+            }
         }
 
 

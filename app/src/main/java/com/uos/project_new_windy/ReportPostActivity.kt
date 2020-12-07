@@ -13,7 +13,7 @@ import com.uos.project_new_windy.databinding.ActivityReportBinding
 import com.uos.project_new_windy.model.PostReportDTO
 import com.uos.project_new_windy.util.TimeUtil
 
-class ReportActivity : AppCompatActivity() , View.OnClickListener {
+class ReportPostActivity : AppCompatActivity() , View.OnClickListener {
 
     lateinit var binding : ActivityReportBinding
     var uid : String ? = null
@@ -25,7 +25,7 @@ class ReportActivity : AppCompatActivity() , View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_report)
-        binding.activityreport = this@ReportActivity
+        binding.activityreport = this@ReportPostActivity
 
         var intent = intent
         postUid = intent.getStringExtra("postUid")

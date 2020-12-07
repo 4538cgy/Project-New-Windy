@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.DetailContentActivity
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.model.ContentDTO
@@ -30,7 +31,7 @@ public class SellViewRecyclerViewAdapter(var activity: LobbyActivity) : Recycler
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.orderBy("timestamp")
+        firestore?.collection("contents")?.orderBy("timestamp",Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentDTOs.clear()
                 contentUidList.clear()

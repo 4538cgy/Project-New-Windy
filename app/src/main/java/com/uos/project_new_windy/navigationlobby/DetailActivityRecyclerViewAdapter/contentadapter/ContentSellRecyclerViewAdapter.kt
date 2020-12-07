@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
@@ -43,7 +44,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp")
+        firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp",Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentSellDTO.clear()
                 contentUidList.clear()
@@ -141,6 +142,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             bundle.putString("userId",contentSellDTO[position].userId)
             bundle.putString("postExplain",contentSellDTO[position].productExplain)
             bundle.putString("postUid",contentUidList[position])
+            bundle.putString("uid" , contentSellDTO[position].uid)
+            bundle.putString("postType", "sell")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }
@@ -165,7 +168,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         //사진
         if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
             Glide.with(holder.itemView.context)
-                .load(data[position].imageDownLoadUrlList?.get(position))
+                .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
 

@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 
@@ -26,7 +27,8 @@ class ContentNormalRecyclerViewAdapter (private val context: Context) : Recycler
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.document("normal").collection("data").orderBy("timestamp")
+        firestore?.collection("contents")?.document("normal").collection("data").orderBy("timestamp",
+            Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentNormalDTO.clear()
                 contentUidList.clear()

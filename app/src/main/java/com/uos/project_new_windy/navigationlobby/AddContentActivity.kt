@@ -152,6 +152,7 @@ class AddContentActivity : AppCompatActivity() {
 
 
 
+
                     //firestore?.collection("contents")?.document()?.set(contentDTO)
                     firestore?.collection("contents")?.document("normal")?.collection("data")?.document()?.set(contentNormalDTO)
 

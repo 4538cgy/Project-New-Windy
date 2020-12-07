@@ -19,9 +19,7 @@ data class ContentNormalDTO(
     //좋아요 갯수
     var favoriteCount : Int ? = null,
     //좋아요 누른 사람 uid
-    var favorites: MutableMap<String,Boolean> = HashMap(),
-    //게시글 uid
-    var postUid : String ? = null
+    var favorites: MutableMap<String,Boolean> = HashMap()
 
 
 

@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.databinding.ItemRecyclerBuyBinding
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
@@ -22,19 +24,27 @@ class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView
     var data = listOf<ContentBuyDTO>()
 
     init {
+        Log.d("디테일!" , "교체완료됬습니다.")
+
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.orderBy("timestamp")
+        firestore?.collection("contents")?.document("buy").collection("data").orderBy("timeStamp", Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentBuyDTO.clear()
                 contentUidList.clear()
-
+                
+                
+                System.out.println("구매하기 데이터 가져오기 성공")
                 if (querySnapshot == null)
                     return@addSnapshotListener
 
                 for (snapshot in querySnapshot!!.documents) {
+
                     var item = snapshot.toObject(ContentBuyDTO::class.java)
+
+                    System.out.println("데이터들 " + item.toString())
                     contentBuyDTO.add(item!!)
+                    System.out.println("데이터들2" + contentBuyDTO.toString())
                     contentUidList.add(snapshot.id)
 
 
@@ -77,14 +87,14 @@ class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView
             }
 
         //사진
-        /*
-        Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageDownLoadUrlList?.get(0))
+
+        Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
             .into(holder.binding.itemRecyclerNormalImageviewImage)
 
-         */
+
     }
 
-    override fun getItemCount(): Int = contentBuyDTO.size
+    override fun getItemCount(): Int = data.size
 
     class ContentBuyRecyclerViewAdapterViewHolder(val binding: ItemRecyclerBuyBinding) : RecyclerView.ViewHolder(binding.root){
         fun onBind(data : ContentBuyDTO){

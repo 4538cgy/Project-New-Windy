@@ -17,12 +17,14 @@ data class ContentBuyDTO(
     //유저 닉네임 혹은 이메일 주소
     var userId : String ? = null,
     //가격
-    var cost : Int ? = null,
+    var cost : String ? = null,
     //제시가격
     var costCustom : Boolean ? = null,
     //카테고리
-    var categoryHash: MutableMap<String,Boolean> = HashMap(),
+    var categoryHash: String ? = null,
     //핸드폰 번호
     var phoneNumber : String ? = null,
+    //서버 시간
+    var timeStamp : Any ? = null
 
 )

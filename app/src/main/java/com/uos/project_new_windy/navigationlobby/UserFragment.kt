@@ -24,6 +24,7 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.FragmentUserBinding
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 
 class UserFragment : Fragment() {
 
@@ -68,24 +69,12 @@ class UserFragment : Fragment() {
 
 
         //리사이클러뷰 초기화
-        /*
-        fragmentView?.fragment_user_recyclerview?.adapter = UserFragmentRecyclerViewAdapter()
-        fragmentView?.fragment_user_recyclerview?.layoutManager = GridLayoutManager(activity!!,3)
-
-         */
 
         binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
         binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
 
         //프로필 이미지 변경 이벤트
-        /*
-        fragmentView?.fragment_user_circle_imageview?.setOnClickListener {
-            var photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
-        }
-         */
-         */
+
         binding.fragmentUserCircleImageview.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
@@ -93,13 +82,18 @@ class UserFragment : Fragment() {
         }
 
 
-        //fragment_user_textview_history_content 눌렀을때 이벤트
-        binding.fragmentUserTextviewHistoryContent.setOnClickListener {
+        //내가 올린 구매 요청 글 눌렀을때 이벤트
+        binding.fragmentUserTextviewBuyingContent.setOnClickListener {
 
         }
 
-        //fragment_user_textview_history_view 눌렀을때 이벤트
-        binding.fragmentUserTextviewHistoryView.setOnClickListener {
+        //내가 올린 판매 글 눌렀을때 이벤트
+        binding.fragmentUserTextviewSellingContent.setOnClickListener {
+
+        }
+
+        //내가 올린 자유 글 눌렀을때 이벤트트
+       binding.fragmentUserTextviewNormalContent.setOnClickListener {
 
         }
 
@@ -203,16 +197,6 @@ class UserFragment : Fragment() {
                 var url = documentSnapshot?.data!!["image"]
 
                 Log.d("프로필 이미지 url = \n",url.toString())
-                /*
-                Glide.with(activity!!.applicationContext)
-                    .load(url)
-                    .apply(
-                        RequestOptions().centerCrop()
-                    )
-                    .error(R.drawable.btn_signin_google)
-                    .into(fragmentView?.fragment_user_circle_imageview!!)
-
-                 */
 
 
                 Glide.with(activity!!.applicationContext)
@@ -237,23 +221,30 @@ class UserFragment : Fragment() {
         var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
-            firestore?.collection("contents")?.whereEqualTo("uid",uid)?.addSnapshotListener{
-                    querySnapshot, firebaseFirestoreException ->
-                //Sometimes, this code return null of querySnapshot when it signout
-                if(querySnapshot == null) return@addSnapshotListener
 
-                //Get data
-                for(snapshot in querySnapshot.documents){
-                    contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
-                    contentUidList.add(snapshot.id)
 
-                }
+            firestore?.collection("contents")
+                ?.document("sell")
+                ?.collection("data")
+                ?.whereEqualTo("uid",uid)
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
 
-                System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
-                //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
-                binding.accountTvPostCount.text = contentDTOs.size.toString()
-                notifyDataSetChanged()
+
+                    if(querySnapshot == null) return@addSnapshotListener
+
+                    //Get data
+                    for(snapshot in querySnapshot.documents){
+                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentUidList.add(snapshot.id)
+
+                    }
+
+                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    notifyDataSetChanged()
             }
+
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -274,13 +265,172 @@ class UserFragment : Fragment() {
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
-             Glide.with(holder.itemView.context).load(contentDTOs[position].imageDownLoadUrlList?.get(0)).apply(RequestOptions().centerCrop()).into(imageView)
+
+            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+                Glide.with(holder.itemView.context)
+                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .apply(RequestOptions().centerCrop()).into(imageView)
+            }
            // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
            // Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
 
 
             imageView.setOnClickListener {
                      i ->
+                var intent = Intent(i.context, DetailSellViewActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
+                intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
+                intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
+                intent.putExtra("contentTime",contentDTOs!![position].time)
+
+                startActivity(intent)
+
+            }
+        }
+
+
+    }
+
+    inner class UserFragmentNormalRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+        var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+        var contentUidList: ArrayList<String> = arrayListOf()
+
+        init {
+
+
+            firestore?.collection("contents")
+                ?.document("normal")
+                ?.collection("data")
+                ?.whereEqualTo("uid",uid)
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+
+
+                    if(querySnapshot == null) return@addSnapshotListener
+
+                    //Get data
+                    for(snapshot in querySnapshot.documents){
+                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentUidList.add(snapshot.id)
+
+                    }
+
+                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    notifyDataSetChanged()
+                }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            var width = resources.displayMetrics.widthPixels/3
+            var imageView = ImageView(parent.context)
+            imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
+            return CustomViewHolder(imageView)
+        }
+
+        inner class CustomViewHolder(var imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
+
+        }
+
+        override fun getItemCount(): Int {
+            return contentDTOs.size
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+            var imageView = (holder as CustomViewHolder).imageView
+
+            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+                Glide.with(holder.itemView.context)
+                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .apply(RequestOptions().centerCrop()).into(imageView)
+            }
+            // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
+            // Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
+
+
+            imageView.setOnClickListener {
+                    i ->
+                var intent = Intent(i.context, DetailContentActivity::class.java)
+                intent.putExtra("contentUid", contentUidList[position])
+                intent.putExtra("destinationUid", contentDTOs[position].uid)
+                intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
+                intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
+                intent.putExtra("contentTime",contentDTOs!![position].time)
+
+                startActivity(intent)
+
+            }
+        }
+
+
+    }
+
+    inner class UserFragmentBuyRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+        var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+        var contentUidList: ArrayList<String> = arrayListOf()
+
+        init {
+
+
+            firestore?.collection("contents")
+                ?.document("buy")
+                ?.collection("data")
+                ?.whereEqualTo("uid",uid)
+                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+
+
+                    if(querySnapshot == null) return@addSnapshotListener
+
+                    //Get data
+                    for(snapshot in querySnapshot.documents){
+                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentUidList.add(snapshot.id)
+
+                    }
+
+                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    notifyDataSetChanged()
+                }
+
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            var width = resources.displayMetrics.widthPixels/3
+            var imageView = ImageView(parent.context)
+            imageView.layoutParams = LinearLayoutCompat.LayoutParams(width,width)
+            return CustomViewHolder(imageView)
+        }
+
+        inner class CustomViewHolder(var imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
+
+        }
+
+        override fun getItemCount(): Int {
+            return contentDTOs.size
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
+            var imageView = (holder as CustomViewHolder).imageView
+
+            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+                Glide.with(holder.itemView.context)
+                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .apply(RequestOptions().centerCrop()).into(imageView)
+            }
+            // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
+            // Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
+
+
+            imageView.setOnClickListener {
+                    i ->
                 var intent = Intent(i.context, DetailContentActivity::class.java)
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)

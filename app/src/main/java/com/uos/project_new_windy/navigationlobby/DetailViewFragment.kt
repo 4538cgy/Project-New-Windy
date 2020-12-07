@@ -41,10 +41,7 @@ class DetailViewFragment : Fragment() {
         
         //전체 게시글 초기화
 
-        /*
-        binding.fragmentDetailRecycler.adapter = DetailViewRecyclerViewAdapter(activity as LobbyActivity)
-        binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
-         */
+
         binding.fragmentDetailRecycler.adapter = ContentSellRecyclerViewAdapter(binding.root.context, fragmentManager!!)
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
 

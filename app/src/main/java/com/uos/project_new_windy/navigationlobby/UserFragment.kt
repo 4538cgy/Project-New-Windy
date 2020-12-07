@@ -84,17 +84,21 @@ class UserFragment : Fragment() {
 
         //내가 올린 구매 요청 글 눌렀을때 이벤트
         binding.fragmentUserTextviewBuyingContent.setOnClickListener {
+            binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+            binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
 
         }
 
         //내가 올린 판매 글 눌렀을때 이벤트
         binding.fragmentUserTextviewSellingContent.setOnClickListener {
-
+            binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+            binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
         }
 
         //내가 올린 자유 글 눌렀을때 이벤트트
        binding.fragmentUserTextviewNormalContent.setOnClickListener {
-
+           binding.fragmentUserRecyclerview.adapter = UserFragmentNormalRecyclerViewAdapter()
+           binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
         }
 
         

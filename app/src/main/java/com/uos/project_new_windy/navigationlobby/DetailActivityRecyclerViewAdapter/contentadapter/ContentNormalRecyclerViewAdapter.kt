@@ -26,7 +26,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context) : Recycler
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.orderBy("timestamp")
+        firestore?.collection("contents")?.document("normal").collection("data").orderBy("timestamp")
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentNormalDTO.clear()
                 contentUidList.clear()

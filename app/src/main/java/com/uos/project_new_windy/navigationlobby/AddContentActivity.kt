@@ -21,6 +21,7 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.databinding.ActivityAddContentBinding
+import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
 
 import com.uos.project_new_windy.util.TimeUtil
@@ -117,7 +118,7 @@ class AddContentActivity : AppCompatActivity() {
     }
 
     fun uploadContentDetail(){
-
+                    /*
                     var contentDTO = ContentDTO()
 
 
@@ -137,7 +138,22 @@ class AddContentActivity : AppCompatActivity() {
 
                     contentDTO.time = TimeUtil().getTime()
 
-                    firestore?.collection("contents")?.document()?.set(contentDTO)
+                     */
+                    var contentNormalDTO  = ContentNormalDTO()
+                    contentNormalDTO.commentCount = 0
+                    contentNormalDTO.explain = binding.activityAddContentEdittextContent.text.toString()
+                    contentNormalDTO.favoriteCount = 0
+                    contentNormalDTO.imageDownLoadUrlList = this.imageDownLoadUriList
+                    contentNormalDTO.time = TimeUtil().getTime()
+                    contentNormalDTO.uid = auth?.currentUser?.uid
+                    contentNormalDTO.userId = auth?.currentUser?.email
+                    contentNormalDTO.timestamp = System.currentTimeMillis()
+
+
+
+
+                    //firestore?.collection("contents")?.document()?.set(contentDTO)
+                    firestore?.collection("contents")?.document("normal")?.collection("data")?.document()?.set(contentNormalDTO)
 
                     setResult(Activity.RESULT_OK)
 

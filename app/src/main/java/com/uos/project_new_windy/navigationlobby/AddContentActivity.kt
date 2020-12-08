@@ -2,6 +2,7 @@ package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +24,7 @@ import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.databinding.ActivityAddContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
+import com.uos.project_new_windy.util.ProgressDialogLoading
 
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
@@ -41,6 +43,7 @@ class AddContentActivity : AppCompatActivity() {
     //이미지 갯수 체크를 위한 변수
     var count: Int = 0;
     var imageDownLoadUriList : ArrayList<String> = arrayListOf()
+    var progressDialog : ProgressDialogLoading ? = null
 
     lateinit var binding : ActivityAddContentBinding
 
@@ -50,7 +53,14 @@ class AddContentActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_content)
         binding.addnormalcontent = this@AddContentActivity
 
+        //로딩 초기화
+        progressDialog = ProgressDialogLoading(binding.root.context)
 
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(android.graphics.Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
         //파이어베이스 초기화
         storage  = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -69,15 +79,13 @@ class AddContentActivity : AppCompatActivity() {
         binding.activityAddContentRecyclerPhoto.adapter = AddNormalContentActivityRecyclerViewAdapter(this,imageUriList)
         binding.activityAddContentRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
-        //이미지 추가 이벤트
-        /*
-        activity_add_content_button_add_photo.setOnClickListener {
-            addPhoto()
 
+        //뒤로가기
+        binding.activityAddNormalContentImagebuttonBack.setOnClickListener {
+            finish()
         }
-
-         */
-
+        
+        //이미지 추가
         binding.activityAddContentButtonAddPhoto.setOnClickListener {
             addPhoto()
         }
@@ -85,16 +93,9 @@ class AddContentActivity : AppCompatActivity() {
 
 
         //이미지 업로드 이벤트 추가
-        /*
-        activity_add_content_button_upload.setOnClickListener {
-            contentUpload()
-
-        }
-
-         */
-
         binding.activityAddContentButtonUpload.setOnClickListener {
             contentUpload()
+            
         }
 
 
@@ -103,6 +104,7 @@ class AddContentActivity : AppCompatActivity() {
     
     //게시글을 DB에 올리는 메서드
     fun contentUpload(){
+        progressDialog?.show()
         if(count < imageUriList.size && imageUriList.size != 0) {
             uploadPhoto(imageUriList[count])
         }else if(imageUriList.size == 0){
@@ -155,6 +157,11 @@ class AddContentActivity : AppCompatActivity() {
 
                     //firestore?.collection("contents")?.document()?.set(contentDTO)
                     firestore?.collection("contents")?.document("normal")?.collection("data")?.document()?.set(contentNormalDTO)
+                        ?.addOnSuccessListener {
+                            progressDialog?.dismiss()
+                        }?.addOnFailureListener {
+                            progressDialog?.dismiss()
+                        }
 
                     setResult(Activity.RESULT_OK)
 

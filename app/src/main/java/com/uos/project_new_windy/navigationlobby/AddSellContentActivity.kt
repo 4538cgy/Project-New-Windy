@@ -63,7 +63,9 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         //스피너에 어댑터 추가
         binding.activityAddSellContentSpinnerCategory.adapter = spinnerAdapter
 
-
+        binding.activityAddSellContentImagebuttonBack.setOnClickListener {
+            finish()
+        }
         //사진이 추가될 리사이클러뷰 초기화
         binding.activityAddSellContentRecyclerPhoto.adapter = AddSellContentActivityRecyclerViewAdapter(this,imageUriList)
         binding.activityAddSellContentRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)

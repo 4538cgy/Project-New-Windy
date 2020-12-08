@@ -27,7 +27,7 @@
             >
 
             <ImageButton
-                android:id="@+id/activity_add_sell_content_image"
+                android:id="@+id/activity_add_normal_content_imagebutton_back"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@android:color/transparent"

@@ -36,7 +36,9 @@ class AddBuyContentActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_buy_content)
         binding.buycontent = this@AddBuyContentActivity
 
-
+        binding.activityAddBuyContentImagebuttonBack.setOnClickListener {
+            finish()
+        }
 
         //카테고리 버튼 클릭
         binding.activityAddBuyContentImagebuttonCategory.setOnClickListener {
@@ -45,11 +47,17 @@ class AddBuyContentActivity : AppCompatActivity() {
         
         //게시글 업로드
         binding.activityAddBuyContentButtonUpload.setOnClickListener {
-            if (photoUri != null) {
+            if (photoUri != null && !binding.activityAddBuyContentTextviewCategory.text.toString().equals("카테고리")) {
                 uploadPhoto()
             }else{
+                if (photoUri == null)
                 Toast.makeText(this,"사진을 추가해주세요." , Toast.LENGTH_LONG).show()
+
+                if (binding.activityAddBuyContentTextviewCategory.text.toString().equals("카테고리"))
+                    Toast.makeText(this,"카테고리를 추가해주세요." , Toast.LENGTH_LONG).show()
             }
+            
+            
         }
 
         //사진 추가
@@ -70,7 +78,7 @@ class AddBuyContentActivity : AppCompatActivity() {
         contentBuyDTO.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
         contentBuyDTO.favoriteCount = 0
         contentBuyDTO.categoryHash = binding.activityAddBuyContentTextviewCategory.text.toString()
-        contentBuyDTO.cost = binding.activityAddBuyContentEdittextCost.text.toString()
+        contentBuyDTO.cost = binding.activityAddBuyContentEdittextCost.text.toString() + "원"
 
 
 

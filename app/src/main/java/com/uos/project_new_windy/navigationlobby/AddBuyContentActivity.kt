@@ -47,6 +47,7 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         val items = resources.getStringArray(R.array.content_category)
         val spinnerAdapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,items)
         binding.activityAddBuyContentSpinnerCategory.adapter = spinnerAdapter
+        binding.activityAddBuyContentSpinnerCategory.onItemSelectedListener = this
 
         //로딩 초기화
         progressDialog = ProgressDialogLoading(binding.root.context)
@@ -170,9 +171,12 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         pickCategory = binding.activityAddBuyContentSpinnerCategory.selectedItem.toString()
         System.out.println("으아아아아" + pickCategory.toString())
+        System.out.println("으아아아아2" + binding.activityAddBuyContentSpinnerCategory.toString())
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
+
+        System.out.println("선택되지않음")
 
     }
 }

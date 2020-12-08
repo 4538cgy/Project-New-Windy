@@ -76,6 +76,8 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         //스피너에 어댑터 추가
         binding.activityAddSellContentSpinnerCategory.adapter = spinnerAdapter
 
+        binding.activityAddSellContentSpinnerCategory.onItemSelectedListener = this
+
         binding.activityAddSellContentImagebuttonBack.setOnClickListener {
             finish()
         }
@@ -220,7 +222,9 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
 
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
           pickCategoryData = binding.activityAddSellContentSpinnerCategory.selectedItem.toString()
+            System.out.println("으아아아" + pickCategoryData)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

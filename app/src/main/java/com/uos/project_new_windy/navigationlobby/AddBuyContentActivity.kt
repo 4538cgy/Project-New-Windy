@@ -2,11 +2,16 @@ package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
@@ -18,9 +23,10 @@ import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
+import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.TimeUtil
 
-class AddBuyContentActivity : AppCompatActivity() {
+class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener {
 
     var PICK_IMAGE_FROM_ALBUM = 0
 
@@ -29,31 +35,47 @@ class AddBuyContentActivity : AppCompatActivity() {
     var storage : FirebaseStorage = FirebaseStorage.getInstance()
     var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     var auth : FirebaseAuth = FirebaseAuth.getInstance()
-
+    var progressDialog : ProgressDialogLoading? = null
+    var pickCategory : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_buy_content)
         binding.buycontent = this@AddBuyContentActivity
 
+
+        val items = resources.getStringArray(R.array.content_category)
+        val spinnerAdapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,items)
+        binding.activityAddBuyContentSpinnerCategory.adapter = spinnerAdapter
+
+        //로딩 초기화
+        progressDialog = ProgressDialogLoading(binding.root.context)
+
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
+
         binding.activityAddBuyContentImagebuttonBack.setOnClickListener {
             finish()
         }
 
-        //카테고리 버튼 클릭
-        binding.activityAddBuyContentImagebuttonCategory.setOnClickListener {
 
-        }
+
         
         //게시글 업로드
         binding.activityAddBuyContentButtonUpload.setOnClickListener {
-            if (photoUri != null && !binding.activityAddBuyContentTextviewCategory.text.toString().equals("카테고리")) {
+
+            System.out.println("클릭클릭클릭" + pickCategory.toString())
+
+            if (photoUri != null && pickCategory != null) {
                 uploadPhoto()
             }else{
                 if (photoUri == null)
                 Toast.makeText(this,"사진을 추가해주세요." , Toast.LENGTH_LONG).show()
 
-                if (binding.activityAddBuyContentTextviewCategory.text.toString().equals("카테고리"))
+                if (pickCategory == null)
                     Toast.makeText(this,"카테고리를 추가해주세요." , Toast.LENGTH_LONG).show()
             }
             
@@ -77,12 +99,17 @@ class AddBuyContentActivity : AppCompatActivity() {
         contentBuyDTO.timeStamp = ServerValue.TIMESTAMP
         contentBuyDTO.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
         contentBuyDTO.favoriteCount = 0
-        contentBuyDTO.categoryHash = binding.activityAddBuyContentTextviewCategory.text.toString()
+        contentBuyDTO.categoryHash = pickCategory
         contentBuyDTO.cost = binding.activityAddBuyContentEdittextCost.text.toString() + "원"
 
 
 
         firestore?.collection("contents")?.document("buy")?.collection("data")?.document()?.set(contentBuyDTO)
+            .addOnSuccessListener {
+                progressDialog?.dismiss()
+            }.addOnFailureListener {
+                progressDialog?.dismiss()
+            }
 
         setResult(Activity.RESULT_OK)
 
@@ -90,6 +117,7 @@ class AddBuyContentActivity : AppCompatActivity() {
     }
 
     fun uploadPhoto(){
+        progressDialog?.show()
         //var timestamp = SimpleDateFormat("yy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))
         var timestamp = TimeUtil().getTime()
         var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
@@ -137,5 +165,14 @@ class AddBuyContentActivity : AppCompatActivity() {
         }
         //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
         binding.activityAddBuyContentImageviewProductImage.setImageURI(photoUri)
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        pickCategory = binding.activityAddBuyContentSpinnerCategory.selectedItem.toString()
+        System.out.println("으아아아아" + pickCategory.toString())
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
     }
 }

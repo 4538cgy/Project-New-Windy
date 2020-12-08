@@ -43,7 +43,7 @@
                 android:textSize="18dp"
                 android:textStyle="bold"
                 android:textColor="@color/colorBlack"
-                app:layout_constraintLeft_toRightOf="@+id/activity_add_sell_content_image"
+                app:layout_constraintLeft_toRightOf="@+id/activity_add_normal_content_imagebutton_back"
                 android:gravity="center"
                 />
 
@@ -76,14 +76,25 @@
                 android:id="@+id/activity_add_content_button_add_photo"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/activity_add_content_recycler_photo"
-                app:layout_constraintBottom_toBottomOf="parent"
+               app:layout_constraintBottom_toTopOf="@+id/activity_add_content_textview_add_photo"
                 app:layout_constraintTop_toTopOf="@+id/activity_add_content_recycler_photo"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:background="@android:color/transparent"
                 android:padding="8dp"
-                android:src="@drawable/ic_add_photo"
+                android:src="@drawable/ic_upload_photo"
                 android:scaleType="centerInside"
+                />
+
+            <TextView
+                android:id="@+id/activity_add_content_textview_add_photo"
+                app:layout_constraintTop_toBottomOf="@+id/activity_add_content_button_add_photo"
+                app:layout_constraintLeft_toLeftOf="@+id/activity_add_content_button_add_photo"
+                app:layout_constraintRight_toRightOf="@+id/activity_add_content_button_add_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사진 추가"
                 />
 
 
@@ -113,10 +124,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="top"
-                android:hint="내용을 적어주세요."
+                android:hint="내용을 적어주세요. \n6자 이상 200자 미만"
                 android:scrollbars="vertical"
                 android:background="@android:color/transparent"
                 android:layout_margin="12dp"
+                android:maxLength="200"
                 android:padding="8dp"
                 />
 

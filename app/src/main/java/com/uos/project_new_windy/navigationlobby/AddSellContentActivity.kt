@@ -2,6 +2,8 @@ package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -23,6 +25,7 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddSellContentActivityRecyclerViewAdapter
+import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
@@ -41,12 +44,22 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
     var count: Int = 0;
     var imageDownLoadUriList : ArrayList<String> = arrayListOf()
     var pickCategoryData : String ? = null
-
+    var progressDialog : ProgressDialogLoading? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_sell_content)
         binding.sellcontent = this@AddSellContentActivity
+
+
+        //로딩 초기화
+        progressDialog = ProgressDialogLoading(binding.root.context)
+
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
 
         //파이어베이스 초기화
         storage  = FirebaseStorage.getInstance()
@@ -88,6 +101,7 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
     }
 
     fun contentUpload(){
+        progressDialog?.show()
         if(count < imageUriList.size && imageUriList.size != 0) {
             uploadPhoto(imageUriList[count])
         }else if(imageUriList.size == 0){
@@ -126,32 +140,12 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         contentSellDTO.time = TimeUtil().getTime()
         //파스에 set
         firestore?.collection("contents")?.document("sell")?.collection("data")?.document()?.set(contentSellDTO)
+            ?.addOnSuccessListener {
+                progressDialog?.dismiss()
+            }?.addOnFailureListener {
+                progressDialog?.dismiss()
+            }
 
-
-        /*
-        var contentDTO = ContentDTO()
-
-
-        //contentDTO.title = activity_add_content_edittext_title.text.toString()
-
-        contentDTO.imageDownLoadUrlList = this.imageDownLoadUriList
-
-        contentDTO.uid = auth?.currentUser?.uid
-
-        contentDTO.commentCount = 0
-
-        contentDTO.userId = auth?.currentUser?.email
-
-        contentDTO.explain = activity_add_content_edittext_content.text.toString()
-
-        contentDTO.timestamp = System.currentTimeMillis()
-
-        contentDTO.time = TimeUtil().getTime()
-
-        firestore?.collection("contents_sell")?.document()?.set(contentDTO)
-
-
-         */
         setResult(Activity.RESULT_OK)
 
         finish()

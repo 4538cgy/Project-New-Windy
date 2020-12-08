@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -94,7 +95,12 @@ class AddContentActivity : AppCompatActivity() {
 
         //이미지 업로드 이벤트 추가
         binding.activityAddContentButtonUpload.setOnClickListener {
-            contentUpload()
+            if (binding.activityAddContentEdittextContent.text.length < 6)
+            {
+                Toast.makeText(this,"내용을 6자 이상 적어주세요.",Toast.LENGTH_LONG).show()
+            }else {
+                contentUpload()
+            }
             
         }
 

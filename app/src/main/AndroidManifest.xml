@@ -12,12 +12,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".util.SharedData"
         android:theme="@style/AppTheme">
         <activity android:name=".DeleteAcceptActivity"></activity>
         <activity android:name=".ReportPostActivity" />
         <activity android:name=".chat.ChatRoomList" />
         <activity android:name=".chat.ChatActivity" />
-        <activity android:name=".detailactivity.DetailSellActivity" />
+
         <activity android:name=".navigationlobby.detailviewactivity.DetailNormalViewActivity" />
         <activity android:name=".navigationlobby.detailviewactivity.DetailBuyViewActivity" />
         <activity android:name=".navigationlobby.detailviewactivity.DetailSellViewActivity" />

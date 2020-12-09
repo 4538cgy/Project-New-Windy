@@ -2,6 +2,8 @@ package com.uos.project_new_windy
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,9 +28,7 @@ import com.uos.project_new_windy.databinding.ActivitySignUpBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.policy.PolicyActivity
-import com.uos.project_new_windy.util.PreferenceUtil
-import com.uos.project_new_windy.util.SharedData
-import com.uos.project_new_windy.util.TimeUtil
+import com.uos.project_new_windy.util.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
 
@@ -44,6 +44,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     val mResendToken: ForceResendingToken? = null
     var phoneVerify: Boolean = false
     var policyAcceptCheck : Boolean = false
+    var progressDialog : ProgressDialogLoadingVerifyPhone? = null
 
     lateinit var binding : ActivitySignUpBinding
 
@@ -53,6 +54,15 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
         binding.activitysignup = this@SignUpActivity
+
+        //로딩 초기화
+        progressDialog = ProgressDialogLoadingVerifyPhone(binding.root.context)
+
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
 
         //파이어베이스 auth 초기화
         mAuth = FirebaseAuth.getInstance()
@@ -203,16 +213,16 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     //핸드폰 자동인증 처리
     private fun AutoRecieveThePhoneVerifyCode() {
 
+        progressDialog?.show()
 
         val phoneNumber = "+82" + activity_sign_up_edittext_phonenumber.text.toString()
         var code: String? = null
-        var auth = FirebaseAuth.getInstance()
-        auth.firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
+        FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
             phoneNumber,
             code
         )
 
-        auth.useAppLanguage()
+        //auth.useAppLanguage()
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
@@ -224,6 +234,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     //성공시
                     Log.d("credential",p0.toString())
                     Log.d("성공", "인증에 성공 했습니다.")
+                    progressDialog?.dismiss()
                     phoneVerify = true
                 }
 
@@ -231,10 +242,19 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     //실패시
                     Log.d("exception",p0.toString())
                     Log.d("실패", "인증에 실패 했습니다.")
+                    progressDialog?.dismiss()
                 }
 
                 override fun onCodeSent(p0: String, p1: ForceResendingToken) {
                     super.onCodeSent(p0, p1)
+                    Log.d("코드가 전송됨", p0.toString())
+                }
+
+                override fun onCodeAutoRetrievalTimeOut(p0: String) {
+                    super.onCodeAutoRetrievalTimeOut(p0)
+                    progressDialog?.dismiss()
+
+                    UpdateView()
                 }
 
             }
@@ -244,7 +264,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     
     //UI 변경 처리
     private fun UpdateView(){
-
+        Toast.makeText(this,"인증에 실패하였습니다. \n 핸드폰 번호를 다시 한번 확인해주세요." , Toast.LENGTH_LONG).show()
     }
 
     //스피너 ITEM 선택 리스너
@@ -290,6 +310,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 SharedData.prefs.setString("userInfo","yes")
 
                 //메인으로 이동하게 startActivity 작성해주세요.
+                startActivity(Intent(this,LobbyActivity::class.java))
+                finish()
             }.addOnFailureListener {
                 System.out.println("유저 정보 저장 실패")
             }

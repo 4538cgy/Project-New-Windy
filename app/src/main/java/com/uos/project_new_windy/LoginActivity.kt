@@ -130,10 +130,13 @@ class LoginActivity : AppCompatActivity() {
 
     fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
-            if (SharedData.prefs.getString("userInfo","no") == "yes") {
-                startActivity(Intent(this, SignUpActivity::class.java))
-            }else{
+
+
+            if (SharedData.prefs.getString("userInfo","no").equals("yes")) {
                 startActivity(Intent(this,LobbyActivity::class.java))
+
+            }else{
+                startActivity(Intent(this, SignUpActivity::class.java))
             }
             finish()
         }

@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.ServerValue
+
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.databinding.ActivityReportBinding
 import com.uos.project_new_windy.model.PostReportDTO
@@ -86,7 +86,7 @@ class ReportPostActivity : AppCompatActivity() , View.OnClickListener {
         var reportDTO  = PostReportDTO()
         reportDTO.destinationUid = destinationUid!!
         reportDTO.postExplain = postExplain!!
-        reportDTO.serverTime = ServerValue.TIMESTAMP
+        reportDTO.serverTime = System.currentTimeMillis()
         reportDTO.title = title
         reportDTO.time = TimeUtil().getTime().toString()
         reportDTO.uid = FirebaseAuth.getInstance().currentUser?.uid.toString()

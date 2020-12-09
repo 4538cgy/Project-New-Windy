@@ -72,17 +72,14 @@ dependencies {
     //firebaseAuth
     implementation 'com.google.firebase:firebase-auth:19.3.2'
 
+    implementation 'com.google.firebase:firebase-database:19.3.1'
+
     //glide
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
-    //bom
-    implementation platform('com.google.firebase:firebase-bom:26.0.0')
 
-    // Declare the dependency for the Realtime Database library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation 'com.google.firebase:firebase-database-ktx'
 
 
     //okhttp

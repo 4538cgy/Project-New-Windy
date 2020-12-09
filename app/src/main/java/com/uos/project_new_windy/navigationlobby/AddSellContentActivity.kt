@@ -127,7 +127,7 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         //제품 설명
         contentSellDTO.productExplain = binding.activityAddSellContentEdittextProductExplain.text.toString()
         //제품 가격
-        contentSellDTO.cost = binding.activityAddSellContentEdittextCost.text.toString()
+        contentSellDTO.cost = binding.activityAddSellContentEdittextCost.text.toString() + "원"
         //카테고리
         contentSellDTO.category = pickCategoryData.toString()
         //사진 리스트

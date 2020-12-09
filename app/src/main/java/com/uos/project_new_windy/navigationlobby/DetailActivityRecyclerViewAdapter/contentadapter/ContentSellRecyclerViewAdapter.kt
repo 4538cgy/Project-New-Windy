@@ -124,8 +124,11 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("uid" , contentSellDTO[position].uid)
                 putExtra("userId",contentSellDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
+                putExtra("cost",contentSellDTO[position].cost)
+                putExtra("category",contentSellDTO[position].category)
                 putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
                 putExtra("contentTime",contentSellDTO[position].time)
+                putExtra("productExplain",contentSellDTO[position].productExplain)
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 

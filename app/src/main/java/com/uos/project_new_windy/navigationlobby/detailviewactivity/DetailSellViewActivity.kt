@@ -32,6 +32,9 @@ class DetailSellViewActivity : AppCompatActivity() {
     var profileImageUrl : Any ? = null
     var sellerAddress : String ? = null
     var contentTime : String ? = null
+    var cost : String ? = null
+    var category : String ? = null
+    var productExplain : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +52,9 @@ class DetailSellViewActivity : AppCompatActivity() {
         likeCount = intent.getStringExtra("likeCount")
         contentTime = intent.getStringExtra("contentTime")
         sellerAddress = intent.getStringExtra("sellerAddress")
+        cost = intent.getStringExtra("cost")
+        category = intent.getStringExtra("category")
+        productExplain = intent.getStringExtra("productExplain")
 
         //이미지 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
@@ -75,9 +81,17 @@ class DetailSellViewActivity : AppCompatActivity() {
         binding.activityDetailSellViewButtonLike.setOnClickListener {
 
         }
+
+        //가격 초기화
+        binding.activityDetailSellViewTextviewCost.text = "가격" + cost
+
+        //카테고리 초기화
+        binding.activityDetailSellViewTextviewCategory.text = category
         
         //주소 초기화
         binding.activityDetailSellViewTextviewAddress.text = sellerAddress
+
+        binding.activityDetailSellViewTextviewTitle.text = productExplain
 
         //시간 초기화
         binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ contentTime.toString()

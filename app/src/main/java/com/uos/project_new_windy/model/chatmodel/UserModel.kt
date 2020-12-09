@@ -11,6 +11,8 @@ data class UserModel(
     var policyAccept : Boolean ? = false,   //정책 동의 정보
     var uid : String ? = null,               //uid
     var timeStamp : Any ? = null,            //가입 시간 서버기준
-    var time : String ? = null               //가입 시간 폰 기준
+    var time : String ? = null,               //가입 시간 폰 기준
+    var point : Int = 0,
+    var memberRating : String ? = null
 
 )

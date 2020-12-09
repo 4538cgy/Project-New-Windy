@@ -7,8 +7,12 @@ import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -22,6 +26,8 @@ import com.uos.project_new_windy.databinding.ActivitySignUpBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.policy.PolicyActivity
+import com.uos.project_new_windy.util.PreferenceUtil
+import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
@@ -36,6 +42,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
     val mCallback: OnVerificationStateChangedCallbacks? = null
     val mResendToken: ForceResendingToken? = null
+    var phoneVerify: Boolean = false
+    var policyAcceptCheck : Boolean = false
 
     lateinit var binding : ActivitySignUpBinding
 
@@ -97,14 +105,31 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          */
 
         binding.activitySignUpButtonLater.setOnClickListener {
-            startActivity(Intent(this,LobbyActivity::class.java))
-            finish()
+
+            FirebaseAuth.getInstance().currentUser?.delete()
+            signOut()
+
+            finishAffinity()
+
         }
 
         //동의하고 회원 정보 입력하기
 
         binding.activitySignUpButtonAccept.setOnClickListener {
-            saveData()
+            if(phoneVerify == true){
+                if(binding.activitySignUpEdittextName.length() < 2){
+                    binding.activitySignUpEdittextName.error = "닉네임을 두 글자 이상 입력해주세요."
+                }else if(binding.activitySignUpEdittextDetailAddress.text.length < 5){
+                    binding.activitySignUpEdittextDetailAddress.error = "주소를 입력해주세요."
+                }else{
+                    saveData()
+                }
+
+
+            }else{
+                Toast.makeText(this,"핸드폰 인증을 진행해주세요.",Toast.LENGTH_LONG).show()
+            }
+
         }
 
         //이용약관 보러가기
@@ -117,6 +142,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         binding.activitySignUpTextview.setOnClickListener {
             startActivity(Intent(this,PolicyActivity::class.java))
+            policyAcceptCheck = true
         }
 
         //프로필 이미지 추가 리스너
@@ -180,12 +206,13 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         val phoneNumber = "+82" + activity_sign_up_edittext_phonenumber.text.toString()
         var code: String? = null
-
-        FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
+        var auth = FirebaseAuth.getInstance()
+        auth.firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
             phoneNumber,
             code
         )
 
+        auth.useAppLanguage()
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
@@ -197,6 +224,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     //성공시
                     Log.d("credential",p0.toString())
                     Log.d("성공", "인증에 성공 했습니다.")
+                    phoneVerify = true
                 }
 
                 override fun onVerificationFailed(p0: FirebaseException) {
@@ -249,16 +277,66 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //유저 uid
         userModel.uid = FirebaseAuth.getInstance().currentUser?.uid
         //유저 닉네임
-        //userModel.userName =
+        userModel.userName = binding.activitySignUpEdittextName.text.toString()
+        userModel.point = 100
+        userModel.memberRating = "0"
+        userModel.policyAccept = policyAcceptCheck
 
-        FirebaseFirestore.getInstance().collection("userInfo").document(FirebaseAuth.getInstance().currentUser?.uid!!).set(userModel)
+        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser?.uid.toString()).document("accountInfo").set(userModel)
             .addOnSuccessListener {
                 System.out.println("유저 정보 저장 성공")
+
+                //회원 정보 저장
+                SharedData.prefs.setString("userInfo","yes")
 
                 //메인으로 이동하게 startActivity 작성해주세요.
             }.addOnFailureListener {
                 System.out.println("유저 정보 저장 실패")
             }
     }
+
+    fun signOut(){
+
+        var gac : GoogleApiClient? = null
+
+        val gso =
+            GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+        gac = GoogleApiClient.Builder(binding.root.context)
+            .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+            .build()
+
+        gac?.connect()
+
+
+
+        gac?.registerConnectionCallbacks(object : GoogleApiClient.ConnectionCallbacks {
+            override fun onConnected(bundle: Bundle?) {
+                FirebaseAuth.getInstance().signOut()
+                if (gac!!.isConnected()) {
+                    Auth.GoogleSignInApi.signOut(gac).setResultCallback { status ->
+                        if (status.isSuccess) {
+                            Log.v("알림", "로그아웃 성공")
+                            startActivity(Intent(binding.root?.context,SplashActivity::class.java))
+                            finish()
+                            setResult(1)
+                        } else {
+                            setResult(0)
+                        }
+                    }
+                }
+            }
+
+            override fun onConnectionSuspended(i: Int) {
+                Log.v("알림", "Google API Client Connection Suspended")
+                setResult(-1)
+            }
+        })
+
+
+    }
+
 
 }

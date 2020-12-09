@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -129,7 +130,11 @@ class LoginActivity : AppCompatActivity() {
 
     fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
-            startActivity(Intent(this, SignUpActivity::class.java))
+            if (SharedData.prefs.getString("userInfo","no") == "yes") {
+                startActivity(Intent(this, SignUpActivity::class.java))
+            }else{
+                startActivity(Intent(this,LobbyActivity::class.java))
+            }
             finish()
         }
     }

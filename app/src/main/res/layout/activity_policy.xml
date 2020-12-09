@@ -29,7 +29,8 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_margin="16dp"
-            android:text="확인"
+            android:text="확인 및 동의"
+            android:background="@drawable/background_round_gray"
             android:textSize="20dp"
             />
 

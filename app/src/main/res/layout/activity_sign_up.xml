@@ -64,7 +64,7 @@
                 android:id="@+id/activity_sign_up_edittext_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="이름"/>
+                android:hint="별명"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -77,13 +77,16 @@
             />
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/activity_sign_up_edittext_detail_address_form"
             android:layout_width="match_parent"
+            android:visibility="invisible"
             android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/activity_sign_up_edittext_detail_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:hint="상세 주소"/>
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +104,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="동의하고 회원정보 저장"
+            android:text="약관에 동의하고 회원정보 저장"
             android:background="@drawable/background_round_gray"
             android:layout_marginVertical="6dp"
             />
@@ -110,7 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="동의하고 나중에 저장"
+            android:text="동의하지 않음"
             android:background="@drawable/background_round_gray"
             android:layout_marginVertical="6dp"
             />

@@ -115,11 +115,15 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          */
 
         binding.activitySignUpButtonLater.setOnClickListener {
-
+            //현재는 테스트로 바로 로비로 이동
+            startActivity(Intent(this,LobbyActivity::class.java))
+            /*
             FirebaseAuth.getInstance().currentUser?.delete()
             signOut()
 
             finishAffinity()
+
+             */
 
         }
 

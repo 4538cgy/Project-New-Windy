@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,7 @@ class DetailViewFragment : Fragment() {
         //전체 게시글 초기화
 
 
-        binding.fragmentDetailRecycler.adapter = ContentSellRecyclerViewAdapter(binding.root.context, fragmentManager!!)
+        binding.fragmentDetailRecycler.adapter = ContentNormalRecyclerViewAdapter(binding.root.context,fragmentManager!!)
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
 
 
@@ -48,7 +49,7 @@ class DetailViewFragment : Fragment() {
             //구매 게시글 리스트로 초기화
             //binding.fragmentDetailRecycler.adapter = BuyViewRecyclerViewAdapter(activity as LobbyActivity)
             //binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
-
+            buttonBackgroundChanger(2)
             setContentBuyRecycler()
         }
 
@@ -56,7 +57,7 @@ class DetailViewFragment : Fragment() {
             //판매 게시글 리스트로 초기화
             //binding.fragmentDetailRecycler.adapter = SellViewRecyclerViewAdapter(activity as LobbyActivity)
             //binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
-
+            buttonBackgroundChanger(3)
             setContentSellRecycler()
         }
 
@@ -64,6 +65,7 @@ class DetailViewFragment : Fragment() {
             //전체 게시글 출력
             //binding.fragmentDetailRecycler.adapter = DetailViewRecyclerViewAdapter(activity as LobbyActivity)
             //binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
+            buttonBackgroundChanger(1)
             setContentNormalRecycler()
         }
 
@@ -74,8 +76,44 @@ class DetailViewFragment : Fragment() {
         return binding.root
     }
 
+    fun buttonBackgroundChanger(state: Int){
+        when(state){
+            1 -> {
+                //normal
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+
+                binding.fragmentDetailTextviewAll.setTextColor(Color.WHITE)
+                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+            }
+            2 -> {
+                //buy
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+
+                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewBuys.setTextColor(Color.WHITE)
+                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+
+            }
+            3 -> {
+                //sell
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_black)
+
+                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewSales.setTextColor(Color.WHITE)
+            }
+        }
+    }
+
     fun setContentBuyRecycler(){
-        val contentBuyViewRecyclerViewAdapter = ContentBuyRecyclerViewAdapter(binding.root.context)
+        val contentBuyViewRecyclerViewAdapter = ContentBuyRecyclerViewAdapter(binding.root.context,fragmentManager!!)
 
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentDetailRecycler.adapter = contentBuyViewRecyclerViewAdapter
@@ -91,7 +129,7 @@ class DetailViewFragment : Fragment() {
     }
 
     fun setContentNormalRecycler(){
-        val contentNormalRecyclerViewAdapter = ContentNormalRecyclerViewAdapter(binding.root.context)
+        val contentNormalRecyclerViewAdapter = ContentNormalRecyclerViewAdapter(binding.root.context,fragmentManager!!)
 
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentDetailRecycler.adapter = contentNormalRecyclerViewAdapter

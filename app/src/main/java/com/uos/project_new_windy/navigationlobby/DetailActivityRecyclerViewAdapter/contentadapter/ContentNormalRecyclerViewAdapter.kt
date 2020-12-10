@@ -1,19 +1,22 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 
-class ContentNormalRecyclerViewAdapter (private val context: Context) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>(){
+class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>(){
 
     var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     var contentNormalDTO: ArrayList<ContentNormalDTO> = arrayListOf()
@@ -84,6 +87,20 @@ class ContentNormalRecyclerViewAdapter (private val context: Context) : Recycler
         //사진
         Glide.with(holder.itemView.context).load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+        
+        //옵션 버튼 클릭
+        holder.binding.itemRecyclerNormalImagebuttonOption.setOnClickListener {
+            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentNormalDTO[position].uid)
+            bundle.putString("userId",contentNormalDTO[position].userId)
+            bundle.putString("postUid",contentUidList[position])
+            bundle.putString("uid" , contentNormalDTO[position].uid)
+            bundle.putString("postType", "normal")
+            bottomeSheetDialog.arguments = bundle
+            bottomeSheetDialog.show(fragmentManager,"dd")
+        }
 
 
 

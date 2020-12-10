@@ -1,21 +1,24 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerBuyBinding
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 
-class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ContentBuyRecyclerViewAdapter.ContentBuyRecyclerViewAdapterViewHolder>() {
+class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentBuyRecyclerViewAdapter.ContentBuyRecyclerViewAdapterViewHolder>() {
 
     var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     var contentBuyDTO: ArrayList<ContentBuyDTO> = arrayListOf()
@@ -90,6 +93,19 @@ class ContentBuyRecyclerViewAdapter(private val context: Context) : RecyclerView
 
         Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+        //옵션 버튼 클릭
+        holder.binding.itemRecyclerBuyImagebuttonOption.setOnClickListener {
+            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentBuyDTO[position].uid)
+            bundle.putString("userId",contentBuyDTO[position].userId)
+            bundle.putString("postUid",contentUidList[position])
+            bundle.putString("uid" , contentBuyDTO[position].uid)
+            bundle.putString("postType", "buy")
+            bottomeSheetDialog.arguments = bundle
+            bottomeSheetDialog.show(fragmentManager,"dd")
+        }
 
 
     }

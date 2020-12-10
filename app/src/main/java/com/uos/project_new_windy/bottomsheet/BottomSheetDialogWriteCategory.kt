@@ -61,7 +61,10 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
 
 
         when(view.id){
-
+            binding.bottomSheetSelectCategoryViewgroupNormal.id -> {
+                startActivity(Intent(binding.bottomsheet?.context, AddContentActivity::class.java))
+                System.out.println("클릭되어씀3")
+            }
             binding.bottomSheetSelectCategoryViewgroupSell.id -> {
                 startActivity(Intent(binding.bottomsheet?.context,AddSellContentActivity::class.java))
                 System.out.println("클릭되어씀1")
@@ -70,10 +73,7 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
                 startActivity(Intent(binding.bottomsheet?.context,AddBuyContentActivity::class.java))
                 System.out.println("클릭되어씀2")
             }
-            binding.bottomSheetSelectCategoryViewgroupNormal.id -> {
-                startActivity(Intent(binding.bottomsheet?.context, AddContentActivity::class.java))
-                System.out.println("클릭되어씀3")
-            }
+
 
 
         }

@@ -2,6 +2,8 @@ package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdap
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.getString
@@ -30,6 +32,8 @@ import com.uos.project_new_windy.navigationlobby.CommentActivity
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
+import com.uos.project_new_windy.util.ProgressDialogLoading
+import com.uos.project_new_windy.util.ProgressDialogLoadingPost
 
 class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder>() {
 
@@ -41,8 +45,12 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
 
 
+
+
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
+
+
 
         firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp",Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -83,6 +91,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         viewType: Int
     ): ContentSellRecyclerViewAdapterViewHolder {
         val binding = ItemRecyclerSellBinding.inflate(LayoutInflater.from(context),parent,false)
+
+
         return ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder(binding)
     }
 

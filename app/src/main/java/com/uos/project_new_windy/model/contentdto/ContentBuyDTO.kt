@@ -7,13 +7,13 @@ data class ContentBuyDTO(
     //사용자 uid
     var uid : String ? = null,
     //댓글 갯수
-    var commentCount : Int ? = null,
+    var commentCount : Int ? = 0,
     //내용
     var explain : String ? = null,
     //시간
     var time : String ? = null,
     //좋아요 갯수
-    var favoriteCount : Int ? = null,
+    var favoriteCount : Int  ? = 0,
     //유저 닉네임 혹은 이메일 주소
     var userId : String ? = null,
     //가격

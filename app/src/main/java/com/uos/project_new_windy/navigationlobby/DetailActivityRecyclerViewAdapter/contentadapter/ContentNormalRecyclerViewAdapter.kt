@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -15,6 +16,8 @@ import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormalViewActivity
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 
 class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>(){
 
@@ -88,7 +91,29 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         Glide.with(holder.itemView.context).load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
 
-        
+        //아이템 자체 클릭
+        //아이템 자체 클릭
+        holder.binding.itemRecyclerNormalConstAll.setOnClickListener {
+            var intent = Intent(holder.itemView.context, DetailNormalViewActivity::class.java)
+            intent.apply {
+                putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid)
+                putExtra("userId",contentNormalDTO[position].userId)
+                putExtra("postUid",contentUidList[position])
+                putExtra("imageList",contentNormalDTO[position].imageDownLoadUrlList)
+                putExtra("contentTime",contentNormalDTO[position].time)
+                putExtra("explain",contentNormalDTO[position].explain)
+                putExtra("likeCount",contentNormalDTO[position].favoriteCount)
+                putExtra("destinationUid",contentNormalDTO[position].uid)
+
+
+                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
+
+            }
+            context.startActivity(intent)
+        }
+
+
+
         //옵션 버튼 클릭
         holder.binding.itemRecyclerNormalImagebuttonOption.setOnClickListener {
             val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
@@ -96,7 +121,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
             bundle.putString("destinationUid",contentNormalDTO[position].uid)
             bundle.putString("userId",contentNormalDTO[position].userId)
             bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" , contentNormalDTO[position].uid)
+            bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "normal")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")

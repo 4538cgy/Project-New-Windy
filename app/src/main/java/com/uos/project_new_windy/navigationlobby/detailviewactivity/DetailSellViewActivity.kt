@@ -1,18 +1,22 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBinding
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBindingImpl
 import com.uos.project_new_windy.model.ContentDTO
@@ -35,6 +39,7 @@ class DetailSellViewActivity : AppCompatActivity() {
     var cost : String ? = null
     var category : String ? = null
     var productExplain : String ? = null
+    var explain : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +60,7 @@ class DetailSellViewActivity : AppCompatActivity() {
         cost = intent.getStringExtra("cost")
         category = intent.getStringExtra("category")
         productExplain = intent.getStringExtra("productExplain")
+        explain = intent.getStringExtra("explain")
 
         //이미지 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
@@ -91,7 +97,11 @@ class DetailSellViewActivity : AppCompatActivity() {
         //주소 초기화
         binding.activityDetailSellViewTextviewAddress.text = sellerAddress
 
+
+        //제목 초기화
         binding.activityDetailSellViewTextviewTitle.text = productExplain
+
+        binding.activityDetailSellViewTextviewExplain.text = explain
 
         //시간 초기화
         binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ contentTime.toString()
@@ -104,6 +114,22 @@ class DetailSellViewActivity : AppCompatActivity() {
                 var url = task.result!!["image"]
                 Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(binding.activityDetailSellViewCircleimageviewProfile)
 
+            }
+        }
+
+        //옵션
+        binding.activityDetailSellViewOptionButton.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
+                val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                var bundle = Bundle()
+                bundle.putString("destinationUid",destinationUid)
+                bundle.putString("userId", userId)
+                bundle.putString("postUid",contentUid)
+                bundle.putString("uid" , uid)
+                bundle.putString("postType", "sell")
+                bottomSheetDialog.arguments = bundle
+                bottomSheetDialog.show(supportFragmentManager,"lol")
             }
         }
 

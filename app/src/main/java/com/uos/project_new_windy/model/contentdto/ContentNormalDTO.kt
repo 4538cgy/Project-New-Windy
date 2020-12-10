@@ -15,9 +15,9 @@ data class ContentNormalDTO(
     //게시 시간
     var time : String ? = null,
     //댓글 갯수
-    var commentCount : Int ? = null,
+    var commentCount : Int ? = 0,
     //좋아요 갯수
-    var favoriteCount : Int ? = null,
+    var favoriteCount : Int ? = 0,
     //좋아요 누른 사람 uid
     var favorites: MutableMap<String,Boolean> = HashMap()
 

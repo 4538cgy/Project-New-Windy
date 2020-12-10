@@ -139,6 +139,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
                 putExtra("contentTime",contentSellDTO[position].time)
                 putExtra("productExplain",contentSellDTO[position].productExplain)
+                putExtra("explain",contentSellDTO[position].explain)
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
@@ -155,7 +156,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             bundle.putString("userId",contentSellDTO[position].userId)
             bundle.putString("postExplain",contentSellDTO[position].productExplain)
             bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" , contentSellDTO[position].uid)
+            bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "sell")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")

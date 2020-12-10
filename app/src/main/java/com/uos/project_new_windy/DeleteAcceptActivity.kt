@@ -1,5 +1,6 @@
 package com.uos.project_new_windy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -38,6 +39,7 @@ class DeleteAcceptActivity : AppCompatActivity() {
                 }.addOnSuccessListener {
                     //성공
                     System.out.println("삭제 성공")
+                    startActivity(Intent(this,LobbyActivity::class.java))
                     finish()
                 }
         }

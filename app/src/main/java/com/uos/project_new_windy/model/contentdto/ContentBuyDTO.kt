@@ -27,7 +27,7 @@ data class ContentBuyDTO(
     //서버 시간
     var timeStamp : Any ? = null,
     //비교 전용 cost
-    var costInt : Int ? = 0,
+    var costInt : String ? = null,
     //좋아요 누른 사람 uid
     var favorites: MutableMap<String,Boolean> = HashMap()
 ){

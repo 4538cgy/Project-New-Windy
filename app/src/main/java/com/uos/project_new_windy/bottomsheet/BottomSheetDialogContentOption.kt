@@ -29,6 +29,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     var postUid : String ? = null
     var uid : String ? = null
     var postType : String ? = null
+    var viewType : String ? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +47,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
         postExplain = bundle?.getString("postExplain")
         postUid = bundle?.getString("postUid")
         postType = bundle?.getString("postType")
+        viewType = bundle?.getString("viewType")
         
         System.out.println("테스트테스트테스트" + uid.toString())
         System.out.println("테스트세트세트2" + FirebaseAuth.getInstance().currentUser?.uid)
@@ -105,6 +107,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
                intent.apply {
                    putExtra("postUid",postUid)
                    putExtra("postType",postType)
+                   putExtra("viewType",viewType)
                }
                 startActivity(intent)
 

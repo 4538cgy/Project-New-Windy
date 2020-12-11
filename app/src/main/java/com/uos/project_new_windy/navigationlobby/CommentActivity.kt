@@ -30,6 +30,7 @@ class CommentActivity : AppCompatActivity() {
     var uid : String ? = null
     var data = listOf<ContentDTO.Comment>()
 
+
     lateinit var binding : ActivityCommentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,6 +42,8 @@ class CommentActivity : AppCompatActivity() {
 
         contentUid = intent.getStringExtra("contentUid")
         destinationUid = intent.getStringExtra("destinationUid")
+        var postType = intent.getStringExtra("postType")
+
 
         firestore = FirebaseFirestore.getInstance()
 
@@ -50,7 +53,7 @@ class CommentActivity : AppCompatActivity() {
         activity_comment_recycler.layoutManager = LinearLayoutManager(this)
          */
 
-        binding.activityCommentRecycler.adapter = CommentRecyclerViewAdapter()
+        binding.activityCommentRecycler.adapter = CommentRecyclerViewAdapter(postType)
         binding.activityCommentRecycler.layoutManager = LinearLayoutManager(this)
 
 
@@ -62,78 +65,35 @@ class CommentActivity : AppCompatActivity() {
             comment.timestamp = System.currentTimeMillis()
             comment.time = TimeUtil().getTime()
 
-
-            /*
-            FirebaseFirestore.getInstance().collection("contents").document(contentUid!!).collection("comments").document().set(comment)
-                .addOnCompleteListener {
-                        task ->
-                    System.out.println("댓글 작성 완료")
-                    if (task.isSuccessful) {
-
-                        System.out.println("태스크 종료!!!!!!!!!!!!!!!!!!")
-                        System.out.println("콘텐츠 아이디" + contentUid)
-                        commentCountTest()
-                    }
-                    System.out.println("댓글 카운트 증가 완료")
-
-
-                }
-
-
-             */
-            FirebaseFirestore.getInstance().collection("contents").document("sell").collection("data").document(contentUid!!).collection("comments").document().set(comment)
-                .addOnCompleteListener {
-                    task ->
-                    System.out.println("댓글 작성 완료")
-                    if (task.isSuccessful) {
-
-                        System.out.println("태스크 종료!!!!!!!!!!!!!!!!!!")
-                        System.out.println("콘텐츠 아이디" + contentUid)
-                        commentCountTest()
-                    }
-                    System.out.println("댓글 카운트 증가 완료")
-                }
-
-
-        }
-    /*
-        activity_comment_button_upload_comment.setOnClickListener {
-            var comment = ContentDTO.Comment()
-            comment.userId = FirebaseAuth.getInstance().currentUser?.email
-            comment.uid = FirebaseAuth.getInstance().currentUser?.uid
-            comment.comment = activity_comment_edittext_explain.text.toString()
-            comment.timestamp = System.currentTimeMillis()
-            comment.time = TimeUtil().getTime()
-
-
-
-            FirebaseFirestore.getInstance().collection("contents").document(contentUid!!).collection("comments").document().set(comment)
-                .addOnCompleteListener {
-                    task ->
-                    System.out.println("댓글 작성 완료")
-                    if (task.isSuccessful) {
-
-                        System.out.println("태스크 종료!!!!!!!!!!!!!!!!!!")
-                        System.out.println("콘텐츠 아이디" + contentUid)
-                        commentCountTest()
-                    }
-                    System.out.println("댓글 카운트 증가 완료")
-
-
-                }
+            commentSave(postType,comment)
 
 
 
         }
 
-     */
 
     }
 
-    fun commentCountTest(){
+    fun commentSave(postType: String, comment: Any) {
+        FirebaseFirestore.getInstance().collection("contents").document(postType).collection("data").document(contentUid!!).collection("comments").document().set(comment)
+            .addOnCompleteListener {
+                    task ->
+                System.out.println("댓글 작성 완료")
+                if (task.isSuccessful) {
+
+                    System.out.println("태스크 종료!!!!!!!!!!!!!!!!!!")
+                    System.out.println("콘텐츠 아이디" + contentUid)
+                    commentCountTest(postType)
+                }
+                System.out.println("댓글 카운트 증가 완료")
+            }
+    }
+
+    fun commentCountTest(postType: String){
         
         System.out.println("commentCountTest 시작")
-        val tsDoc = firestore?.collection("contents")?.document(contentUid!!)
+        //val tsDoc = firestore?.collection("contents")?.document(contentUid!!)
+        val tsDoc = firestore?.collection("contents")?.document(postType)?.collection("data")?.document(contentUid!!)
 
         firestore?.runTransaction {
             transition ->
@@ -172,35 +132,17 @@ class CommentActivity : AppCompatActivity() {
         }?.addOnCompleteListener { System.out.println("트랜잭션 정상 실행 완료") }
     }
 
-    inner class CommentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    inner class CommentRecyclerViewAdapter(postType: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
         var comments : ArrayList<ContentDTO.Comment> = arrayListOf()
 
 
 
         init {
-        /*
+
             FirebaseFirestore.getInstance()
                 .collection("contents")
-                .document(contentUid!!)
-                .collection("comments")
-                .orderBy("timestamp")
-                .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-
-                    comments.clear()
-                    if (querySnapshot == null) return@addSnapshotListener
-
-                    for (snapshot in querySnapshot.documents!!){
-                        comments.add(snapshot.toObject(ContentDTO.Comment::class.java)!!)
-                    }
-                    notifyDataSetChanged()
-
-                }
-
-         */
-            FirebaseFirestore.getInstance()
-                .collection("contents")
-                .document("sell")
+                .document(postType)
                 .collection("data")
                 .document(contentUid!!)
                 .collection("comments")

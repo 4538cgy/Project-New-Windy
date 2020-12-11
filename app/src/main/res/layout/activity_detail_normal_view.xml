@@ -149,6 +149,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="내용"
+            android:textSize="18dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_detail_normal_view_view_1"

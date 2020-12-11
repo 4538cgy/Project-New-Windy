@@ -148,6 +148,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
             bundle.putString("postUid",contentUidList[position])
             bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "normal")
+            bundle.putString("viewType","fragment")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }

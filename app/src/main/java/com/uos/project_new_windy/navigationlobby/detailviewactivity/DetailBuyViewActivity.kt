@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
+import android.app.Activity
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -42,9 +43,17 @@ class DetailBuyViewActivity : AppCompatActivity() {
     var cost : String ? = null
     var category : String ? = null
     var explain : String ? = null
-    
+
+    companion object{
+        var activity : Activity? = null
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        activity = this
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_buy_view)
         binding.activitydetailviewbuy = this@DetailBuyViewActivity
 
@@ -121,7 +130,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
                 bundle.putString("postUid",contentUid)
                 bundle.putString("uid" , uid)
                 bundle.putString("postType", "buy")
-
+                bundle.putString("viewType","activity")
                 bottomSheetDialog.arguments = bundle
                 bottomSheetDialog.show(supportFragmentManager,"lol")
             }

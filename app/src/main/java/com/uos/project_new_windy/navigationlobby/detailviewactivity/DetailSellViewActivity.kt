@@ -133,6 +133,7 @@ class DetailSellViewActivity : AppCompatActivity() {
             var bundle = Bundle()
             bundle.putString("destinationUid",uid)
             bundle.putString("userId",userId)
+            bundle.putString("viewType","activity")
             fragment.arguments = bundle
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             supportFragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()

@@ -7,7 +7,7 @@ class TimeUtil {
 
     fun getTime(): String {
 
-            return SimpleDateFormat("yy-MM-dd hh:mm:ss").format(Date(System.currentTimeMillis())).toString()
+            return SimpleDateFormat("yyyy년 MM월 dd일 a hh시 mm분 ss초").format(Date(System.currentTimeMillis())).toString()
 
     }
 }

@@ -141,7 +141,7 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         //time
         contentSellDTO.time = TimeUtil().getTime()
         //비교 전용 cost
-        contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text as Int
+        contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()
 
         //파스에 set
         firestore?.collection("contents")?.document("sell")?.collection("data")?.document()?.set(contentSellDTO)

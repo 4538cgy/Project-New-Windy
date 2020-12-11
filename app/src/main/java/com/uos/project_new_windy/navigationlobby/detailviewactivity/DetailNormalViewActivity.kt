@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -31,15 +32,25 @@ class DetailNormalViewActivity : AppCompatActivity() {
     var imageList : ArrayList<String> ? = null
     var contentTime : String ? = null
     var explain : String ? = null
-    var likeCount : String ? = null
+    var likeCount : Int ? = null
 
 
     lateinit var binding : ActivityDetailNormalViewBinding
 
     var firestore : FirebaseFirestore ? = null
     var auth : FirebaseAuth? = null
+
+    companion object{
+        var activity : Activity? = null
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        activity = this
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_normal_view)
         binding.activitydetailviewnormal = this@DetailNormalViewActivity
 
@@ -51,7 +62,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
         postUid = intent.getStringExtra("postUid")
         imageList = intent.getStringArrayListExtra("imageList")
         contentTime = intent.getStringExtra("contentTime")
-        likeCount = intent.getStringExtra("likeCount")
+        likeCount = intent.getIntExtra("likeCount",0)
         explain = intent.getStringExtra("explain")
 
         //이미지 리사이클러뷰 초기화
@@ -85,6 +96,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
                 bundle.putString("postUid",postUid)
                 bundle.putString("uid" , auth!!.currentUser?.uid.toString())
                 bundle.putString("postType", "normal")
+                bundle.putString("viewType","activity")
                 bottomSheetDialog.arguments = bundle
                 bottomSheetDialog.show(supportFragmentManager,"lol")
             }

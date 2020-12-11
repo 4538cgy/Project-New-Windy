@@ -82,10 +82,21 @@
                 android:id="@+id/activity_add_sell_content_imagebutton_addphoto"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:src="@drawable/ic_add_photo"
+                android:src="@drawable/ic_upload_photo"
                 android:background="@android:color/transparent"
                 android:scaleType="centerInside"
                 android:padding="8dp"
+                />
+
+            <TextView
+                android:id="@+id/activity_add_sell_content_textview_add_photo"
+                app:layout_constraintTop_toBottomOf="@+id/activity_add_sell_content_imagebutton_addphoto"
+                app:layout_constraintLeft_toLeftOf="@+id/activity_add_sell_content_imagebutton_addphoto"
+                app:layout_constraintRight_toRightOf="@+id/activity_add_sell_content_imagebutton_addphoto"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="사진 추가"
                 />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_add_sell_content_recycler_photo"

@@ -128,6 +128,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             bundle.putString("postUid",contentUidList[position])
             bundle.putString("uid" , contentBuyDTO[position].uid)
             bundle.putString("postType", "buy")
+            bundle.putString("viewType","fragment")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }

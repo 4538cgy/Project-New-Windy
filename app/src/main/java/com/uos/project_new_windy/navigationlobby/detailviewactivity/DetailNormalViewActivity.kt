@@ -22,6 +22,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.ActivityDetailNormalViewBinding
 import com.uos.project_new_windy.model.ContentDTO
+import com.uos.project_new_windy.navigationlobby.CommentActivity
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class DetailNormalViewActivity : AppCompatActivity() {
@@ -77,7 +78,13 @@ class DetailNormalViewActivity : AppCompatActivity() {
         System.out.println("좋아요 갯수는 "  + likeCount)
         //댓글 버튼
         binding.activityDetailNormalViewImagebuttonComment.setOnClickListener {
-
+            var intent = Intent(this, CommentActivity::class.java)
+            intent.apply {
+                putExtra("contentUid",postUid)
+                putExtra("destinationUid",uid)
+                putExtra("postType","normal")
+            }
+            startActivity(intent)
         }
 
         //좋아요 버튼

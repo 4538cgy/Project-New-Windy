@@ -18,6 +18,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityCommentBinding
 import com.uos.project_new_windy.databinding.ItemCommentBinding
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
+import com.uos.project_new_windy.navigationlobby.CommentActivity.CommentRecyclerViewAdapter.CommentRecyclerViewAdapterViewHolder
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
@@ -28,7 +29,7 @@ class CommentActivity : AppCompatActivity() {
     var destinationUid : String ? = null
     var firestore : FirebaseFirestore ? = null
     var uid : String ? = null
-    var data = listOf<ContentDTO.Comment>()
+
 
 
     lateinit var binding : ActivityCommentBinding
@@ -132,9 +133,10 @@ class CommentActivity : AppCompatActivity() {
         }?.addOnCompleteListener { System.out.println("트랜잭션 정상 실행 완료") }
     }
 
-    inner class CommentRecyclerViewAdapter(postType: String) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+    inner class CommentRecyclerViewAdapter(postType: String) : RecyclerView.Adapter<CommentRecyclerViewAdapterViewHolder>(){
 
         var comments : ArrayList<ContentDTO.Comment> = arrayListOf()
+        var data = listOf<ContentDTO.Comment>()
 
 
 
@@ -159,19 +161,32 @@ class CommentActivity : AppCompatActivity() {
             data = comments
 
 
+
+
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentRecyclerViewAdapterViewHolder {
+            /*
             var view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment,parent,false)
             return CustomViewHolder(view)
+
+             */
+            val binding = ItemCommentBinding.inflate(LayoutInflater.from(this@CommentActivity),parent,false)
+            return CommentRecyclerViewAdapterViewHolder(binding)
         }
 
-        private inner class CustomViewHolder(view : View) : RecyclerView.ViewHolder(view)
 
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+       // private inner class CustomViewHolder(view : View) : RecyclerView.ViewHolder(view)
 
-            var view = holder.itemView
+        override fun onBindViewHolder(holder: CommentRecyclerViewAdapterViewHolder, position: Int) {
 
+            //var view = holder.itemView
+            holder.onBind(comments[position])
+            comments.forEach {
+                    it ->
+
+                System.out.println("댓글 데이터어어어어어엌" + it.toString())
+            }
 
             FirebaseFirestore.getInstance()
                 .collection("profileImages")
@@ -181,17 +196,21 @@ class CommentActivity : AppCompatActivity() {
                     if (task.isSuccessful)
                     {
                         var url = task.result!!["image"]
-                        Glide.with(holder.itemView.context).load(url).apply(RequestOptions().circleCrop()).into(view.item_comment_circleImageview)
+                        Glide.with(holder.itemView.context).load(url).apply(RequestOptions().circleCrop()).into(holder.binding.itemCommentCircleImageview)
 
                     }
                 }
         }
 
         override fun getItemCount(): Int {
-            return comments.size
+            return data.size
         }
 
-
+        inner class CommentRecyclerViewAdapterViewHolder(val binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root){
+            fun onBind(data : ContentDTO.Comment){
+                binding.commentitem = data
+            }
+        }
 
 
     }

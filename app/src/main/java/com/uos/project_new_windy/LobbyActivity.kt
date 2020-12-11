@@ -53,7 +53,7 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 return  true
             }
             R.id.action_search -> {
-                var gridFragment = GridFragment()
+                var gridFragment = SearchFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_content,gridFragment).commit()
                 return  true
             }

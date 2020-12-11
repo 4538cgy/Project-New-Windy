@@ -1,5 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -20,8 +22,11 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBinding
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBindingImpl
 import com.uos.project_new_windy.model.ContentDTO
+import com.uos.project_new_windy.navigationlobby.UserFragment
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
+
+
 
 class DetailSellViewActivity : AppCompatActivity() {
 
@@ -41,8 +46,18 @@ class DetailSellViewActivity : AppCompatActivity() {
     var productExplain : String ? = null
     var explain : String ? = null
 
+
+    companion object{
+        var activity : Activity ? = null
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
+
+        activity = this
+
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_sell_view)
         binding.activitydetailviewsell = this@DetailSellViewActivity
 
@@ -103,6 +118,17 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         binding.activityDetailSellViewTextviewExplain.text = explain
 
+        //프로필 이미지 클릭
+        binding.activityDetailSellViewCircleimageviewProfile.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",uid)
+            bundle.putString("userId",userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            supportFragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+        }
+
         //시간 초기화
         binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ contentTime.toString()
 
@@ -128,6 +154,7 @@ class DetailSellViewActivity : AppCompatActivity() {
                 bundle.putString("postUid",contentUid)
                 bundle.putString("uid" , uid)
                 bundle.putString("postType", "sell")
+
                 bottomSheetDialog.arguments = bundle
                 bottomSheetDialog.show(supportFragmentManager,"lol")
             }
@@ -206,8 +233,14 @@ class DetailSellViewActivity : AppCompatActivity() {
                         return@addSnapshotListener
 
                     //querySnapshot["imageDownLoadUrlList"]
-                    contentImageList = documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
-                    contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
+                    if(documentSnapshot.exists()) {
+                        if (documentSnapshot.get("imageDownLoadUrlList") != null) {
+                            contentImageList =
+                                documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
+                        }
+
+                        contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
+                    }
                 }
             /*
             firestore?.collection("contents")?.document(contentUid!!)
@@ -268,4 +301,6 @@ class DetailSellViewActivity : AppCompatActivity() {
             return contentImageList.size
         }
     }
+
+
 }

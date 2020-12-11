@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -127,8 +128,12 @@ class DetailNormalViewActivity : AppCompatActivity() {
                         return@addSnapshotListener
 
                     //querySnapshot["imageDownLoadUrlList"]
-                    contentImageList = documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
-                    contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
+                    if (documentSnapshot.exists()) {
+                        contentImageList =
+                            documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
+
+                        contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
+                    }
                 }
             /*
             firestore?.collection("contents")?.document(contentUid!!)
@@ -190,4 +195,5 @@ class DetailNormalViewActivity : AppCompatActivity() {
             return contentImageList.size
         }
     }
+
 }

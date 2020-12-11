@@ -84,7 +84,6 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     fun groupClick(view : View){
 
 
-
         when(view.id){
             //신고
             binding.bottomSheetSelectContentOptionConstReport.id -> {
@@ -109,13 +108,19 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
                }
                 startActivity(intent)
 
+
                 System.out.println("클릭되어씀2")
             }
 
 
 
+
+
         }
+        dismiss()
     }
+
+
 
 
 

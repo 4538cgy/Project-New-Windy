@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.bottomsheet
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -20,6 +21,7 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
 
     lateinit var bottomSheetButtonClickListener: BottomSheetButtonClickListener
     private lateinit var binding : BottomSheetSelectCategoryBinding
+
 
     override fun onCreateView(
          inflater: LayoutInflater,
@@ -77,6 +79,7 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
 
 
         }
+        dismiss()
     }
 
 

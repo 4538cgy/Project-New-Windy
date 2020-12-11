@@ -25,6 +25,20 @@ data class ContentBuyDTO(
     //핸드폰 번호
     var phoneNumber : String ? = null,
     //서버 시간
-    var timeStamp : Any ? = null
+    var timeStamp : Any ? = null,
+    //비교 전용 cost
+    var costInt : Int ? = 0,
+    //좋아요 누른 사람 uid
+    var favorites: MutableMap<String,Boolean> = HashMap()
+){
+    data class Comment(
 
-)
+        var uid : String ? = null,
+        var userId : String ? = null,
+        var comment : String ? = null,
+        var timestamp : Long ? = null,
+        var time : String ? = null
+
+    )
+
+}

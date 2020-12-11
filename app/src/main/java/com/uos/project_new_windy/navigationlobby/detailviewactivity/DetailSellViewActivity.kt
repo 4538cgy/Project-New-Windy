@@ -116,8 +116,17 @@ class DetailSellViewActivity : AppCompatActivity() {
         //제목 초기화
         binding.activityDetailSellViewTextviewTitle.text = productExplain
 
+        //내용 초기화
         binding.activityDetailSellViewTextviewExplain.text = explain
 
+
+        //거래 버튼 초기화
+        if(uid == FirebaseAuth.getInstance().currentUser?.uid) {
+            binding.activityDetailSellViewButtonChat.text = "거래 완료"
+        }else {
+            binding.activityDetailSellViewButtonChat.text = "거래 요청"
+        }
+        
         //프로필 이미지 클릭
         binding.activityDetailSellViewCircleimageviewProfile.setOnClickListener {
             var fragment = UserFragment()

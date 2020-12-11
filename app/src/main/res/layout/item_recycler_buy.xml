@@ -80,10 +80,11 @@
         <LinearLayout
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/item_recycler_buy_linearlayout_bottom"
+            app:layout_constraintTop_toBottomOf="@+id/item_recycler_normal_imageview_image"
             android:id="@+id/item_recycler_buy_linearlayout_action"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             >
 
             <ImageButton
@@ -136,23 +137,57 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 >
 
                 <TextView
-                    android:id="@+id/item_recycler_buy_textview_category"
-                    android:layout_width="0dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/item_recycler_buy_textview_time"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="@{contentbuy.categoryHash}"
+                    android:text="@{contentbuy.time}"
+
+                    />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"
                     />
                 <TextView
-                    android:id="@+id/item_recycler_buy_textview_cost"
-                    android:layout_width="0dp"
+                    android:layout_margin="8dp"
+                    android:id="@+id/item_recycler_buy_textview_category"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:text="@{contentbuy.categoryHash}"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"
+                    />
+                <TextView
+                    android:layout_margin="8dp"
+                    android:id="@+id/item_recycler_buy_textview_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:text='@{contentbuy.cost}'
                     />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"
+                    />
+                <TextView
+                    android:layout_margin="8dp"
+                    android:id="@+id/item_recycler_buy_textview_explain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text='@{contentbuy.explain}'
+                    />
+
 
 
 
@@ -162,32 +197,7 @@
         </LinearLayout>
 
 
-        <LinearLayout
-            android:id="@+id/item_recycler_buy_linearlayout_bottom"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            >
-            <TextView
-                android:layout_margin="8dp"
-                android:gravity="right"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{contentbuy.time.toString()}"
-                />
 
-            <TextView
-                android:layout_margin="8dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@{contentbuy.explain}"
-                />
-
-        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

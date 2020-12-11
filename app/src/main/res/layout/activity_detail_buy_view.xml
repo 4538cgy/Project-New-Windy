@@ -11,9 +11,169 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/activity_detail_buy_view_const_all"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_detail_buy_view_const_top_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/activity_detail_buy_view_circleimageview_profile"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="16dp"
+                android:src="@drawable/ic_post_menu_2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginLeft="12dp"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/activity_detail_buy_view_circleimageview_profile"
+                app:layout_constraintRight_toLeftOf="@+id/activity_detail_buy_view_option_button"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/activity_detail_buy_view_textview_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="nickname" />
+
+                <TextView
+                    android:id="@+id/activity_detail_buy_view_textview_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="address" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/activity_detail_buy_view_option_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="@android:color/transparent"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_post_menu_2"
+                android:layout_marginRight="12dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/activity_detail_buy_view_recycler_photo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_detail_buy_view_const_top_bar" />
+
+
+        <LinearLayout
+            android:id="@+id/activity_detail_buy_view_textview_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:orientation="vertical"
+            app:layout_constraintTop_toBottomOf="@+id/activity_detail_buy_view_recycler_photo">
+
+
+            <TextView
+                android:id="@+id/activity_detail_buy_view_textview_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16dp"
+                android:textColor="@color/colorBlack"
+                android:text="남성패션/잡화" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/activity_detail_sell_view_textview_cost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:text="가격" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/activity_detail_buy_view_textview_explain"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="내용" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/activity_detail_buy_view_textview_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="게시일 : 2020-09-21" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/activity_detail_buy_view_button_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_detail_buy_view_textview_bar">
+
+            <Button
+                android:id="@+id/activity_detail_buy_view_button_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="거래 요청" />
+
+            <Button
+                android:id="@+id/activity_detail_buy_view_button_like"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="이 글을 추천" />
+
+
+        </LinearLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

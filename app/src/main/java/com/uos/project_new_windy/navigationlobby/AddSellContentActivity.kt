@@ -140,6 +140,9 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         contentSellDTO.timeStamp = System.currentTimeMillis()
         //time
         contentSellDTO.time = TimeUtil().getTime()
+        //비교 전용 cost
+        contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text as Int
+
         //파스에 set
         firestore?.collection("contents")?.document("sell")?.collection("data")?.document()?.set(contentSellDTO)
             ?.addOnSuccessListener {

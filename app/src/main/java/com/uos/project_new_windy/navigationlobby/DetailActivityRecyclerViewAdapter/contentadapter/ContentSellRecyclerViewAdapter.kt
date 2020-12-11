@@ -106,6 +106,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 intent.apply {
                     putExtra("contentUid",contentUidList[position])
                     putExtra("destinationUid",contentSellDTO[position].uid)
+                    putExtra("postType","sell")
                 }
             context.startActivity(intent)
         }

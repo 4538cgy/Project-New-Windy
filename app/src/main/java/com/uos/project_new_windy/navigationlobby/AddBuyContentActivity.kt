@@ -102,7 +102,9 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         contentBuyDTO.favoriteCount = 0
         contentBuyDTO.categoryHash = pickCategory
         contentBuyDTO.cost = binding.activityAddBuyContentEdittextCost.text.toString() + "원"
-
+        contentBuyDTO.commentCount = 0
+        //비교 전용 cost
+        contentBuyDTO.costInt = binding.activityAddBuyContentEdittextCost.text as Int
 
 
         firestore?.collection("contents")?.document("buy")?.collection("data")?.document()?.set(contentBuyDTO)

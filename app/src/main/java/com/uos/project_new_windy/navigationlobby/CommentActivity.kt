@@ -57,7 +57,14 @@ class CommentActivity : AppCompatActivity() {
         binding.activityCommentRecycler.adapter = CommentRecyclerViewAdapter(postType)
         binding.activityCommentRecycler.layoutManager = LinearLayoutManager(this)
 
-
+        
+        //뒤로가기
+        binding.activityCommentImagebuttonBack.setOnClickListener { 
+            finish()
+        }
+        
+        
+        //댓글 발송
         binding.activityCommentButtonUploadComment.setOnClickListener {
             var comment = ContentDTO.Comment()
             comment.userId = FirebaseAuth.getInstance().currentUser?.email

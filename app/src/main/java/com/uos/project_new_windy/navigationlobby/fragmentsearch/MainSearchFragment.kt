@@ -5,7 +5,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.databinding.FragmentMainSearchBinding
+import com.uos.project_new_windy.databinding.FragmentSearchBinding
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,10 +20,15 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MainSearchFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+private const val ARG_OBJECT = "object"
+
+
 class MainSearchFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+
+    lateinit var binding: FragmentMainSearchBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,8 +42,16 @@ class MainSearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_main_search, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_main_search,container,false)
+        binding.fragmentmainsearch
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        arguments?.takeIf { it.containsKey(ARG_OBJECT) }?.apply {
+            //val textView: TextView = view.findViewById(android.R.id.text1)
+           binding.fragmentMainSearchTextviewTest.text = getInt(ARG_OBJECT).toString()
+        }
     }
 
     companion object {

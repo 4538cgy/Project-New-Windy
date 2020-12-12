@@ -4,18 +4,61 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.google.android.material.tabs.TabLayoutMediator
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.databinding.FragmentSearchBinding
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.MainSearchFragment
+import kotlinx.android.synthetic.main.fragment_search.*
+
+const val NUM_PAGES = 3
+private const val ARG_OBJECT = "object"
 
 class SearchFragment : Fragment() {
+
+    lateinit var binding : FragmentSearchBinding
+    private lateinit var demoCollectionAdapter: DemoCollectionAdapter
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var view = LayoutInflater.from(activity).inflate(R.layout.fragment_search, container, false)
+        //var view = LayoutInflater.from(activity).inflate(R.layout.fragment_search, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search,container,false)
+
+        binding.fragmentSearchViewpager2.adapter
 
 
-        return view
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        var main_adapter = DemoCollectionAdapter(this)
+        binding.fragmentSearchViewpager2.adapter = main_adapter
+
+        TabLayoutMediator(binding.fragmentSearchTablayout, binding.fragmentSearchViewpager2) { tab, position ->
+            tab.text = "OBJECT ${(position + 1)}"
+        }.attach()
+    }
+
+    inner class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
+
+        override fun getItemCount(): Int = 100
+
+        override fun createFragment(position: Int): Fragment {
+            // Return a NEW fragment instance in createFragment(int)
+            val fragment = MainSearchFragment()
+            fragment.arguments = Bundle().apply {
+                // Our object is just an integer :-P
+                putInt(ARG_OBJECT, position + 1)
+            }
+            return fragment
+        }
     }
 }

@@ -11,6 +11,9 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.FragmentSearchBinding
 import com.uos.project_new_windy.navigationlobby.fragmentsearch.MainSearchFragment
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostBuySearch
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostNormalSearch
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostSellSearch
 import kotlinx.android.synthetic.main.fragment_search.*
 
 const val NUM_PAGES = 3
@@ -43,21 +46,68 @@ class SearchFragment : Fragment() {
         binding.fragmentSearchViewpager2.adapter = main_adapter
 
         TabLayoutMediator(binding.fragmentSearchTablayout, binding.fragmentSearchViewpager2) { tab, position ->
-            tab.text = "OBJECT ${(position + 1)}"
+
+
+            when(position){
+                0 ->
+                {
+                    tab.text = "농업 뉴스"
+                }
+                1 ->
+                {
+                    tab.text = "구매 게시판 검색"
+                }
+                2 ->
+                {
+                    tab.text = "새 소식 검색"
+                }
+                3 ->
+                {
+                    tab.text = "판매 게시판 검색"
+                }
+            }
+
+
         }.attach()
     }
 
     inner class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount(): Int = 100
+        override fun getItemCount(): Int = 4
 
         override fun createFragment(position: Int): Fragment {
             // Return a NEW fragment instance in createFragment(int)
+
+            var fragment : Fragment
+
+            fragment = MainSearchFragment()
+
+            when(position){
+                0 ->
+                {
+                    fragment = MainSearchFragment()
+                }
+                1 ->
+                {
+                    fragment = PostBuySearch()
+                }
+                2 ->
+                {
+                    fragment = PostNormalSearch()
+                }
+                3 ->
+                {
+                    fragment = PostSellSearch()
+                }
+            }
+            /*
             val fragment = MainSearchFragment()
             fragment.arguments = Bundle().apply {
                 // Our object is just an integer :-P
                 putInt(ARG_OBJECT, position + 1)
             }
+
+             */
             return fragment
         }
     }

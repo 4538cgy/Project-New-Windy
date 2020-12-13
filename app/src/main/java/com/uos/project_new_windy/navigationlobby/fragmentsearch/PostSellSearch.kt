@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.fragmentsearch
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,6 +40,10 @@ class PostSellSearch : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_post_sell_search,container,false)
         binding.fragmentpostsellsearch
+
+
+        binding.root.context.startActivity(Intent(binding.root.context,PostSellSearchCategorySetActivity::class.java))
+
         return binding.root
     }
 

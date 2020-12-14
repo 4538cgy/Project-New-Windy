@@ -55,9 +55,28 @@ class PostSellSearch : Fragment() {
 
     var categoryData: ArrayList<String> = arrayListOf()
 
+    //원본 데이터
     var contentSellDTO: ArrayList<ContentSellDTO> = arrayListOf()
+    
+    //원본 데이터
     var contentUidList: ArrayList<String> = arrayListOf()
+    
+    //카테고리 필터링 이후 결과값
+    var contentUidListData : ArrayList<String> = arrayListOf()
+    // 카테고리 필터링 이후 결과값
     var contentData : ArrayList<ContentSellDTO> = arrayListOf()
+    
+    //검색 버튼 누른뒤 조회 결과
+    var searchResultContentData : ArrayList<ContentSellDTO> = arrayListOf()
+    var searchResultPostUidListData : ArrayList<String> = arrayListOf()
+    
+    //검색 창에 입력한 스트링 키값
+    var searchKeyString : String ? = null
+
+    //리사이클러뷰에 들어갈 데이터
+    var mList : ArrayList<ContentSellDTO> = arrayListOf()
+    //리사이클러뷰에 들어갈 postUid데이터
+    var mContentUidList : ArrayList<String> = arrayListOf()
 
     init {
 
@@ -75,11 +94,11 @@ class PostSellSearch : Fragment() {
 
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject(ContentSellDTO::class.java)
-                    System.out.println("데이터들 " + item.toString())
+                    //System.out.println("데이터들 " + item.toString())
                     //거래완료 상품이 아니면 보여줌
                     if (item?.checkSellComplete == false) {
                         contentSellDTO.add(item!!)
-                        System.out.println("데이터들2" + contentSellDTO.toString())
+                        //System.out.println("데이터들2" + contentSellDTO.toString())
                         contentUidList.add(snapshot.id)
                     }
 
@@ -105,6 +124,39 @@ class PostSellSearch : Fragment() {
         binding.fragmentPostSellSearchEdittextSearch.setOnEditorActionListener(EditListener())
 
 
+        //검색 버튼
+        binding.fragmentPostSellSearchImagebuttonSearch.setOnClickListener {
+            searchResultContentData.clear()
+            for(c in contentData.indices)
+            {
+
+                if(contentData[c].explain.toString().contains(searchKeyString.toString()) || contentData[c].productExplain.toString().contains(searchKeyString.toString())) {
+
+
+
+
+                    searchResultContentData.add(contentData[c])
+                    searchResultPostUidListData.add(contentUidListData[c])
+                }
+
+
+
+            }
+            mList.clear()
+            mContentUidList.clear()
+            mList.addAll(searchResultContentData)
+            mContentUidList.addAll(searchResultPostUidListData)
+            /*
+            contentData.clear()
+            contentData.addAll(searchResultContentData)
+            contentData.forEach {
+                System.out.println("검색결과 식별2" + it.toString())
+            }
+            binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context)
+
+             */
+            binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
+        }
 
         startActivityForResult(Intent(
             binding.root.context,
@@ -119,13 +171,19 @@ class PostSellSearch : Fragment() {
             if (contentSellDTO[c].category.equals(categoryData[d].toString())){
                     System.out.println("중복됩니다." + categoryData[d] + contentSellDTO[c])
                 contentData.add(contentSellDTO[c])
+                contentUidListData.add(contentUidList[c])
             }
         }
-
+        /*
         contentData.forEach {
             System.out.println("카테고리를 포함한 데이터 $it" )
         }
 
+         */
+        mList.clear()
+        mContentUidList.clear()
+        mList.addAll(contentData)
+        mContentUidList.addAll(contentUidListData)
         binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
     }
 
@@ -137,25 +195,26 @@ class PostSellSearch : Fragment() {
             if (resultCode == 1556) {
                 System.out.println("데이터 전달 성공적으로 완수3123123123123")
                 categoryData = data?.getStringArrayListExtra("categoryList")!!
+                /*
                 categoryData.forEach {
                     System.out.println("카테고리 리스트 목록 = $it")
                 }
+
+                 */
+
                 dataCleaning()
             }
 
 
         }
 
-        binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context)
+        binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context,mList,mContentUidList)
         //binding.fragmentPostSellSearchRecycler.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
         binding.fragmentPostSellSearchRecycler.layoutManager = LinearLayoutManager(activity)
         binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
 
     }
 
-    fun searchByEdittext(text : String){
-        //text를 기준으로 검색 결과 반환 
-    }
 
     inner class EditWatcher: TextWatcher{
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -165,7 +224,7 @@ class PostSellSearch : Fragment() {
         //문자 열이 바뀐 후 이벤트
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             Log.d("TAG","텍스트가 변경되어써오: $s" )
-            searchByEdittext(s.toString())
+            searchKeyString = s.toString()
         }
 
         override fun afterTextChanged(s: Editable?) {
@@ -189,27 +248,25 @@ class PostSellSearch : Fragment() {
 
     }
 
-    inner class PostSellSearchRecyclerViewAdapter(context : Context) : RecyclerView.Adapter<PostSellSearchRecyclerViewAdapter.PostSellSearchRecyclerViewAdapterViewHolder>(){
+    inner class PostSellSearchRecyclerViewAdapter(context : Context, list : ArrayList<ContentSellDTO>,postUidList : ArrayList<String>) : RecyclerView.Adapter<PostSellSearchRecyclerViewAdapter.PostSellSearchRecyclerViewAdapterViewHolder>(){
 
-        var contentSellDTO : ArrayList<ContentSellDTO> = arrayListOf()
-
-        var data  = listOf<ContentSellDTO>()
+       // var contentSellDTO : ArrayList<ContentSellDTO> = arrayListOf()
+        var mlist : ArrayList<ContentSellDTO> = list
+        var mpostlist : ArrayList<String> = postUidList
+        //var data  = listOf<ContentSellDTO>()
         init {
-            
+
             System.out.println("리사이클러뷰 초기화아아아아아아아아아아앜")
+            /*
+            mlist.clear()
+            mpostlist.clear()
 
-            contentSellDTO.addAll(contentData)
+             */
+            //contentSellDTO.addAll(list)
+
+          //  data = list
 
 
-            data = contentSellDTO
-
-            data.forEach {
-                System.out.println("카테고리를 포함한 데이터 datadatadata $it" )
-            }
-
-            contentSellDTO.forEach {
-                System.out.println("카테고리를 포함한 데이터 dadadadadadadada $it" )
-            }
 
             notifyDataSetChanged()
         }
@@ -222,25 +279,25 @@ class PostSellSearch : Fragment() {
 
 
         override fun getItemCount(): Int {
-            return contentSellDTO.size
+            return mlist.size
         }
 
         override fun onBindViewHolder(holder: PostSellSearchRecyclerViewAdapterViewHolder, position: Int) {
-            holder.onBind(contentSellDTO[position])
+            holder.onBind(mlist[position])
 
             //아이템 자체 클릭
             holder.binding.itemPostSellSearchResultConstAll.setOnClickListener {
                 var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
                 intent.apply {
-                    putExtra("uid" , contentSellDTO[position].uid)
-                    putExtra("userId",contentSellDTO[position].userId)
-                    putExtra("postUid",contentUidList[position])
-                    putExtra("cost",contentSellDTO[position].cost)
-                    putExtra("category",contentSellDTO[position].category)
-                    putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
-                    putExtra("contentTime",contentSellDTO[position].time)
-                    putExtra("productExplain",contentSellDTO[position].productExplain)
-                    putExtra("explain",contentSellDTO[position].explain)
+                    putExtra("uid" , mlist[position].uid)
+                    putExtra("userId",mlist[position].userId)
+                    putExtra("postUid",mpostlist[position])
+                    putExtra("cost",mlist[position].cost)
+                    putExtra("category",mlist[position].category)
+                    putExtra("imageList",mlist[position].imageDownLoadUrlList)
+                    putExtra("contentTime",mlist[position].time)
+                    putExtra("productExplain",mlist[position].productExplain)
+                    putExtra("explain",mlist[position].explain)
                     //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
 
 
@@ -249,9 +306,9 @@ class PostSellSearch : Fragment() {
             }
 
             //사진 추가
-            if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
+            if (mlist[position].imageDownLoadUrlList?.isEmpty() == false) {
                 Glide.with(holder.itemView.context)
-                    .load(data[position].imageDownLoadUrlList?.get(0))
+                    .load(mlist[position].imageDownLoadUrlList?.get(0))
                     .into(holder.binding.itemPostSellSearchResultImageviewPhoto)
             }
 

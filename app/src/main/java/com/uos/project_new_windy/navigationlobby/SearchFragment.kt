@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,6 +70,13 @@ class SearchFragment : Fragment() {
 
 
         }.attach()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+
     }
 
     inner class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {

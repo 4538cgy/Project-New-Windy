@@ -44,6 +44,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
     }
 
+
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
 
@@ -90,6 +92,13 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == 1234){
+            System.out.println("데이터 전달 성공적으로 완수1234")
+        }
+
+        if(resultCode == 1555)
+            System.out.println("데이터 전달 성공적으로 완수1666")
 
 
         if(requestCode == UserFragment.PICK_PROFILE_FROM_ALBUM && resultCode == Activity.RESULT_OK){

@@ -4,10 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.FragmentManager
@@ -95,7 +101,8 @@ class PostSellSearch : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_post_sell_search, container, false)
 
-
+        binding.fragmentPostSellSearchEdittextSearch.addTextChangedListener(EditWatcher())
+        binding.fragmentPostSellSearchEdittextSearch.setOnEditorActionListener(EditListener())
 
 
 
@@ -146,6 +153,41 @@ class PostSellSearch : Fragment() {
 
     }
 
+    fun searchByEdittext(text : String){
+        //text를 기준으로 검색 결과 반환 
+    }
+
+    inner class EditWatcher: TextWatcher{
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+        }
+        
+        //문자 열이 바뀐 후 이벤트
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            Log.d("TAG","텍스트가 변경되어써오: $s" )
+            searchByEdittext(s.toString())
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+
+        }
+
+    }
+
+    inner class EditListener : TextView.OnEditorActionListener{
+        override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+            var handled = false
+
+            if (actionId == EditorInfo.IME_ACTION_DONE){
+
+            }else if (actionId == EditorInfo.IME_ACTION_NEXT){
+                handled = true
+            }
+
+            return handled
+        }
+
+    }
 
     inner class PostSellSearchRecyclerViewAdapter(context : Context) : RecyclerView.Adapter<PostSellSearchRecyclerViewAdapter.PostSellSearchRecyclerViewAdapterViewHolder>(){
 

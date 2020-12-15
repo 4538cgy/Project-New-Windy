@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
 import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,16 +34,16 @@ class DetailBuyViewActivity : AppCompatActivity() {
     var contentUid : String ? = null
     var destinationUid : String ? = null
     var commentCount : String ? = null
-    var likeCount : String ? = null
     var firestore : FirebaseFirestore ? = null
     var uid : String ? = null
     var userId : String ? = null
-    var profileImageUrl : Any ? = null
     var sellerAddress : String ? = null
     var contentTime : String ? = null
     var cost : String ? = null
     var category : String ? = null
     var explain : String ? = null
+    var imageUrl : String ? = null
+
 
     companion object{
         var activity : Activity? = null
@@ -57,10 +58,33 @@ class DetailBuyViewActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_detail_buy_view)
         binding.activitydetailviewbuy = this@DetailBuyViewActivity
 
+        firestore = FirebaseFirestore.getInstance()
+
+        uid = intent.getStringExtra("uid")
+        System.out.println("가져온 uid" + uid.toString())
+        userId = intent.getStringExtra("userId")
+        contentUid = intent.getStringExtra("postUid")
+        cost = intent.getStringExtra("cost")
+        category = intent.getStringExtra("categoryHash")
+        imageUrl = intent.getStringExtra("imageUrl")
+        contentTime = intent.getStringExtra("contentTime")
+        explain = intent.getStringExtra("explain")
+
+
         //이미지 리사이클러뷰 초기화
+        /*
         binding.activityDetailBuyViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
         binding.activityDetailBuyViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
+         */
+
+
+        //사진클릭
+        binding.activityDetailBuyViewImageviewPhoto.setOnClickListener {
+            var intent = Intent(this,PhotoDetailViewActivity::class.java)
+            intent.putExtra("photoUrl",imageUrl)
+            startActivity(intent)
+        }
 
         //아이디 초기화
         binding.activityDetailBuyViewTextviewId.text = userId
@@ -74,9 +98,11 @@ class DetailBuyViewActivity : AppCompatActivity() {
         binding.activityDetailBuyViewButtonLike.setOnClickListener {
 
         }
-
+        //이미지
+        Glide.with(binding.root.context).load(imageUrl)
+            .into(binding.activityDetailBuyViewImageviewPhoto)
         //가격 초기화
-        binding.activityDetailSellViewTextviewCost.text = cost + "원"
+        binding.activityDetailSellViewTextviewCost.text = cost
 
         //카테고리 초기화
         binding.activityDetailBuyViewTextviewCategory.text = category
@@ -94,6 +120,8 @@ class DetailBuyViewActivity : AppCompatActivity() {
         }else {
             binding.activityDetailBuyViewButtonChat.text = "거래 요청"
         }
+
+
 
         //프로필 이미지 클릭
         binding.activityDetailBuyViewCircleimageviewProfile.setOnClickListener {
@@ -114,6 +142,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
                 task ->
             if (task.isSuccessful)
             {
+                System.out.println("으아아아아아아ㅏ"+  task.result!!["image"].toString())
                 var url = task.result!!["image"]
                 Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(binding.activityDetailBuyViewCircleimageviewProfile)
 
@@ -140,89 +169,5 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
     }
 
-    inner class DetailContentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        var contentDTOs: ArrayList<ContentDTO> = arrayListOf()
-        var contentUidList: ArrayList<String> = arrayListOf()
-
-        var contentImageList : ArrayList<String> = arrayListOf()
-
-        init {
-
-            firestore?.collection("contents")?.document("buy")?.collection("data")?.document(contentUid!!)
-                ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                    contentDTOs.clear()
-
-                    if(documentSnapshot == null)
-                        return@addSnapshotListener
-
-                    //querySnapshot["imageDownLoadUrlList"]
-                    if(documentSnapshot.exists()) {
-                        if (documentSnapshot.get("imageDownLoadUrlList") != null) {
-                            contentImageList =
-                                documentSnapshot.get("imageDownLoadUrlList") as ArrayList<String>
-                        }
-
-                        contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
-                    }
-                }
-            /*
-            firestore?.collection("contents")?.document(contentUid!!)
-                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    contentDTOs.clear()
-
-                    if(querySnapshot == null)
-                        return@addSnapshotListener
-
-                    //querySnapshot["imageDownLoadUrlList"]
-                    contentImageList = querySnapshot.get("imageDownLoadUrlList") as ArrayList<String>
-                    contentDTOs.add(querySnapshot.toObject(ContentDTO::class.java)!!)
-
-                }
-
-             */
-            notifyDataSetChanged()
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            var view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_list,parent,false)
-            return CustomViewHolder(view)
-        }
-
-        inner class CustomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-
-        }
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-
-            var viewHolder = (holder as CustomViewHolder).itemView
-
-
-            contentDTOs[0].imageDownLoadUrlList?.forEach {
-                    i ->
-                Log.d("이미지 리스트" , i)
-            }
-            //Glide.with(holder.itemView.context).load(contentDTOs[0].imageDownLoadUrlList!![position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
-
-
-            /*
-            Log.d("이미지 리스트 확인", contentDTOs[position].imageDownLoadUrlList!![position])
-            Log.d("이미지 리스트 크기 확인", contentDTOs[0].imageDownLoadUrlList?.size.toString())
-            Log.d("새로운 이미지 리스트 확인" , contentImageList[position])
-            Log.d("새로운 이미지 리스트 크기 확인" , contentImageList.size.toString())
-
-             */
-            Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
-            viewHolder.item_image_list_imageview.setOnClickListener {
-                    i ->
-
-                Log.d("클릭완료",position.toString())
-            }
-
-
-        }
-
-        override fun getItemCount(): Int {
-            return contentImageList.size
-        }
-    }
 }

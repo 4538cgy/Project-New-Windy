@@ -10,11 +10,17 @@
             type="com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity" />
     </data>
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/activity_detail_buy_view_const_all"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/activity_detail_buy_view_const_top_bar"
             android:layout_width="match_parent"
@@ -78,8 +84,8 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/activity_detail_buy_view_recycler_photo"
+        <ImageView
+            android:id="@+id/activity_detail_buy_view_imageview_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -93,7 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
             android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/activity_detail_buy_view_recycler_photo">
+            app:layout_constraintTop_toBottomOf="@+id/activity_detail_buy_view_imageview_photo">
 
 
             <TextView
@@ -176,6 +182,7 @@
         </LinearLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
 </layout>

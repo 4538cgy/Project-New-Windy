@@ -24,6 +24,9 @@ import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.CommentActivity
+import com.uos.project_new_windy.navigationlobby.UserFragment
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
 
 class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentBuyRecyclerViewAdapter.ContentBuyRecyclerViewAdapterViewHolder>() {
@@ -114,6 +117,17 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             context.startActivity(intent)
         }
 
+        //프로필 이미지 클릭
+        holder.binding.itemRecyclerBuyImageviewProfile.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentBuyDTO[position].uid)
+            bundle.putString("userId",contentBuyDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+        }
+
         //사진
 
         Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
@@ -131,6 +145,25 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             bundle.putString("viewType","fragment")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
+        }
+        //아이템 자체 클릭
+        holder.binding.itemRecyclerBuyConstAll.setOnClickListener {
+            var intent = Intent(holder.itemView.context, DetailBuyViewActivity::class.java)
+            intent.apply {
+
+                putExtra("uid" , contentBuyDTO[position].uid)
+                putExtra("userId",contentBuyDTO[position].userId)
+                putExtra("postUid",contentUidList[position])
+                putExtra("cost",contentBuyDTO[position].cost)
+                putExtra("categoryHash",contentBuyDTO[position].categoryHash)
+                putExtra("imageUrl",contentBuyDTO[position].imageUrl)
+                putExtra("contentTime",contentBuyDTO[position].time)
+                putExtra("explain",contentBuyDTO[position].explain)
+                //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
+                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
+
+            }
+            context.startActivity(intent)
         }
 
 

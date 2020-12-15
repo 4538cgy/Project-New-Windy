@@ -98,10 +98,7 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         }
 
-        //추천
-        binding.activityDetailSellViewButtonLike.setOnClickListener {
 
-        }
 
         //가격 초기화
         binding.activityDetailSellViewTextviewCost.text = "가격" + cost
@@ -147,6 +144,7 @@ class DetailSellViewActivity : AppCompatActivity() {
             task ->
             if (task.isSuccessful)
             {
+
                 var url = task.result!!["image"]
                 Glide.with(this).load(url).apply(RequestOptions().circleCrop()).into(binding.activityDetailSellViewCircleimageviewProfile)
 
@@ -252,21 +250,7 @@ class DetailSellViewActivity : AppCompatActivity() {
                         contentDTOs.add(documentSnapshot.toObject(ContentDTO::class.java)!!)
                     }
                 }
-            /*
-            firestore?.collection("contents")?.document(contentUid!!)
-                ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                    contentDTOs.clear()
 
-                    if(querySnapshot == null)
-                        return@addSnapshotListener
-
-                    //querySnapshot["imageDownLoadUrlList"]
-                    contentImageList = querySnapshot.get("imageDownLoadUrlList") as ArrayList<String>
-                    contentDTOs.add(querySnapshot.toObject(ContentDTO::class.java)!!)
-
-                }
-
-             */
             notifyDataSetChanged()
         }
 
@@ -287,21 +271,16 @@ class DetailSellViewActivity : AppCompatActivity() {
                     i ->
                 Log.d("이미지 리스트" , i)
             }
-            //Glide.with(holder.itemView.context).load(contentDTOs[0].imageDownLoadUrlList!![position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
 
-
-            /*
-            Log.d("이미지 리스트 확인", contentDTOs[position].imageDownLoadUrlList!![position])
-            Log.d("이미지 리스트 크기 확인", contentDTOs[0].imageDownLoadUrlList?.size.toString())
-            Log.d("새로운 이미지 리스트 확인" , contentImageList[position])
-            Log.d("새로운 이미지 리스트 크기 확인" , contentImageList.size.toString())
-
-             */
             Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
             viewHolder.item_image_list_imageview.setOnClickListener {
                     i ->
 
                 Log.d("클릭완료",position.toString())
+                var intent = Intent(viewHolder.context,PhotoDetailViewActivity::class.java)
+                System.out.println("우와아아아아아아아앜")
+                intent.putExtra("photoUrl",contentImageList[position])
+                viewHolder.context.startActivity(intent)
             }
 
 

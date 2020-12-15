@@ -205,6 +205,10 @@ class DetailNormalViewActivity : AppCompatActivity() {
                     i ->
 
                 Log.d("클릭완료",position.toString())
+                var intent = Intent(viewHolder.context,PhotoDetailViewActivity::class.java)
+                System.out.println("우와아아아아아아아앜")
+                intent.putExtra("photoUrl",contentImageList[position])
+                viewHolder.context.startActivity(intent)
             }
 
 

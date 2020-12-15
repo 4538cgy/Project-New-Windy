@@ -22,6 +22,7 @@ import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.CommentActivity
+import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormalViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
@@ -121,20 +122,31 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         holder.binding.itemRecyclerNormalConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context, DetailNormalViewActivity::class.java)
             intent.apply {
-                putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid)
+                putExtra("uid" , contentNormalDTO[position].uid)
                 putExtra("userId",contentNormalDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
                 putExtra("imageList",contentNormalDTO[position].imageDownLoadUrlList)
                 putExtra("contentTime",contentNormalDTO[position].time)
                 putExtra("explain",contentNormalDTO[position].explain)
                 putExtra("likeCount",contentNormalDTO[position].favoriteCount)
-                putExtra("destinationUid",contentNormalDTO[position].uid)
+
 
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
             }
             context.startActivity(intent)
+        }
+
+        //프로필 이미지 클릭
+        holder.binding.itemRecyclerNormalImageviewProfile.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentNormalDTO[position].uid)
+            bundle.putString("userId",contentNormalDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
 

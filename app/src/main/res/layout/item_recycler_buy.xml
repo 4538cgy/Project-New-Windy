@@ -10,6 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item_recycler_buy_const_all"
         android:background="@drawable/background_round_white"
         android:layout_margin="8dp"
         android:elevation="6dp"

@@ -147,12 +147,15 @@ class UserFragment : Fragment() {
 
         //메세지 보내기 or 채팅리스트 열기
         binding.fragmentUserButtonMessage.setOnClickListener {
+            System.out.println("으아아아아아아아아아아앙아ㅏㅋ")
             if(uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
                 //채팅함 열기
+                System.out.println("채팅함을 열었습니다")
                 startActivity(Intent(binding.root.context,ChatRoomList::class.java))
             }else
             {
                 //채팅 보내기
+                System.out.println("채팅 보내기를 열었습니다.")
                 var intent = Intent(binding.root.context,ChatActivity::class.java)
                 intent.apply {
                     putExtra("destinationUid",uid)
@@ -162,6 +165,7 @@ class UserFragment : Fragment() {
         }
 
         //메세지 버튼 클릭했을 때
+        /*
         binding.fragmentUserButtonMessage.setOnClickListener {
             var intent = Intent(binding.root.context, ChatActivity::class.java)
             intent.putExtra("uid" , FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -169,6 +173,8 @@ class UserFragment : Fragment() {
 
             startActivity(intent)
         }
+
+         */
 
         //신고하기  버튼 클릭했을 때
         binding.fragmentUserButtonReport.setOnClickListener {

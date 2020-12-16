@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
@@ -24,6 +25,8 @@ import com.google.firebase.auth.PhoneAuthProvider.OnVerificationStateChangedCall
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ServerTimestamp
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.databinding.ActivitySignUpBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.navigationlobby.UserFragment
@@ -222,10 +225,24 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     binding.activitySearchAddressButtonAddress.isEnabled = false
                     binding.activitySignUpEdittextDetailAddressForm.visibility = View.VISIBLE
 
+
+
                 }
 
                 UserFragment.PICK_PROFILE_FROM_ALBUM -> {
                     activity_sign_up_circleimageview.setImageURI(data?.data)
+                    var imageUri = data?.data
+                    var uid = FirebaseAuth.getInstance().currentUser?.uid
+                    var storageRef = FirebaseStorage.getInstance().reference.child("userProfileImages").child(uid!!)
+                    storageRef.putFile(imageUri!!).continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
+                        return@continueWithTask storageRef.downloadUrl
+                    }.addOnSuccessListener { uri ->
+                        var map = HashMap<String,Any>()
+                        map["image"] = uri.toString()
+                        FirebaseFirestore.getInstance().collection("profileImages").document(uid).set(map)
+
+
+                    }
                 }
 
             }

@@ -3,7 +3,6 @@ package com.uos.project_new_windy.model.chatmodel
 data class UserModel(
 
     var userName : String ? = null,         //닉네임
-    var profileImageUrl : String ? = null,  //프로필 이미지
     var phoneNumber : String ? = null,      //핸드폰 번호
     var totalAddress : String ? = null,          //전체 주소
     var address : String ? = null,            //주소

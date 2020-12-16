@@ -173,10 +173,13 @@ class ChatActivity : AppCompatActivity() {
 
             //상대방이 보낸 메세지
             }else{
+                /*
                 Glide.with(holder.itemView.context)
                     .load(userModel.profileImageUrl)
                     .apply(RequestOptions().circleCrop())
                     .into(holder.binding.messageItemImageviewProfile)
+
+                 */
                 holder.binding.messageItemTextviewName.text = userModel.userName
                 holder.binding.messageItemLinearlayoutDestination.visibility = View.VISIBLE
                 holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_gray)

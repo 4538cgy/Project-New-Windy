@@ -25,6 +25,7 @@ import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.FragmentUserBinding
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.util.SharedData
 
 class UserFragment : Fragment() {
 
@@ -122,6 +123,7 @@ class UserFragment : Fragment() {
             {
                 //로그아웃
                 FirebaseAuth.getInstance().signOut()
+                SharedData.prefs.setString("userInfo","no")
                 signOut()
             }else
             {

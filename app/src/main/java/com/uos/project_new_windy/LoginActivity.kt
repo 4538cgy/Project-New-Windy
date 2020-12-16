@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -131,14 +132,30 @@ class LoginActivity : AppCompatActivity() {
     fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {
 
+            FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                .document("accountInfo")
+                .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-            if (SharedData.prefs.getString("userInfo","no").equals("yes")) {
-                startActivity(Intent(this,LobbyActivity::class.java))
 
-            }else{
-                startActivity(Intent(this, SignUpActivity::class.java))
-            }
-            finish()
+                    if (documentSnapshot!=null) {
+                        if (documentSnapshot!!.exists()) {
+                            SharedData.prefs.setString("userInfo", "yes")
+                        } else {
+                            SharedData.prefs.setString("userInfo", "no")
+                        }
+
+                        if (SharedData.prefs.getString("userInfo", "no").equals("yes")) {
+                            startActivity(Intent(this, LobbyActivity::class.java))
+
+                        } else {
+                            startActivity(Intent(this, SignUpActivity::class.java))
+                        }
+                        finish()
+                    }
+
+                }
+
+
         }
     }
 

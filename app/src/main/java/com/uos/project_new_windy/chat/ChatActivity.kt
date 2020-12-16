@@ -116,7 +116,7 @@ class ChatActivity : AppCompatActivity() {
 
 
         init {
-
+            /*
             FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid!!)
                 .addListenerForSingleValueEvent(
                     object : ValueEventListener {
@@ -131,6 +131,9 @@ class ChatActivity : AppCompatActivity() {
 
 
                     })
+
+             */
+            getMessageList()
         }
 
         fun getMessageList() {
@@ -191,7 +194,7 @@ class ChatActivity : AppCompatActivity() {
                     .into(holder.binding.messageItemImageviewProfile)
 
                  */
-                holder.binding.messageItemTextviewName.text = userModel.userName
+                holder.binding.messageItemTextviewName.text = "테스트 유저" /*userModel.userName*/
                 holder.binding.messageItemLinearlayoutDestination.visibility = View.VISIBLE
                 holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_gray)
                 holder.binding.messageItemTextViewMessage.text = comments[position].message

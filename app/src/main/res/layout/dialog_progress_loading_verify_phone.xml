@@ -34,7 +34,7 @@
             android:gravity="center_horizontal"
             android:textStyle="bold"
             android:textSize="18dp"
-            android:text="핸드폰 인증 중 입니다. \n 앱을 종료 하지마세요."
+            android:text="핸드폰 인증 중 입니다. \n 앱을 종료 하지마세요. \n 최대 1분까지 소요됩니다."
             />
 
 

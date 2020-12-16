@@ -74,6 +74,7 @@
             android:layout_height="wrap_content"
             android:text="주소 검색"
             android:background="@drawable/background_round_gray"
+            android:elevation="6dp"
             />
 
         <com.google.android.material.textfield.TextInputLayout
@@ -86,7 +87,8 @@
                 android:id="@+id/activity_sign_up_edittext_detail_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
+                android:background="@drawable/background_round_white"
+                android:elevation="6dp"
                 android:hint="상세 주소"/>
 
         </com.google.android.material.textfield.TextInputLayout>

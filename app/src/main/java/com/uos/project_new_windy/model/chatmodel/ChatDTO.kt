@@ -18,7 +18,7 @@ data class ChatDTO(
     data class Comment (
         var uid : String ? = null,
         var message : String ? = null,
-        var timestamp : Object ? = null
+        var timestamp : Any ? = null
     )
 }
 

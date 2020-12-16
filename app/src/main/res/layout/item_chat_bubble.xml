@@ -5,16 +5,18 @@
     <data>
         <variable
             name="itemchatbubble"
-            type="com.uos.project_new_windy.model.chatmodel.ChatDTO" />
+            type="com.uos.project_new_windy.model.chatmodel.ChatDTO.Comment" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
 
         <LinearLayout
+            android:id="@+id/messageItem_linearlayout_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"

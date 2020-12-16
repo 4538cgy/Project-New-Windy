@@ -45,6 +45,12 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     var phoneVerify: Boolean = false
     var policyAcceptCheck : Boolean = false
     var progressDialog : ProgressDialogLoadingVerifyPhone? = null
+    /*
+    카카오 지번 검색에서 가져온 데이터들 변수
+     */
+    var zipCode : String ? = null
+    var address : String ? = null
+    var building : String ? = null
 
     lateinit var binding : ActivitySignUpBinding
 
@@ -91,7 +97,15 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          */
 
         binding.activitySearchAddressButtonAuthToPhone.setOnClickListener {
-            AutoRecieveThePhoneVerifyCode()
+            binding.activitySignUpEdittextPhonenumber.isClickable = false
+            binding.activitySignUpEdittextPhonenumber.isFocusable = false
+            binding.activitySignUpEdittextPhonenumber.isFocusableInTouchMode = false
+            binding.activitySignUpEdittextPhonenumber.isEnabled = false
+            binding.activitySearchAddressButtonAuthToPhone.isEnabled = false
+
+            phoneVerify = true
+            //AutoRecieveThePhoneVerifyCode()
+
         }
         //주소 요청
         /*
@@ -130,11 +144,12 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         //동의하고 회원 정보 입력하기
 
         binding.activitySignUpButtonAccept.setOnClickListener {
-            if(phoneVerify == true){
+            if(phoneVerify){
                 if(binding.activitySignUpEdittextName.length() < 2){
-                    binding.activitySignUpEdittextName.error = "닉네임을 두 글자 이상 입력해주세요."
+                    Toast.makeText(binding.root.context,"닉네임을 두 글자 이상 입력해주세요.",Toast.LENGTH_LONG).show()
                 }else if(binding.activitySignUpEdittextDetailAddress.text.length < 5){
-                    binding.activitySignUpEdittextDetailAddress.error = "주소를 입력해주세요."
+                    Toast.makeText(binding.root.context,"주소를 입력해주세요.", Toast.LENGTH_LONG).show()
+
                 }else{
                     saveData()
                 }
@@ -201,6 +216,11 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                                 data!!.getStringExtra("address_arg2").toString() +
                                 data!!.getStringExtra("address_arg3").toString()
                     )
+                    zipCode = data!!.getStringExtra("address_arg1").toString()
+                    address = data!!.getStringExtra("address_arg2").toString()
+                    building = data!!.getStringExtra("address_arg3").toString()
+                    binding.activitySearchAddressButtonAddress.isEnabled = false
+                    binding.activitySignUpEdittextDetailAddressForm.visibility = View.VISIBLE
 
                 }
 
@@ -238,7 +258,14 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     //성공시
                     Log.d("credential",p0.toString())
                     Log.d("성공", "인증에 성공 했습니다.")
+                    Toast.makeText(binding.root.context, "핸드폰 인증에 성공했습니다. \n 나머지 정보를 입력해주세요.", Toast.LENGTH_LONG).show()
                     progressDialog?.dismiss()
+
+                    binding.activitySignUpEdittextPhonenumber.isClickable = false
+                    binding.activitySignUpEdittextPhonenumber.isFocusable = false
+                    binding.activitySignUpEdittextPhonenumber.isFocusableInTouchMode = false
+                    binding.activitySignUpEdittextPhonenumber.isEnabled = false
+                    binding.activitySearchAddressButtonAuthToPhone.isEnabled = false
                     phoneVerify = true
                 }
 
@@ -246,6 +273,11 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     //실패시
                     Log.d("exception",p0.toString())
                     Log.d("실패", "인증에 실패 했습니다.")
+                    Toast.makeText(binding.root.context, "핸드폰 인증에 실패했습니다. \n 올바른 번호를 입력해주세요.", Toast.LENGTH_LONG).show()
+
+
+
+
                     progressDialog?.dismiss()
                 }
 
@@ -265,6 +297,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         )
 
     }
+
+
     
     //UI 변경 처리
     private fun UpdateView(){
@@ -287,9 +321,15 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         var userModel = UserModel()
 
         //주소
-        userModel.address = binding.activitySearchAddressButtonAddress.text.toString()
+        userModel.totalAddress = binding.activitySearchAddressButtonAddress.text.toString()
         //상세주소
         userModel.addressDetail = binding.activitySignUpEdittextDetailAddress.text.toString()
+
+        //세부주소
+        userModel.address = address
+        userModel.building = building
+        userModel.zipCode = zipCode
+
         //선호하는 작물
         userModel.favoriteCategory = pickToSpinnerPlant.toString()
         //핸드폰 번호

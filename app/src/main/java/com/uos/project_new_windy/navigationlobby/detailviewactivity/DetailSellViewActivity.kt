@@ -267,6 +267,7 @@ class DetailSellViewActivity : AppCompatActivity() {
             var viewHolder = (holder as CustomViewHolder).itemView
 
 
+
             contentDTOs[0].imageDownLoadUrlList?.forEach {
                     i ->
                 Log.d("이미지 리스트" , i)

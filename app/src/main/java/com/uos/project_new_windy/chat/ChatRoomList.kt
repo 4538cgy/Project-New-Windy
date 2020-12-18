@@ -80,14 +80,15 @@ class ChatRoomList : AppCompatActivity() {
         }
         inner class ChatListViewHolder(var binding: ItemChatRoomListBinding) : RecyclerView.ViewHolder(
             binding.root) {
-            fun onBind(data: ChatDTO.Comment) {
-                binding.listchatroom = chat
+            fun onBind(data: ChatDTO) {
+                binding.listchatroom = data
             }
 
 
         }
 
         override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
+            holder.onBind(chat[position])
             var destinationUid: String? = null
 
 
@@ -148,9 +149,8 @@ class ChatRoomList : AppCompatActivity() {
 
 
             //TimeStamp
-            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"))
-            val date = Date(chat[position].comments[lastMessageKey]?.timestamp)
-            customViewHolder.textView_timestamp.setText(simpleDateFormat.format(date))
+            holder.binding.itemChatRoomListTextviewTimestamp.text = chat[position].comments[lastMessageKey]?.timestamp.toString()
+
 
         }
 

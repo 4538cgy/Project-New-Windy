@@ -62,7 +62,8 @@ class ChatActivity : AppCompatActivity() {
                 var comment = ChatDTO.Comment()
                 comment.uid = uid;
                 comment.message = binding.activityChatEdittextExplain.text.toString()
-                comment.timestamp = ServerValue.TIMESTAMP
+                comment.timestamp = TimeUtil().getTime()
+                comment.serverTimestamp = ServerValue.TIMESTAMP
                 FirebaseDatabase.getInstance().getReference().child("chatrooms")
                     .child(chatRoomUid!!).child(
                         "comments").push().setValue(comment).addOnCompleteListener {

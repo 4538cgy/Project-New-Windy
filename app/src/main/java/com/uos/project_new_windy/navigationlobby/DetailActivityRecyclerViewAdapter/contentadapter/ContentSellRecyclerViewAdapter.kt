@@ -21,6 +21,7 @@ import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
+import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.databinding.ItemRecyclerBuyBinding
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.databinding.ItemRecyclerSellBinding
@@ -187,6 +188,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
+
 
 
     }

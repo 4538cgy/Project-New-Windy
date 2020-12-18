@@ -10,15 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityChatRoomListBinding
 import com.uos.project_new_windy.databinding.ItemChatRoomListBinding
 import com.uos.project_new_windy.model.chatmodel.ChatDTO
+import com.uos.project_new_windy.model.chatmodel.UserModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +36,12 @@ class ChatRoomList : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_chat_room_list)
         binding.activitychatroomlist = this@ChatRoomList
+
+        
+        //뒤로가기
+        binding.activityChatRoomListImagebuttonBack.setOnClickListener {
+            finish()
+        }
 
         binding.activityChatRoomListRecyclerChatList.adapter = ChatRoomListRecyclerAdapter()
         binding.activityChatRoomListRecyclerChatList.layoutManager = LinearLayoutManager(this,
@@ -102,6 +112,7 @@ class ChatRoomList : AppCompatActivity() {
                 }
             }
             /*
+
             FirebaseDatabase.getInstance().reference.child("users").child(destinationUid!!)
                 .addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -116,7 +127,46 @@ class ChatRoomList : AppCompatActivity() {
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
 
+
              */
+
+
+            //프로필 이미지
+            FirebaseFirestore.getInstance()?.collection("profileImages")?.document(destinationUid!!)
+                ?.get()?.addOnCompleteListener { task ->
+
+                    if (task.isSuccessful)
+                    {
+
+
+                        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(destinationUid!!).document("accountInfo")
+                            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                                if (documentSnapshot != null){
+
+                                    var userModel = documentSnapshot.toObject(UserModel::class.java)
+                                    holder.binding.itemChatRoomListTextviewTitle.text = userModel?.userName
+
+
+                                    System.out.println("userModel 은? " + userModel.toString())
+                                    System.out.println("destinationUid는?" + destinationUid!!)
+
+                                }
+                            }
+
+
+
+
+
+                        var url = task.result!!["image"]
+                        Glide.with(holder.itemView.context)
+                            .load(url)
+                            .apply(RequestOptions().circleCrop()).into(holder.binding.itemChatRoomListCircleimageview)
+
+
+                    }
+
+                }
 
             //메시지를 내림 차순으로 정렬 후 마지막 메세지의 키값을 가져옴
 

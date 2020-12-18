@@ -42,6 +42,13 @@ class ChatActivity : AppCompatActivity() {
         //채팅을 당하는 아이디
         destinationUid = intent.getStringExtra("destinationUid")
 
+
+        //뒤로가기
+        binding.activityChatImagebuttonBack.setOnClickListener {
+            finish()
+        }
+
+        //챗 보내기
         binding.activityChatImagebuttonUpload.setOnClickListener {
 
             var chatDTOs = ChatDTO()
@@ -181,9 +188,10 @@ class ChatActivity : AppCompatActivity() {
             //내가 보낸 메세지
             if (comments[position].uid.equals(uid)) {
                 holder.binding.messageItemTextViewMessage.text = comments[position].message
-                holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_white_stroke_black)
+                holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_white)
                 holder.binding.messageItemLinearlayoutDestination.visibility = View.INVISIBLE
-                holder.binding.messageItemTextViewMessage.textSize = 25F
+                holder.binding.messageItemTextViewMessage.textSize = 18F
+
                 holder.binding.messageItemLinearlayoutMain.gravity = Gravity.RIGHT
 
                 //상대방이 보낸 메세지
@@ -199,7 +207,7 @@ class ChatActivity : AppCompatActivity() {
                 holder.binding.messageItemLinearlayoutDestination.visibility = View.VISIBLE
                 holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_gray)
                 holder.binding.messageItemTextViewMessage.text = comments[position].message
-                holder.binding.messageItemTextViewMessage.textSize = 25F
+                holder.binding.messageItemTextViewMessage.textSize = 18F
                 holder.binding.messageItemLinearlayoutMain.gravity = Gravity.LEFT
             }
             /*

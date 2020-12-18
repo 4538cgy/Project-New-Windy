@@ -41,7 +41,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/item_chat_room_list_circleimageview"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/item_chat_room_list_textview_time"
+                app:layout_constraintRight_toLeftOf="@+id/item_chat_room_list_textview_timestamp"
                 android:layout_marginHorizontal="8dp"
                 >
 

@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
+import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBinding
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBindingImpl
 import com.uos.project_new_windy.model.ContentDTO
@@ -90,7 +91,12 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         //채팅으로 거래
         binding.activityDetailSellViewButtonChat.setOnClickListener {
-
+            System.out.println("채팅 보내기를 열었습니다.")
+            var intent = Intent(binding.root.context, ChatActivity::class.java)
+            intent.apply {
+                putExtra("destinationUid",uid)
+            }
+            startActivity(intent)
         }
 
         //찜하기
@@ -283,6 +289,7 @@ class DetailSellViewActivity : AppCompatActivity() {
                 intent.putExtra("photoUrl",contentImageList[position])
                 viewHolder.context.startActivity(intent)
             }
+
 
 
         }

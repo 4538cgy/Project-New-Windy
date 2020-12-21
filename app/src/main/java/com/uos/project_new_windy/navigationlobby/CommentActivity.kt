@@ -17,8 +17,10 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityCommentBinding
 import com.uos.project_new_windy.databinding.ItemCommentBinding
+import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.CommentActivity.CommentRecyclerViewAdapter.CommentRecyclerViewAdapterViewHolder
+import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_comment.*
 import kotlinx.android.synthetic.main.item_comment.view.*
@@ -74,7 +76,7 @@ class CommentActivity : AppCompatActivity() {
             comment.time = TimeUtil().getTime()
 
             commentSave(postType,comment)
-
+            commentAlarm(destinationUid!!,activity_comment_edittext_explain.text.toString())
 
 
         }
@@ -95,6 +97,21 @@ class CommentActivity : AppCompatActivity() {
                 }
                 System.out.println("댓글 카운트 증가 완료")
             }
+    }
+
+    fun commentAlarm(destinationUid : String, message : String){
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+        alarmDTO.kind = 1
+        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.localTimestamp = TimeUtil().getTime()
+        alarmDTO.message = message
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var msg = FirebaseAuth.getInstance().currentUser?.email + " " + getString(R.string.alarm_comment) + " of " + message
+        FcmPush.instance.sendMessage(destinationUid,"Howlstagram", msg)
     }
 
     fun commentCountTest(postType: String){

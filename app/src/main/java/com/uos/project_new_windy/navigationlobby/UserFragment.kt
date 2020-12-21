@@ -32,7 +32,9 @@ import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormalViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.setting.SettingActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
@@ -148,6 +150,11 @@ class UserFragment : Fragment() {
         binding.fragmentUserButtonReport.setOnClickListener {
             if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
                 //내 정보 액티비티 켜기
+                var intent = Intent(binding.root.context,SettingActivity::class.java)
+                intent.apply {
+
+                }
+                startActivity(intent)
             }else{
                 //신고하기
                 var intent = Intent(binding.root.context,ReportPostActivity::class.java)
@@ -515,7 +522,7 @@ class UserFragment : Fragment() {
 
             imageView.setOnClickListener {
                     i ->
-                var intent = Intent(i.context, DetailContentActivity::class.java)
+                var intent = Intent(i.context, DetailNormalViewActivity::class.java)
                 /*
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)

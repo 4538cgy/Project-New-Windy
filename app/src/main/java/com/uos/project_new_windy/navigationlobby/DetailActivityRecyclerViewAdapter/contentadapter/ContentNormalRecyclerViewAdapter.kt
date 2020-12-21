@@ -26,6 +26,7 @@ import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormalViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
+import com.uos.project_new_windy.util.TimeUtil
 
 class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>(){
 
@@ -211,7 +212,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
                 //When the button is not clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid!!] = true
-                favoriteAlarm(contentNormalDTO[position].uid!!)
+                favoriteAlarm(contentNormalDTO[position].uid!!,contentNormalDTO[position].userNickName.toString())
             }
             transaction.set(tsDoc,contentDTO)
 
@@ -222,7 +223,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun favoriteAlarm(destinationUid : String){
+    fun favoriteAlarm(destinationUid : String, userNickName : String){
 
         System.out.println("좋아요 알람 이벤트")
         var alarmDTO = AlarmDTO()
@@ -231,6 +232,8 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
         alarmDTO.kind = 0
         alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.localTimestamp = TimeUtil().getTime()
+        alarmDTO.userNickName = userNickName
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)

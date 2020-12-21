@@ -32,6 +32,8 @@ class ChatActivity : AppCompatActivity() {
     var destinationUid: String? = null
     var simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm")
     var chatRoomUid: String? = null
+    var userNickName : String ? = null
+    var chatMessageData : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +41,21 @@ class ChatActivity : AppCompatActivity() {
         binding.activitychat = this@ChatActivity
 
 
+
+
+
         //채팅을 요구하는 아이디 [ 단말기에 로그인 된 ]
         uid = FirebaseAuth.getInstance().currentUser?.uid
+
+        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(uid!!).document("accountInfo")
+            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+                }
+            }
+
         //채팅을 당하는 아이디
         destinationUid = intent.getStringExtra("destinationUid")
 
@@ -71,6 +86,7 @@ class ChatActivity : AppCompatActivity() {
                 var comment = ChatDTO.Comment()
                 comment.uid = uid;
                 comment.message = binding.activityChatEdittextExplain.text.toString()
+                chatMessageData = binding.activityChatEdittextExplain.text.toString()
                 comment.timestamp = TimeUtil().getTime()
                 comment.serverTimestamp = ServerValue.TIMESTAMP
                 FirebaseDatabase.getInstance().getReference().child("chatrooms")
@@ -96,7 +112,8 @@ class ChatActivity : AppCompatActivity() {
         alarmDTO.kind = 3
         alarmDTO.timestamp = System.currentTimeMillis()
         alarmDTO.localTimestamp = TimeUtil().getTime()
-        alarmDTO.chatMessage = binding.activityChatEdittextExplain.text.toString()
+        alarmDTO.userNickName = userNickName
+        alarmDTO.chatMessage = chatMessageData
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)

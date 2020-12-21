@@ -16,6 +16,7 @@ data class AlarmDTO(
     var localTimestamp : String ? = null,
     var postUid : String ? = null,
     var postExplain : String ? = null,
-    var chatMessage : String ? = null
+    var chatMessage : String ? = null,
+    var userNickName : String ? = null
 
 )

@@ -279,9 +279,5 @@ class ChatActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
-        //super.onBackPressed()
-        finish()
-        overridePendingTransition(R.anim.fromleft, R.anim.fromright)
-    }
+
 }

@@ -47,17 +47,30 @@ class ChatActivity : AppCompatActivity() {
         //채팅을 요구하는 아이디 [ 단말기에 로그인 된 ]
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(uid!!).document("accountInfo")
+
+
+
+
+
+
+
+
+        //채팅을 당하는 아이디
+        destinationUid = intent.getStringExtra("destinationUid")
+
+        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(destinationUid!!).document("accountInfo")
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
 
                 if (documentSnapshot != null)
                 {
                     userNickName = documentSnapshot.get("userName")?.toString()
+                    binding.activityChatTextviewUsernickname.text = userNickName
                 }
+
+
             }
 
-        //채팅을 당하는 아이디
-        destinationUid = intent.getStringExtra("destinationUid")
 
 
         //뒤로가기

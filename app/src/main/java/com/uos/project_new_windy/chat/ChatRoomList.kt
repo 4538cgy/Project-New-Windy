@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -42,7 +43,7 @@ class ChatRoomList : AppCompatActivity() {
         binding.activityChatRoomListImagebuttonBack.setOnClickListener {
             finish()
         }
-
+        binding.activityChatRoomListRecyclerChatList.addItemDecoration(DividerItemDecoration(binding.root.context,DividerItemDecoration.VERTICAL))
         binding.activityChatRoomListRecyclerChatList.adapter = ChatRoomListRecyclerAdapter()
         binding.activityChatRoomListRecyclerChatList.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,

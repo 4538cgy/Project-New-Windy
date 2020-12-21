@@ -50,7 +50,7 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
         super.onStop()
         System.out.println("아 로비 액티비티가 꺼진것이에오")
         //4538cgy@gmail.com UID 값 [ 너무 푸쉬를 많이 보내서 일시적으로 사용 중지 주석 풀지마세요! ]
-        FcmPush.instance.sendMessage("1XTFiOeUFTcK4J8vzqnfctCiC1h1", "hi", "bye")
+        //FcmPush.instance.sendMessage("1XTFiOeUFTcK4J8vzqnfctCiC1h1", "hi", "bye")
     }
 
 

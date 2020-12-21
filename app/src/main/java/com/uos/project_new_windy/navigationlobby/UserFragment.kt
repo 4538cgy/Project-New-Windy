@@ -197,9 +197,12 @@ class UserFragment : Fragment() {
          */
 
         //신고하기  버튼 클릭했을 때
+        /*
         binding.fragmentUserButtonReport.setOnClickListener {
             startActivity(Intent(binding.root.context, ReportPostActivity::class.java))
         }
+
+         */
 
         getFollowerAndFollowing()
 

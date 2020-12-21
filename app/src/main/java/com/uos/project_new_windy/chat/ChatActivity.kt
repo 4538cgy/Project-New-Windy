@@ -17,8 +17,10 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityChatBinding
 import com.uos.project_new_windy.databinding.ItemChatBubbleBinding
+import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.model.chatmodel.ChatDTO
 import com.uos.project_new_windy.model.chatmodel.UserModel
+import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -75,12 +77,29 @@ class ChatActivity : AppCompatActivity() {
                     .child(chatRoomUid!!).child(
                         "comments").push().setValue(comment).addOnCompleteListener {
                         binding.activityChatEdittextExplain.setText(" ")
+                        chatAlarm(destinationUid!!)
                     }
             }
 
         }
 
         checkChatRoom()
+    }
+
+    fun chatAlarm(destinationUid : String){
+
+        System.out.println("채팅 알람 이벤트")
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+        alarmDTO.kind = 3
+        alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.chatMessage = binding.activityChatEdittextExplain.text.toString()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
+        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
     }
 
     fun checkChatRoom() {

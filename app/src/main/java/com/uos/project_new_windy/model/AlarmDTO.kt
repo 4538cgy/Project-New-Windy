@@ -8,7 +8,13 @@ data class AlarmDTO(
     //0 : like alarm
     //1 : comment alarm
     //2 : follow alarm
+    //3 : chat alarm
+    //4 : follower data update alarm
     var kind : Int? = null,
     var message : String ? = null,
-    var timestamp : Long ? = null
+    var timestamp : Long ? = null,
+    var localTimestamp : String ? = null,
+    var postUid : String ? = null,
+    var chatMessage : String ? = null
+
 )

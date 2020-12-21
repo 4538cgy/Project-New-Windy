@@ -100,12 +100,15 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          */
 
         binding.activitySearchAddressButtonAuthToPhone.setOnClickListener {
+
             binding.activitySignUpEdittextPhonenumber.isClickable = false
             binding.activitySignUpEdittextPhonenumber.isFocusable = false
             binding.activitySignUpEdittextPhonenumber.isFocusableInTouchMode = false
             binding.activitySignUpEdittextPhonenumber.isEnabled = false
             binding.activitySearchAddressButtonAuthToPhone.isEnabled = false
 
+
+            Toast.makeText(binding.root.context,"인증이 일시적으로 제한되었습니다. \n 인증 허용" , Toast.LENGTH_LONG).show()
             phoneVerify = true
             //AutoRecieveThePhoneVerifyCode()
 

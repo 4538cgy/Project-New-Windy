@@ -124,6 +124,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         }
 
 
+
+
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {
             favoriteEvent(position)
@@ -250,7 +252,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid,"HowlInstgram",message)
+        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
     }
 
 }

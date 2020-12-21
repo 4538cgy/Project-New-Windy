@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.navigationlobby
 
 import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.widget.LinearLayoutCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,8 +26,16 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.chat.ChatActivity
 import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.FragmentUserBinding
+import com.uos.project_new_windy.model.AlarmDTO
+import com.uos.project_new_windy.model.FollowDTO
+import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
+import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
+import com.uos.project_new_windy.model.contentdto.ContentSellDTO
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
+import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment() {
 
@@ -71,7 +81,7 @@ class UserFragment : Fragment() {
 
         //리사이클러뷰 초기화
 
-        binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+        binding.fragmentUserRecyclerview.adapter = UserFragmentSellRecyclerViewAdapter()
         binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
 
         //프로필 이미지 변경 이벤트
@@ -85,14 +95,14 @@ class UserFragment : Fragment() {
 
         //내가 올린 구매 요청 글 눌렀을때 이벤트
         binding.fragmentUserTextviewBuyingContent.setOnClickListener {
-            binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+            binding.fragmentUserRecyclerview.adapter = UserFragmentBuyRecyclerViewAdapter()
             binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
 
         }
 
         //내가 올린 판매 글 눌렀을때 이벤트
         binding.fragmentUserTextviewSellingContent.setOnClickListener {
-            binding.fragmentUserRecyclerview.adapter = UserFragmentRecyclerViewAdapter()
+            binding.fragmentUserRecyclerview.adapter = UserFragmentSellRecyclerViewAdapter()
             binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
         }
 
@@ -181,6 +191,8 @@ class UserFragment : Fragment() {
             startActivity(Intent(binding.root.context, ReportPostActivity::class.java))
         }
 
+        getFollowerAndFollowing()
+
         return binding.root
     }
 
@@ -226,10 +238,129 @@ class UserFragment : Fragment() {
     }
 
 
+    fun getFollowerAndFollowing(){
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("follow")?.addSnapshotListener{
+                documentSnapshot, firebaseFirestoreException ->
 
-    inner class UserFragmentRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+            if (documentSnapshot == null)
+                return@addSnapshotListener
 
-        var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+            var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
+            if (followDTO?.followingCount!=null){
+                //fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
+                binding.accountTvFollowingCount.text = followDTO?.followingCount?.toString()
+            }
+
+            if (followDTO?.followerCount != null){
+                //fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
+                binding.accountTvFollowerCount.text = followDTO.followerCount.toString()
+                if (followDTO?.followers?.containsKey(currentUserUid!!)){
+                    //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
+
+                    binding.accountBtnFollowSignout.text = getString(R.string.follow_cancel)
+                    binding.accountBtnFollowSignout.background.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
+                    /*
+                    fragmentView?.account_btn_follow_signout?.background?.setColorFilter(
+                        ContextCompat.getColor(activity!!,R.color.colorLightGray),
+                        PorterDuff.Mode.MULTIPLY)
+
+                     */
+                }else{
+
+                    if (uid != currentUserUid){
+
+                        //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+                        //fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
+                        binding.accountBtnFollowSignout.text = getString(R.string.follow)
+                        binding.accountBtnFollowSignout.background.colorFilter = null
+                    }
+                }
+            }
+        }
+    }
+
+    fun requestFollow(){
+
+        //Save data to my account
+        var tsDocFollowing = firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("follow")
+        firestore?.runTransaction{
+
+                transaction ->
+            var followDTO = transaction.get(tsDocFollowing!!).toObject(FollowDTO::class.java)
+            if (followDTO == null){
+                followDTO = FollowDTO()
+                followDTO!!.followingCount = 1
+                followDTO!!.followers[uid!!] = true
+
+                transaction.set(tsDocFollowing,followDTO)
+                return@runTransaction
+            }
+
+            if (followDTO.followings.containsKey(uid))
+            {
+                //its remove following third person when a third person follow me
+                followDTO.followingCount = followDTO?.followingCount - 1
+                followDTO?.followers?.remove(uid)
+
+            }else{
+                //its remove following third person when a third person do not follow me
+                followDTO?.followingCount = followDTO.followingCount + 1
+                followDTO?.followers[uid!!] = true
+            }
+            transaction.set(tsDocFollowing,followDTO)
+            return@runTransaction
+
+        }
+
+
+        //Save data to third person
+        var tsDocFollower = firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("follow")
+        firestore?.runTransaction {
+                transaction ->
+            var followDTO = transaction.get(tsDocFollower!!).toObject(FollowDTO::class.java)
+            if (followDTO == null){
+                followDTO = FollowDTO()
+                followDTO!!.followerCount = 1
+                followDTO!!.followers[currentUserUid!!] = true
+
+                transaction.set(tsDocFollower,followDTO!!)
+                return@runTransaction
+            }
+
+            if (followDTO!!.followers.containsKey(currentUserUid)){
+                //It cancel my follower when I follow a third person
+                followDTO!!.followerCount = followDTO!!.followerCount - 1
+                followDTO!!.followers.remove(currentUserUid!!)
+            }else{
+                //It cancel my follower when i don't follow a third person
+                followDTO!!.followerCount = followDTO!!.followerCount + 1
+                followDTO!!.followers[currentUserUid!!] = true
+                followerAlarm(uid!!)
+            }
+
+            transaction.set(tsDocFollower,followDTO!!)
+            return@runTransaction
+        }
+    }
+
+    fun followerAlarm(destinationUid : String){
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = auth?.currentUser?.email
+        alarmDTO.uid = auth?.currentUser?.uid
+        alarmDTO.kind = 2
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = auth?.currentUser?.email + getString(R.string.alarm_follow)
+        FcmPush.instance.sendMessage(destinationUid,"HowlInstgram",message)
+    }
+
+
+
+    inner class UserFragmentSellRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+
+        var contentSellDTO : ArrayList<ContentSellDTO> = arrayListOf()
         var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
@@ -246,14 +377,14 @@ class UserFragment : Fragment() {
 
                     //Get data
                     for(snapshot in querySnapshot.documents){
-                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentSellDTO.add(snapshot.toObject(ContentSellDTO::class.java)!!)
                         contentUidList.add(snapshot.id)
 
                     }
 
-                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    System.out.println("내가 올린 게시글의 갯수" + contentSellDTO.size)
                     //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
-                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentSellDTO.size.toString()
                     notifyDataSetChanged()
             }
 
@@ -271,16 +402,16 @@ class UserFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return contentDTOs.size
+            return contentSellDTO.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
 
-            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+            if(contentSellDTO[position].imageDownLoadUrlList?.size!! > 0) {
                 Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .load(contentSellDTO[position].imageDownLoadUrlList?.get(0))
                     .apply(RequestOptions().centerCrop()).into(imageView)
             }
            // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
@@ -290,11 +421,24 @@ class UserFragment : Fragment() {
             imageView.setOnClickListener {
                      i ->
                 var intent = Intent(i.context, DetailSellViewActivity::class.java)
+
+                /*
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)
                 intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
                 intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
                 intent.putExtra("contentTime",contentDTOs!![position].time)
+
+                 */
+                intent.putExtra("uid" , contentSellDTO[position].uid)
+                intent.putExtra("userId",contentSellDTO[position].userId)
+                intent.putExtra("postUid",contentUidList[position])
+                intent.putExtra("cost",contentSellDTO[position].cost)
+                intent.putExtra("category",contentSellDTO[position].category)
+                intent.putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
+                intent.putExtra("contentTime",contentSellDTO[position].time)
+                intent.putExtra("productExplain",contentSellDTO[position].productExplain)
+                intent.putExtra("explain",contentSellDTO[position].explain)
 
                 startActivity(intent)
 
@@ -306,7 +450,7 @@ class UserFragment : Fragment() {
 
     inner class UserFragmentNormalRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-        var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+        var contentNormalDTO : ArrayList<ContentNormalDTO> = arrayListOf()
         var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
@@ -323,14 +467,14 @@ class UserFragment : Fragment() {
 
                     //Get data
                     for(snapshot in querySnapshot.documents){
-                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentNormalDTO.add(snapshot.toObject(ContentNormalDTO::class.java)!!)
                         contentUidList.add(snapshot.id)
 
                     }
 
-                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    System.out.println("내가 올린 게시글의 갯수" + contentNormalDTO.size)
                     //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
-                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentNormalDTO.size.toString()
                     notifyDataSetChanged()
                 }
 
@@ -348,16 +492,16 @@ class UserFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return contentDTOs.size
+            return contentNormalDTO.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
 
-            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+            if(contentNormalDTO[position].imageDownLoadUrlList?.size!! > 0) {
                 Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .load(contentNormalDTO[position].imageDownLoadUrlList?.get(0))
                     .apply(RequestOptions().centerCrop()).into(imageView)
             }
             // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
@@ -367,11 +511,23 @@ class UserFragment : Fragment() {
             imageView.setOnClickListener {
                     i ->
                 var intent = Intent(i.context, DetailContentActivity::class.java)
+                /*
                 intent.putExtra("contentUid", contentUidList[position])
                 intent.putExtra("destinationUid", contentDTOs[position].uid)
                 intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
                 intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
                 intent.putExtra("contentTime",contentDTOs!![position].time)
+
+                 */
+                intent.apply {
+                    putExtra("uid", contentNormalDTO[position].uid)
+                    putExtra("userId", contentNormalDTO[position].userId)
+                    putExtra("postUid", contentUidList[position])
+                    putExtra("imageList", contentNormalDTO[position].imageDownLoadUrlList)
+                    putExtra("contentTime", contentNormalDTO[position].time)
+                    putExtra("explain", contentNormalDTO[position].explain)
+                    putExtra("likeCount", contentNormalDTO[position].favoriteCount)
+                }
 
                 startActivity(intent)
 
@@ -383,7 +539,7 @@ class UserFragment : Fragment() {
 
     inner class UserFragmentBuyRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-        var contentDTOs : ArrayList<ContentDTO> = arrayListOf()
+        var contentBuyDTOs : ArrayList<ContentBuyDTO> = arrayListOf()
         var contentUidList: ArrayList<String> = arrayListOf()
 
         init {
@@ -400,14 +556,14 @@ class UserFragment : Fragment() {
 
                     //Get data
                     for(snapshot in querySnapshot.documents){
-                        contentDTOs.add(snapshot.toObject(ContentDTO::class.java)!!)
+                        contentBuyDTOs.add(snapshot.toObject(ContentBuyDTO::class.java)!!)
                         contentUidList.add(snapshot.id)
 
                     }
 
-                    System.out.println("내가 올린 게시글의 갯수" + contentDTOs.size)
+                    System.out.println("내가 올린 게시글의 갯수" + contentBuyDTOs.size)
                     //fragmentView?.account_tv_post_count?.text = contentDTOs.size.toString()
-                    binding.accountTvPostCount.text = contentDTOs.size.toString()
+                    binding.accountTvPostCount.text = contentBuyDTOs.size.toString()
                     notifyDataSetChanged()
                 }
 
@@ -425,16 +581,16 @@ class UserFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return contentDTOs.size
+            return contentBuyDTOs.size
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
             var imageView = (holder as CustomViewHolder).imageView
 
-            if(contentDTOs[position].imageDownLoadUrlList?.size!! > 0) {
+            if (contentBuyDTOs[position].imageUrl != null){
                 Glide.with(holder.itemView.context)
-                    .load(contentDTOs[position].imageDownLoadUrlList?.get(0))
+                    .load(contentBuyDTOs[position].imageUrl)
                     .apply(RequestOptions().centerCrop()).into(imageView)
             }
             // System.out.println("이미지의 url" + contentDTOs[position].imageDownLoadUrlList)
@@ -443,16 +599,26 @@ class UserFragment : Fragment() {
 
             imageView.setOnClickListener {
                     i ->
-                var intent = Intent(i.context, DetailContentActivity::class.java)
-                intent.putExtra("contentUid", contentUidList[position])
-                intent.putExtra("destinationUid", contentDTOs[position].uid)
-                intent.putExtra("commentCount", contentDTOs!![position].commentCount.toString())
-                intent.putExtra("likeCount",contentDTOs!![position].favoriteCount.toString())
-                intent.putExtra("contentTime",contentDTOs!![position].time)
+                var intent = Intent(i.context, DetailBuyViewActivity::class.java)
+                intent.apply {
 
+                    putExtra("uid" , contentBuyDTOs[position].uid)
+                    putExtra("userId",contentBuyDTOs[position].userId)
+                    putExtra("postUid",contentUidList[position])
+                    putExtra("cost",contentBuyDTOs[position].cost)
+                    putExtra("categoryHash",contentBuyDTOs[position].categoryHash)
+                    putExtra("imageUrl",contentBuyDTOs[position].imageUrl)
+                    putExtra("contentTime",contentBuyDTOs[position].time)
+                    putExtra("explain",contentBuyDTOs[position].explain)
+                    //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
+                    System.out.println("입력된 uid으아아아아앙아" + uid.toString())
+
+                }
                 startActivity(intent)
 
             }
+
+
         }
 
 

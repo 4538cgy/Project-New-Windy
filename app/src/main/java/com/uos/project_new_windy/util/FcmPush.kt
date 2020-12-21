@@ -51,6 +51,7 @@ class FcmPush {
 
                     override fun onResponse(response: Response?) {
                         println(response?.body()?.string())
+                        println("아아아 푸쉬 전송 성공")
                     }
 
 

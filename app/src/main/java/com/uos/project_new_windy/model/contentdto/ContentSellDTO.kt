@@ -18,8 +18,11 @@ data class ContentSellDTO(
     var timeStamp : Long ? = null,
     //좋아요 갯수
     var favoriteCount : Int ? = 0,
-    //유저 닉네임 혹은 이메일주소
+    //유저 이메일주소
     var userId : String ? = null,
+    //유저 닉네임
+    var userNickName : String ? = null,
+    
     //카테고리
     var category : String ? = null,
     //가격

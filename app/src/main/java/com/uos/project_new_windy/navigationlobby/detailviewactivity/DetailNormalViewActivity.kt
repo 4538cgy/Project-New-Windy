@@ -34,6 +34,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
     var contentTime : String ? = null
     var explain : String ? = null
     var likeCount : Int ? = null
+    var userNickName : String ? = null
 
 
     lateinit var binding : ActivityDetailNormalViewBinding
@@ -65,13 +66,14 @@ class DetailNormalViewActivity : AppCompatActivity() {
         contentTime = intent.getStringExtra("contentTime")
         likeCount = intent.getIntExtra("likeCount",0)
         explain = intent.getStringExtra("explain")
+        userNickName = intent.getStringExtra("userNickName")
 
         //이미지 리사이클러뷰 초기화
         binding.activityDetailNormalViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
         binding.activityDetailNormalViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
         //아이디 초기화
-        binding.activityDetailNormalViewTextviewNickname.text = userId
+        binding.activityDetailNormalViewTextviewNickname.text = userNickName
 
         //좋아요 갯수 초기화
         binding.activityDetailNormalViewTextviewLikeCount.text = "좋아요 "+likeCount+" 개"

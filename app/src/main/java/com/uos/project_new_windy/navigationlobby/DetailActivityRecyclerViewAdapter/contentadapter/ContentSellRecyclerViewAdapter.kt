@@ -131,6 +131,17 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             favoriteEvent(position)
         }
 
+        //유저 닉네임 클릭
+        holder.binding.itemRecyclerSellTextviewUsername.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentSellDTO[position].uid)
+            bundle.putString("userId",contentSellDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+        }
+
         //아이템 자체 클릭
         holder.binding.itemRecyclerSellConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
@@ -144,6 +155,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("contentTime",contentSellDTO[position].time)
                 putExtra("productExplain",contentSellDTO[position].productExplain)
                 putExtra("explain",contentSellDTO[position].explain)
+                putExtra("userNickName",contentSellDTO[position].userNickName)
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
@@ -229,7 +241,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 //When the button is not clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid!!] = true
-                favoriteAlarm(contentSellDTO[position].uid!!)
+                favoriteAlarm(contentSellDTO[position].uid!!,contentUidList[position],contentSellDTO[position].explain.toString())
             }
             transaction.set(tsDoc,contentDTO)
 
@@ -240,7 +252,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun favoriteAlarm(destinationUid : String){
+    fun favoriteAlarm(destinationUid : String, postUid : String, postExplain : String){
 
         System.out.println("좋아요 알람 이벤트")
         var alarmDTO = AlarmDTO()
@@ -248,11 +260,15 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
         alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
         alarmDTO.kind = 0
+        alarmDTO.postUid = postUid
+        alarmDTO.postExplain = postExplain
         alarmDTO.timestamp = System.currentTimeMillis()
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
         FcmPush.instance.sendMessage(destinationUid,"신바람",message)
     }
+
+
 
 }

@@ -95,6 +95,7 @@ class ChatActivity : AppCompatActivity() {
         alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
         alarmDTO.kind = 3
         alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.localTimestamp = TimeUtil().getTime()
         alarmDTO.chatMessage = binding.activityChatEdittextExplain.text.toString()
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 

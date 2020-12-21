@@ -117,7 +117,17 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
             context.startActivity(intent)
         }
 
-        //아이템 자체 클릭
+        //닉네임 클릭
+        //유저 닉네임 클릭
+        holder.binding.itemRecyclerNormalTextviewUsername.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentNormalDTO[position].uid)
+            bundle.putString("userId",contentNormalDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+        }
         //아이템 자체 클릭
         holder.binding.itemRecyclerNormalConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context, DetailNormalViewActivity::class.java)
@@ -129,7 +139,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
                 putExtra("contentTime",contentNormalDTO[position].time)
                 putExtra("explain",contentNormalDTO[position].explain)
                 putExtra("likeCount",contentNormalDTO[position].favoriteCount)
-
+                putExtra("userNickName",contentNormalDTO[position].userNickName)
 
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())

@@ -3,12 +3,14 @@ package com.uos.project_new_windy.navigationlobby.detailviewactivity
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,10 +22,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.chat.ChatActivity
+import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBinding
 import com.uos.project_new_windy.databinding.ActivityDetailSellViewBindingImpl
+import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.model.ContentDTO
+import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.UserFragment
+import com.uos.project_new_windy.util.FcmPush
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
@@ -46,6 +52,7 @@ class DetailSellViewActivity : AppCompatActivity() {
     var category : String ? = null
     var productExplain : String ? = null
     var explain : String ? = null
+    var userNickName : String ? = null
 
 
     companion object{
@@ -77,12 +84,13 @@ class DetailSellViewActivity : AppCompatActivity() {
         category = intent.getStringExtra("category")
         productExplain = intent.getStringExtra("productExplain")
         explain = intent.getStringExtra("explain")
+        userNickName = intent.getStringExtra("userNickName")
 
         //이미지 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
         binding.activityDetailSellViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
         //아이디 초기화
-        binding.activityDetailSellViewTextviewId.text = userId
+        binding.activityDetailSellViewTextviewId.text = userNickName
 
         //댓글 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerComment.adapter = DetailContentCommentRecyclerViewAdapter()
@@ -91,17 +99,27 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         //채팅으로 거래
         binding.activityDetailSellViewButtonChat.setOnClickListener {
-            System.out.println("채팅 보내기를 열었습니다.")
-            var intent = Intent(binding.root.context, ChatActivity::class.java)
-            intent.apply {
-                putExtra("destinationUid",uid)
+
+            if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+                System.out.println("채팅함을 열었습니다")
+                startActivity(Intent(binding.root.context, ChatRoomList::class.java))
+            }else {
+
+
+                System.out.println("채팅 보내기를 열었습니다.")
+                var intent = Intent(binding.root.context, ChatActivity::class.java)
+                intent.apply {
+                    putExtra("destinationUid", uid)
+                }
+                startActivity(intent)
             }
-            startActivity(intent)
         }
 
         //찜하기
         binding.activityDetailSellViewButtonPicking.setOnClickListener {
-
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                favoriteEvent()
+            }
         }
 
 
@@ -157,6 +175,11 @@ class DetailSellViewActivity : AppCompatActivity() {
             }
         }
 
+        //유저 아이디 클릭
+        binding.activityDetailSellViewTextviewId.setOnClickListener {
+
+        }
+
         //옵션
         binding.activityDetailSellViewOptionButton.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -175,6 +198,60 @@ class DetailSellViewActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun favoriteEvent(){
+
+
+        System.out.println("좋아요 이벤트 ㅇㅅㅇ")
+        var tsDoc = firestore?.collection("contents")?.document("sell")?.collection("data")?.document(contentUid!!)
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentSellDTO::class.java)
+
+            if (contentDTO!!.favorites.containsKey(uid)){
+                //When the button is clicked
+                contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
+                contentDTO?.favorites.remove(uid)
+                binding.activityDetailSellViewButtonPicking.text = "추천 취소"
+
+                System.out.println("uid 존재")
+            }else{
+                System.out.println("uid 미존재")
+                //When the button is not clicked
+                contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
+                contentDTO?.favorites[uid!!] = true
+                favoriteAlarm(uid!!, contentUid!!,explain!!)
+                binding.activityDetailSellViewButtonPicking.text = "이 글을 추천"
+            }
+            transaction.set(tsDoc,contentDTO)
+
+
+        }
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    fun favoriteAlarm(destinationUid : String, postUid : String, postExplain : String){
+
+        System.out.println("좋아요 알람 이벤트")
+        var alarmDTO = AlarmDTO()
+        alarmDTO.destinationUid = destinationUid
+        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+        alarmDTO.kind = 0
+        alarmDTO.postUid = postUid
+        alarmDTO.postExplain = postExplain
+        alarmDTO.timestamp = System.currentTimeMillis()
+        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+        var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
+        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
     }
     
     

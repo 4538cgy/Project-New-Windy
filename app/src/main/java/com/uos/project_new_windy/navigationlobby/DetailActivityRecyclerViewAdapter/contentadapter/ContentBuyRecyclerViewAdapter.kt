@@ -128,6 +128,17 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
+        //유저 닉네임 클릭
+        holder.binding.itemRecyclerBuyTextviewUsername.setOnClickListener {
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",contentBuyDTO[position].uid)
+            bundle.putString("userId",contentBuyDTO[position].userId)
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+        }
+
         //사진
 
         Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
@@ -159,6 +170,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 putExtra("imageUrl",contentBuyDTO[position].imageUrl)
                 putExtra("contentTime",contentBuyDTO[position].time)
                 putExtra("explain",contentBuyDTO[position].explain)
+                putExtra("userNickName",contentBuyDTO[position].userNickName)
+
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 

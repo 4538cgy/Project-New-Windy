@@ -169,13 +169,19 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="거래 요청" />
+                android:background="@drawable/background_round_white"
+                android:elevation="6dp"
+                android:layout_margin="8dp"
+                android:text="구매자에게 채팅 보내기" />
 
             <Button
                 android:id="@+id/activity_detail_buy_view_button_like"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@drawable/background_round_white"
+                android:elevation="6dp"
+                android:layout_margin="8dp"
                 android:text="이 글을 추천" />
 
 

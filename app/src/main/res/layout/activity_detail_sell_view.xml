@@ -184,14 +184,20 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="채팅으로 거래" />
+                    android:background="@drawable/background_round_white"
+                    android:elevation="6dp"
+                    android:layout_margin="8dp"
+                    android:text="판매자에게 채팅보내기" />
 
                 <Button
                     android:id="@+id/activity_detail_sell_view_button_picking"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="찜하기" />
+                    android:background="@drawable/background_round_white"
+                    android:elevation="6dp"
+                    android:layout_margin="8dp"
+                    android:text="이 글을 추천" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout

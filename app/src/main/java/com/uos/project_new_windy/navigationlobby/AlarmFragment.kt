@@ -79,28 +79,33 @@ class AlarmFragment : Fragment() {
                 0 -> {
                     val str_0 = alarmDTOList[position].userId + getString(R.string.alarm_favorite)
                     view.item_comment_textview_profile.text = str_0
+                    view.item_comment_textview_time.text = alarmDTOList[position].localTimestamp
                 }
 
                 1 -> {
                     val str_0 =
                         alarmDTOList[position].userId + " " + getString(R.string.alarm_comment) + " of " + alarmDTOList[position].message
                     view.item_comment_textview_profile.text = str_0
+                    view.item_comment_textview_time.text = alarmDTOList[position].localTimestamp
                 }
 
                 2 -> {
                     val str_0 =
                         alarmDTOList[position].userId + " " + getString(R.string.alarm_follow)
                     view.item_comment_textview_profile.text = str_0
+                    view.item_comment_textview_time.text = alarmDTOList[position].localTimestamp
                 }
                 3 -> {
                     var str_0 =
                         alarmDTOList[position].userId + " " + getString(R.string.alarm_chat)
                     view.item_comment_textview_profile.text = str_0
+                    view.item_comment_textview_time.text = alarmDTOList[position].localTimestamp
                 }
                 4 -> {
                     var str_0 =
                         alarmDTOList[position].userId + " " + getString(R.string.alarm_follower_update)
                     view.item_comment_textview_profile.text = str_0
+                    view.item_comment_textview_time.text = alarmDTOList[position].localTimestamp
                 }
             }
 

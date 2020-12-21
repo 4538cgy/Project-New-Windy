@@ -37,6 +37,7 @@ class AddContentActivity : AppCompatActivity() {
 
     var PICK_IMAGE_FROM_ALBUM = 0
     var storage : FirebaseStorage ? = null
+
     var photoUri : Uri? = null
     var auth : FirebaseAuth? = null
     var firestore : FirebaseFirestore ? = null
@@ -45,6 +46,7 @@ class AddContentActivity : AppCompatActivity() {
     var count: Int = 0;
     var imageDownLoadUriList : ArrayList<String> = arrayListOf()
     var progressDialog : ProgressDialogLoading ? = null
+    var userNickName : String ? = null
 
     lateinit var binding : ActivityAddContentBinding
 
@@ -67,6 +69,17 @@ class AddContentActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+
+        //유저 닉네임 가져오기
+        firestore!!.collection("userInfo").document("userData").collection(auth!!.currentUser?.uid!!).document("accountInfo")
+            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+                }
+
+            }
 
         //앨범 열기
         addPhoto()
@@ -156,6 +169,7 @@ class AddContentActivity : AppCompatActivity() {
                     contentNormalDTO.uid = auth?.currentUser?.uid
                     contentNormalDTO.userId = auth?.currentUser?.email
                     contentNormalDTO.timestamp = System.currentTimeMillis()
+                    contentNormalDTO.userNickName = userNickName
 
 
 

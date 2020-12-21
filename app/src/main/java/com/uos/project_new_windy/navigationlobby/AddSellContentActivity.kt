@@ -45,6 +45,7 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
     var imageDownLoadUriList : ArrayList<String> = arrayListOf()
     var pickCategoryData : String ? = null
     var progressDialog : ProgressDialogLoading? = null
+    var userNickName : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +67,17 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+
+        //유저 닉네임 가져오기
+        firestore!!.collection("userInfo").document("userData").collection(auth!!.currentUser?.uid!!).document("accountInfo")
+            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+                }
+
+            }
         
         val items = resources.getStringArray(R.array.content_category)
         val spinnerAdapter = ArrayAdapter(
@@ -140,6 +152,9 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         contentSellDTO.timeStamp = System.currentTimeMillis()
         //time
         contentSellDTO.time = TimeUtil().getTime()
+        //유저 닉네임
+        contentSellDTO.userNickName = userNickName
+
         //비교 전용 cost
         contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()
 

@@ -16,6 +16,8 @@ data class ContentBuyDTO(
     var favoriteCount : Int  ? = 0,
     //유저 닉네임 혹은 이메일 주소
     var userId : String ? = null,
+    //유저 닉네임
+    var userNickName : String ? = null,
     //가격
     var cost : String ? = null,
     //제시가격

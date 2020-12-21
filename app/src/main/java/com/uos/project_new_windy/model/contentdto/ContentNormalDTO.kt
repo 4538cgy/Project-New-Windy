@@ -14,6 +14,8 @@ data class ContentNormalDTO(
     var timestamp : Long ? = null,
     //게시 시간
     var time : String ? = null,
+    //유저 닉네임
+    var userNickName : String ? = null,
     //댓글 갯수
     var commentCount : Int ? = 0,
     //좋아요 갯수

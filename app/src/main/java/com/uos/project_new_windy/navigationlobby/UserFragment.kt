@@ -35,6 +35,7 @@ import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyVie
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.fragment_user.view.*
 
 class UserFragment : Fragment() {
@@ -115,7 +116,7 @@ class UserFragment : Fragment() {
         
         //현재 보고있는 화면의 유저가 내가 아닌지를 판단
         if(!uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
-             binding.accountBtnFollowSignout.text = "친구 맺기"
+             binding.accountBtnFollowSignout.text = "구독"
             binding.fragmentUserButtonMessage.text = "메세지 보내기"
             binding.fragmentUserButtonReport.text = "신고하기"
             
@@ -138,6 +139,8 @@ class UserFragment : Fragment() {
             }else
             {
                 //팔로우 이벤트
+
+                requestFollow()
             }
         }
 
@@ -257,8 +260,9 @@ class UserFragment : Fragment() {
                 if (followDTO?.followers?.containsKey(currentUserUid!!)){
                     //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
 
-                    binding.accountBtnFollowSignout.text = getString(R.string.follow_cancel)
-                    binding.accountBtnFollowSignout.background.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
+                    binding.accountBtnFollowSignout.text = binding.root.context.getString(R.string.follow_cancel)
+                   // binding.accountBtnFollowSignout.background.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
+                    binding.accountBtnFollowSignout.setBackgroundColor(R.drawable.background_round_gray)
                     /*
                     fragmentView?.account_btn_follow_signout?.background?.setColorFilter(
                         ContextCompat.getColor(activity!!,R.color.colorLightGray),
@@ -271,7 +275,7 @@ class UserFragment : Fragment() {
 
                         //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
                         //fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
-                        binding.accountBtnFollowSignout.text = getString(R.string.follow)
+                        binding.accountBtnFollowSignout.text = binding.root.context.getString(R.string.follow)
                         binding.accountBtnFollowSignout.background.colorFilter = null
                     }
                 }
@@ -282,7 +286,7 @@ class UserFragment : Fragment() {
     fun requestFollow(){
 
         //Save data to my account
-        var tsDocFollowing = firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("follow")
+        var tsDocFollowing = firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("follow")
         firestore?.runTransaction{
 
                 transaction ->
@@ -350,6 +354,7 @@ class UserFragment : Fragment() {
         alarmDTO.uid = auth?.currentUser?.uid
         alarmDTO.kind = 2
         alarmDTO.timestamp = System.currentTimeMillis()
+        alarmDTO.localTimestamp = TimeUtil().getTime()
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = auth?.currentUser?.email + getString(R.string.alarm_follow)

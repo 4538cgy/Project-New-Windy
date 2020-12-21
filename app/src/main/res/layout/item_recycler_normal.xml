@@ -46,10 +46,11 @@
                 />
 
             <TextView
+                android:id="@+id/item_recycler_normal_textview_username"
                 android:layout_marginHorizontal="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{contentnormal.userId}"
+                android:text="@{contentnormal.userNickName}"
                 />
         </LinearLayout>
 

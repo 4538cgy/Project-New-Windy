@@ -37,6 +37,7 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
     var auth : FirebaseAuth = FirebaseAuth.getInstance()
     var progressDialog : ProgressDialogLoading? = null
     var pickCategory : String ? = null
+    var userNickName : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +49,18 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         val spinnerAdapter = ArrayAdapter(this,R.layout.support_simple_spinner_dropdown_item,items)
         binding.activityAddBuyContentSpinnerCategory.adapter = spinnerAdapter
         binding.activityAddBuyContentSpinnerCategory.onItemSelectedListener = this
+
+        //유저 닉네임 가져오기
+        firestore.collection("userInfo").document("userData").collection(auth.currentUser?.uid!!).document("accountInfo")
+            .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+                }
+
+            }
+
 
         //로딩 초기화
         progressDialog = ProgressDialogLoading(binding.root.context)
@@ -103,6 +116,7 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         contentBuyDTO.categoryHash = pickCategory
         contentBuyDTO.cost = binding.activityAddBuyContentEdittextCost.text.toString() + "원"
         contentBuyDTO.commentCount = 0
+        contentBuyDTO.userNickName = userNickName
         //비교 전용 cost
         contentBuyDTO.costInt =   binding.activityAddBuyContentEdittextCost.text.toString()
 

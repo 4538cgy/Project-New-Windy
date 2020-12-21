@@ -14,11 +14,13 @@ import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
+import com.uos.project_new_windy.util.FcmPush
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -40,7 +42,28 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
         //최초 화면 초기화
         bottom_navigtaion.selectedItemId = R.id.action_home
+        registerPushToken()
 
+    }
+
+    override fun onStop() {
+        super.onStop()
+        System.out.println("아 로비 액티비티가 꺼진것이에오")
+        //4538cgy@gmail.com UID 값 [ 너무 푸쉬를 많이 보내서 일시적으로 사용 중지 주석 풀지마세요! ]
+        FcmPush.instance.sendMessage("1XTFiOeUFTcK4J8vzqnfctCiC1h1", "hi", "bye")
+    }
+
+
+    fun registerPushToken(){
+
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
+                task ->
+            val token = task.result?.token
+            val uid = FirebaseAuth.getInstance().currentUser?.uid
+            val map = mutableMapOf<String,Any>()
+            map["pushToken"] = token!!
+            FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
+        }
 
     }
 

@@ -12,6 +12,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.uos.project_new_windy.util.FcmPush
 import java.security.MessageDigest
 
 class SplashActivity : AppCompatActivity() {
@@ -28,6 +29,13 @@ class SplashActivity : AppCompatActivity() {
         startActivity(Intent(this,LoginActivity::class.java))
 
 
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        //4538cgy@gmail.com UID 값 [ 너무 푸쉬를 많이 보내서 일시적으로 사용 중지 주석 풀지마세요! ]
+        //FcmPush.instance.sendMessage("1XTFiOeUFTcK4J8vzqnfctCiC1h1", "hi", "bye")
     }
 
 

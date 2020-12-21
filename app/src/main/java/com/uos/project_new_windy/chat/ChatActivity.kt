@@ -117,7 +117,9 @@ class ChatActivity : AppCompatActivity() {
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+
+        System.out.println("푸쉬 알람이 도착하는 id 주소" + destinationUid.toString())
+        FcmPush.instance.sendMessage(FirebaseAuth.getInstance().currentUser?.uid!!,"신바람",message)
     }
 
     fun checkChatRoom() {

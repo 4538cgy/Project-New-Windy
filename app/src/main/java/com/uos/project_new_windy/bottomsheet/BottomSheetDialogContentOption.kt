@@ -52,7 +52,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
         System.out.println("테스트테스트테스트" + uid.toString())
         System.out.println("테스트세트세트2" + FirebaseAuth.getInstance().currentUser?.uid)
         
-        if(uid != FirebaseAuth.getInstance().currentUser?.uid){
+        if(destinationUid != FirebaseAuth.getInstance().currentUser?.uid){
             // 삭제 버튼 안보이게
             binding.bottomSheetSelectContentOptionConstDelete.visibility = View.GONE
         }

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".setting.SettingUserInfoEditActivity">
+    
+    <data>
+        <variable
+            name="activitysettinguserinfoedit"
+            type="com.uos.project_new_windy.setting.SettingUserInfoEditActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_setting_user_info_edit_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <ImageButton
+                android:id="@+id/activity_setting_user_info_edit_imagebutton_back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@android:color/transparent"
+                />
+
+
+            <TextView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원 정보 수정"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_setting_user_info_edit_const_user_info_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_round_white"
+            android:elevation="6dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/activity_setting_user_info_edit_topbar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/activity_setting_user_info_edit_textview_user_info_edit"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="정보 수정"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_margin="8dp"
+                />
+
+            <Button
+                android:id="@+id/activity_setting_user_info_edit_button_edit_user_nickname"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="left|center_vertical"
+                android:text="닉네임 변경"
+                android:background="@android:color/transparent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_setting_user_info_edit_textview_user_info_edit"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="12dp"
+                />
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_setting_user_info_edit_const_user_delete_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_round_white"
+            android:elevation="6dp"
+            android:layout_margin="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/activity_setting_user_info_edit_const_user_info_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <TextView
+                android:id="@+id/activity_setting_user_info_edit_textview_delete_user"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="회원 탈퇴"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:layout_margin="8dp"
+                />
+
+            <Button
+                android:id="@+id/activity_setting_user_info_edit_button_delete_user"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:gravity="left|center_vertical"
+                android:text="회원 탈퇴 신청"
+                android:background="@android:color/transparent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_setting_user_info_edit_textview_delete_user"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="12dp"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

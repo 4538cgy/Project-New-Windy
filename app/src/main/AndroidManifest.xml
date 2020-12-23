@@ -14,9 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
-        <activity android:name=".navigationlobby.detailviewactivity.PhotoDetailViewActivity"></activity>
+        <activity android:name=".setting.SettingUserInfoEditActivity"></activity>
+        <activity android:name=".navigationlobby.detailviewactivity.PhotoDetailViewActivity" />
         <activity android:name=".navigationlobby.fragmentsearch.PostSellSearchCategorySetActivity" />
         <activity android:name=".DeleteAcceptActivity" />
         <activity android:name=".ReportPostActivity" />

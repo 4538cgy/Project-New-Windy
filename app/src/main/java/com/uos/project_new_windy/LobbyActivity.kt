@@ -1,6 +1,8 @@
 package com.uos.project_new_windy
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -143,5 +145,30 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
             }
         }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+
+        var builder = AlertDialog.Builder(binding.root.context)
+
+
+        builder.apply {
+            setMessage("종료하시겠습니까?")
+            setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                finishAffinity()
+            })
+            setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                return@OnClickListener
+
+            })
+            setTitle("안내")
+            show()
+        }
+
+
+
+
+
     }
 }

@@ -50,6 +50,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
                     android:text="@{contentbuy.userNickName}"
                     />
             </LinearLayout>
@@ -105,6 +106,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentbuy.favoriteCount.toString()}"
                 />
 
@@ -123,6 +125,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentbuy.commentCount.toString()}"
                 />
         </LinearLayout>
@@ -147,6 +150,7 @@
                     android:id="@+id/item_recycler_buy_textview_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorGray"
                     android:text="@{contentbuy.time}"
 
                     />
@@ -162,6 +166,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="18dp"
                     android:textStyle="bold"
+                    android:textColor="@color/colorBlack"
                     android:text="@{contentbuy.categoryHash}"
                     />
 
@@ -175,6 +180,8 @@
                     android:id="@+id/item_recycler_buy_textview_cost"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorLightGreen"
+                    android:textStyle="bold"
                     android:text='@{contentbuy.cost}'
                     />
                 <View
@@ -187,6 +194,7 @@
                     android:id="@+id/item_recycler_buy_textview_explain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
                     android:text='@{contentbuy.explain}'
                     />
 

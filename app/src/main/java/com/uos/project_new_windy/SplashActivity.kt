@@ -7,27 +7,55 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import androidx.annotation.RequiresApi
+import androidx.databinding.DataBindingUtil
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.uos.project_new_windy.databinding.ActivitySplashBinding
 import com.uos.project_new_windy.util.FcmPush
 import java.security.MessageDigest
 
 class SplashActivity : AppCompatActivity() {
 
 
-
-
+    lateinit var binding: ActivitySplashBinding
+    lateinit var anim: Animation
+    internal lateinit var intent : Intent
 
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
+        binding.activitysplash = this@SplashActivity
 
-        startActivity(Intent(this,LoginActivity::class.java))
+        anim = AnimationUtils.loadAnimation(binding.root.context, R.anim.alpha)
+        anim.setAnimationListener(AlphaAnimationListener())
 
+        //binding.activitySplashImageviewLogo.startAnimation(AnimationUtils.loadAnimation(binding.root.context, R.anim.alpha))
+        binding.activitySplashImageviewLogo.startAnimation(anim)
+
+       intent =  Intent(this, LoginActivity::class.java)
+
+
+    }
+
+    inner class AlphaAnimationListener : Animation.AnimationListener {
+        override fun onAnimationStart(animation: Animation?) {
+            println(" 애니메이션 시작 ")
+        }
+
+        override fun onAnimationEnd(animation: Animation?) {
+            println(" 애니메이션 종료 ")
+            binding.root.context.startActivity(intent)
+        }
+
+        override fun onAnimationRepeat(animation: Animation?) {
+
+        }
 
     }
 

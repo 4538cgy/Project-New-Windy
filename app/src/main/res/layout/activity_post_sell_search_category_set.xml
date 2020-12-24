@@ -102,11 +102,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="선택완료"
-            android:layout_margin="12dp"
+
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:background="@drawable/background_round_white_stroke_black"
+            android:background="@color/colorLightGreen"
             />
 
 

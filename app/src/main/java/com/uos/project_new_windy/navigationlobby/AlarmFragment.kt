@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -23,6 +24,10 @@ class AlarmFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
         var view = LayoutInflater.from(activity).inflate(R.layout.fragment_alarm, container, false)
+
+
+        view.fragment_alarm_recycler.addItemDecoration(
+            DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL))
 
         view.fragment_alarm_recycler.adapter = AlarmRecyclerViewAdapter()
         view.fragment_alarm_recycler.layoutManager = LinearLayoutManager(activity)

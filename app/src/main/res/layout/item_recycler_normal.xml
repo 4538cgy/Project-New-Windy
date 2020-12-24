@@ -50,6 +50,7 @@
                 android:layout_marginHorizontal="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.userNickName}"
                 />
         </LinearLayout>
@@ -105,6 +106,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.favoriteCount.toString()}"
                 />
 
@@ -123,6 +125,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.commentCount.toString()}"
                 />
         </LinearLayout>
@@ -142,6 +145,7 @@
                 android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.time.toString()}"
                 />
 
@@ -149,6 +153,7 @@
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.explain}"
                 />
 

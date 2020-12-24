@@ -51,6 +51,7 @@
                     android:layout_marginHorizontal="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/colorBlack"
                     android:text="@{contentsell.userNickName}"
                     />
             </LinearLayout>
@@ -107,6 +108,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentsell.favoriteCount.toString()}"
                 />
 
@@ -125,6 +127,7 @@
                 android:layout_marginHorizontal="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentsell.commentCount.toString()}"
                 />
         </LinearLayout>
@@ -144,6 +147,7 @@
                 android:gravity="right"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentsell.time.toString()}"
                 />
 
@@ -158,6 +162,7 @@
                 android:gravity="left"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentsell.productExplain.toString()}"
                 android:textSize="18dp"
                 android:textStyle="bold"
@@ -173,6 +178,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:textColor="@color/colorLightGreen"
                 android:text="@{contentsell.cost}"
                 />
 
@@ -186,6 +192,7 @@
                 android:layout_margin="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
                 android:text="@{contentsell.explain}"
                 />
 

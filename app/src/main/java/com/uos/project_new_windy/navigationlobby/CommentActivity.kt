@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -55,7 +56,7 @@ class CommentActivity : AppCompatActivity() {
         activity_comment_recycler.adapter = CommentRecyclerViewAdapter()
         activity_comment_recycler.layoutManager = LinearLayoutManager(this)
          */
-
+        binding.activityCommentRecycler.addItemDecoration(DividerItemDecoration(binding.root.context,DividerItemDecoration.VERTICAL))
         binding.activityCommentRecycler.adapter = CommentRecyclerViewAdapter(postType)
         binding.activityCommentRecycler.layoutManager = LinearLayoutManager(this)
 

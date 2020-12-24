@@ -34,13 +34,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/bottom_sheet_select_category_imageview_buy"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_buyicon"
+                android:src="@drawable/ic_add_buy_post_button"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
+
                 />
             <TextView
                 app:layout_constraintRight_toRightOf="parent"
@@ -66,6 +66,7 @@
                 android:text="원하는 물건을 구매요청 할 수 있어요"
                 android:textSize="16dp"
                 android:textStyle="normal"
+                android:textColor="@color/colorBlack"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -80,13 +81,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/bottom_sheet_select_category_imageview_sell"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_saleicon"
+                android:src="@drawable/ic_add_sell_post_button"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
+
                 />
             <TextView
                 app:layout_constraintRight_toRightOf="parent"
@@ -112,6 +113,7 @@
                 android:text="판매을 판매 할 수 있어요 ( 실명인증 필요 )"
                 android:textSize="16dp"
                 android:textStyle="normal"
+                android:textColor="@color/colorBlack"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -126,13 +128,13 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:id="@+id/bottom_sheet_select_category_imageview_post"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:layout_margin="8dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_writeicon"
+                android:src="@drawable/ic_new_spead_button"
                 android:scaleType="centerInside"
                 android:background="@android:color/transparent"
-                android:padding="8dp"
+
                 />
             <TextView
                 app:layout_constraintRight_toRightOf="parent"
@@ -158,6 +160,7 @@
                 android:text="자유롭게 소통해보세요."
                 android:textSize="16dp"
                 android:textStyle="normal"
+                android:textColor="@color/colorBlack"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
 

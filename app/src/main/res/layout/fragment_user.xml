@@ -28,28 +28,35 @@
             <Button
                 android:id="@+id/fragment_user_button_message"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/background_round_gray_16dp"
+                android:drawableLeft="@drawable/messenger_bubble_small_blue"
+                android:paddingHorizontal="6dp"
+                android:elevation="6dp"
                 android:text="메세지 보내기" />
 
             <Button
                 android:id="@+id/fragment_user_button_report"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_margin="8dp"
                 android:layout_weight="1"
                 android:background="@drawable/background_round_gray_16dp"
+                android:paddingHorizontal="6dp"
+                android:elevation="6dp"
                 android:text="신고하기" />
 
             <Button
                 android:id="@+id/account_btn_follow_signout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:layout_margin="8dp"
                 android:background="@drawable/background_round_gray_16dp"
+                android:paddingHorizontal="6dp"
+                android:elevation="6dp"
                 android:text="@string/follow" />
 
 

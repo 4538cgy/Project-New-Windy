@@ -3,119 +3,115 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="bottomsheetcontentoption"
-            type="com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption"
-            />
+            type="com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption" />
 
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            >
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottom_sheet_select_content_option_const_report"
-                android:onClick="@{bottomsheetcontentoption.groupClick}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:onClick="@{bottomsheetcontentoption.groupClick}">
+
                 <ImageView
+                    android:id="@+id/bottom_sheet_select_content_option_imageview_report"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_margin="8dp"
+                    android:background="@android:color/transparent"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_report_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:id="@+id/bottom_sheet_select_content_option_imageview_report"
-                    android:layout_margin="8dp"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/ic_buyicon"
-                    android:scaleType="centerInside"
-                    android:background="@android:color/transparent"
-                    android:padding="8dp"
+
                     />
+
                 <TextView
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_report"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/bottom_sheet_select_content_option_textview_report_content"
                     android:id="@+id/bottom_sheet_select_content_option_textview_report_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="신고"
+                    android:text="신고하기"
+                    android:textColor="#000000"
                     android:textSize="24dp"
                     android:textStyle="bold"
-                    android:textColor="#000000"
-                    />
-                <TextView
-                    app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_select_content_option_textview_report_title"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_report"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_report"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/bottom_sheet_select_content_option_textview_report_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="불편한 게시글을 신고할 수 있어요."
+                    android:layout_marginLeft="12dp"
+                    android:text="불편한 게시글 신고하기"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16dp"
                     android:textStyle="normal"
-                    />
+                    app:layout_constraintBottom_toBottomOf="@+id/bottom_sheet_select_content_option_textview_report_title"
+                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_textview_report_title"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/bottom_sheet_select_content_option_textview_report_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/bottom_sheet_select_content_option_const_delete"
-                android:onClick="@{bottomsheetcontentoption.groupClick}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
+                android:onClick="@{bottomsheetcontentoption.groupClick}">
+
                 <ImageView
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/bottom_sheet_select_content_option_imageview_delete"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_margin="8dp"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:src="@drawable/ic_saleicon"
-                    android:scaleType="centerInside"
                     android:background="@android:color/transparent"
-                    android:padding="8dp"
-                    />
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_delete_post_button"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <TextView
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_delete"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toTopOf="@+id/bottom_sheet_select_content_option_textview_delete_content"
                     android:id="@+id/bottom_sheet_select_content_option_textview_delete_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="삭제"
+                    android:text="삭제하기"
+                    android:textColor="#000000"
                     android:textSize="24dp"
                     android:textStyle="bold"
-                    android:textColor="#000000"
-                    />
-                <TextView
-                    app:layout_constraintTop_toBottomOf="@+id/bottom_sheet_select_content_option_textview_delete_title"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_delete"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_imageview_delete"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/bottom_sheet_select_content_option_textview_delete_content"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="게시글을 삭제할 수 있어요"
+                    android:layout_marginLeft="12dp"
+                    android:text="게시글 삭제하기"
+                    android:textColor="@color/colorBlack"
                     android:textSize="16dp"
                     android:textStyle="normal"
-                    />
+                    app:layout_constraintBottom_toBottomOf="@+id/bottom_sheet_select_content_option_textview_delete_title"
+                    app:layout_constraintLeft_toRightOf="@+id/bottom_sheet_select_content_option_textview_delete_title"
+                    app:layout_constraintTop_toTopOf="@+id/bottom_sheet_select_content_option_textview_delete_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
         </LinearLayout>

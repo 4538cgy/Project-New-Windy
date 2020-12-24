@@ -28,7 +28,10 @@ class SettingActivity : AppCompatActivity() {
             if(documentSnapshot != null)
             {
                 userModel = documentSnapshot.toObject(UserModel::class.java)!!
+                println("끼에ㅐ에에에에엙" + userModel.toString())
             }
+
+
         }
 
 

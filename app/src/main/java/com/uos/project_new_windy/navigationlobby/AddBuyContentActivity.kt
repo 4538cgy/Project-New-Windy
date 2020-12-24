@@ -110,7 +110,7 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         contentBuyDTO.uid = auth.currentUser?.uid
         contentBuyDTO.time = TimeUtil().getTime()
         contentBuyDTO.imageUrl = uri.toString()
-        contentBuyDTO.timeStamp = ServerValue.TIMESTAMP
+        contentBuyDTO.timeStamp = System.currentTimeMillis()
         contentBuyDTO.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
         contentBuyDTO.favoriteCount = 0
         contentBuyDTO.categoryHash = pickCategory

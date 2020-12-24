@@ -51,12 +51,12 @@
                 android:id="@+id/activity_add_content_button_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:text="작성 완료"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
                 android:background="@android:color/transparent"
+                android:text="작성 완료"
                 android:textSize="18dp"
-                />
+                android:textColor="@color/colorLightGreen"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -67,48 +67,6 @@
             android:background="@color/colorGray"
             android:layout_margin="4dp"
             />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
-            <ImageButton
-                android:id="@+id/activity_add_content_button_add_photo"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/activity_add_content_recycler_photo"
-               app:layout_constraintBottom_toTopOf="@+id/activity_add_content_textview_add_photo"
-                app:layout_constraintTop_toTopOf="@+id/activity_add_content_recycler_photo"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:background="@android:color/transparent"
-                android:padding="8dp"
-                android:src="@drawable/ic_upload_photo"
-                android:scaleType="centerInside"
-                />
-
-            <TextView
-                android:id="@+id/activity_add_content_textview_add_photo"
-                app:layout_constraintTop_toBottomOf="@+id/activity_add_content_button_add_photo"
-                app:layout_constraintLeft_toLeftOf="@+id/activity_add_content_button_add_photo"
-                app:layout_constraintRight_toRightOf="@+id/activity_add_content_button_add_photo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="사진 추가"
-                />
-
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activity_add_content_recycler_photo"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/activity_add_content_button_add_photo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -119,8 +77,9 @@
             <EditText
                 android:id="@+id/activity_add_content_edittext_content"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/activity_add_content_recycler_photo"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="top"
@@ -130,6 +89,31 @@
                 android:layout_margin="12dp"
                 android:maxLength="200"
                 android:padding="8dp"
+                />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_add_content_recycler_photo"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                />
+
+            <Button
+                android:id="@+id/activity_add_content_button_add_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/background_roung_white_stroke_green_16dp"
+                android:text="+ 사진 추가"
+                android:drawableRight="@drawable/ic_add_photo_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="12dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:paddingHorizontal="12dp"
                 />
 
 

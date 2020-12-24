@@ -181,7 +181,7 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
             }
         }
         //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
-        binding.activityAddBuyContentImageviewProductImage.setImageURI(photoUri)
+        binding.activityAddBuyContentImageviewPhoto.setImageURI(photoUri)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {

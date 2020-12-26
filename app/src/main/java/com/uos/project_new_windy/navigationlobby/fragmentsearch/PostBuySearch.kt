@@ -25,6 +25,7 @@ import com.uos.project_new_windy.databinding.ItemPostBuySearchResultBinding
 import com.uos.project_new_windy.databinding.ItemPostSellSearchResultBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,7 +43,7 @@ class PostBuySearch : Fragment() {
 
 
     lateinit var binding : FragmentPostBuySearchBinding
-    var categoryData: ArrayList<String> = arrayListOf()
+
 
     //원본 데이터
     var contentBuyTO: ArrayList<ContentBuyDTO> = arrayListOf()
@@ -53,14 +54,14 @@ class PostBuySearch : Fragment() {
 
 
     //검색 버튼 누른뒤 조회 결과
-    var searchResultContentData : ArrayList<ContentSellDTO> = arrayListOf()
+    var searchResultContentData : ArrayList<ContentBuyDTO> = arrayListOf()
     var searchResultPostUidListData : ArrayList<String> = arrayListOf()
 
     //검색 창에 입력한 스트링 키값
     var searchKeyString : String ? = null
 
     //리사이클러뷰에 들어갈 데이터
-    var mList : ArrayList<ContentSellDTO> = arrayListOf()
+    var mList : ArrayList<ContentBuyDTO> = arrayListOf()
     //리사이클러뷰에 들어갈 postUid데이터
     var mContentUidList : ArrayList<String> = arrayListOf()
 
@@ -106,7 +107,7 @@ class PostBuySearch : Fragment() {
         binding.fragmentPostBuySearchEdittextSearch.setOnEditorActionListener(EditListener())
 
 
-        binding.fragmentPostBuySearchRecycler.adapter =PostBuySearchRecyclerViewAdapter(binding.root.context,contentBuyTO,contentUidList)
+        binding.fragmentPostBuySearchRecycler.adapter =PostBuySearchRecyclerViewAdapter(binding.root.context,mList,mContentUidList)
         binding.fragmentPostBuySearchRecycler.layoutManager = LinearLayoutManager(activity)
         binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
 
@@ -114,7 +115,19 @@ class PostBuySearch : Fragment() {
         binding.fragmentPostBuySearchImagebuttonSearch.setOnClickListener {
             searchResultContentData.clear()
 
+            for (c in contentBuyTO.indices){
+                if (contentBuyTO[c].explain.toString().contains(searchKeyString.toString()))
+                {
+                    searchResultContentData.add(contentBuyTO[c])
+                    searchResultPostUidListData.add(contentUidList[c])
+                }
+            }
+            mList.clear()
+            mContentUidList.clear()
+            mList.addAll(searchResultContentData)
+            mContentUidList.addAll(searchResultPostUidListData)
 
+            binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
         }
 
         return binding.root
@@ -122,7 +135,7 @@ class PostBuySearch : Fragment() {
 
     inner class EditWatcher: TextWatcher{
         override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            TODO("Not yet implemented")
+
         }
 
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -130,7 +143,7 @@ class PostBuySearch : Fragment() {
         }
 
         override fun afterTextChanged(s: Editable?) {
-            TODO("Not yet implemented")
+
         }
 
     }
@@ -176,7 +189,7 @@ class PostBuySearch : Fragment() {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostBuySearchRecyclerViewAdapter.PostBuySearchRecyclerViewAdapterViewHolder {
 
-            val binding = ItemPostSellSearchResultBinding.inflate(LayoutInflater.from(context),parent,false)
+            val binding = ItemPostBuySearchResultBinding.inflate(LayoutInflater.from(context),parent,false)
             return PostBuySearchRecyclerViewAdapterViewHolder(binding)
         }
 
@@ -190,14 +203,14 @@ class PostBuySearch : Fragment() {
 
             //아이템 자체 클릭
             holder.binding.itemPostBuySearchResultConstAll.setOnClickListener {
-                var intent = Intent(holder.itemView.context, DetailSellViewActivity::class.java)
+                var intent = Intent(holder.itemView.context, DetailBuyViewActivity::class.java)
                 intent.apply {
                     putExtra("uid" , mlist[position].uid)
                     putExtra("userId",mlist[position].userId)
                     putExtra("postUid",mpostlist[position])
                     putExtra("cost",mlist[position].cost)
-                    //putExtra("category",mlist[position].category)
-                    //putExtra("imageList",mlist[position].imageDownLoadUrlList)
+                    putExtra("categoryHash",mlist[position].categoryHash)
+                    putExtra("imageUrl",mlist[position].imageUrl)
                     putExtra("contentTime",mlist[position].time)
                     //putExtra("productExplain",mlist[position].productExplain)
                     putExtra("explain",mlist[position].explain)
@@ -209,14 +222,14 @@ class PostBuySearch : Fragment() {
             }
 
             //사진 추가
-            /*
-            if (mlist[position].imageDownLoadUrlList?.isEmpty() == false) {
+
+            if (mlist[position].imageUrl?.isEmpty() == false) {
                 Glide.with(holder.itemView.context)
-                    .load(mlist[position].imageDownLoadUrlList?.get(0))
+                    .load(mlist[position].imageUrl)
                     .into(holder.binding.itemPostBuySearchResultImageviewPhoto)
             }
 
-             */
+
 
 
         }

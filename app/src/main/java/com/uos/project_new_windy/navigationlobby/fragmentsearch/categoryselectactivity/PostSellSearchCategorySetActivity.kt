@@ -1,4 +1,4 @@
-package com.uos.project_new_windy.navigationlobby.fragmentsearch
+package com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -8,14 +8,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityPostSellSearchCategorySetBinding
 import com.uos.project_new_windy.databinding.ItemSellSearchCategoryBinding
 import com.uos.project_new_windy.model.CategorySellPostDTO
-import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
-import com.uos.project_new_windy.model.contentdto.ContentSellDTO
-import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 
 class PostSellSearchCategorySetActivity : AppCompatActivity() {
 
@@ -80,7 +76,7 @@ class PostSellSearchCategorySetActivity : AppCompatActivity() {
 
         }
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostSellSearchCategoryRecyclerViewAdapter.PostSellSearchCategoryRecyclerViewAdapterViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostSellSearchCategoryRecyclerViewAdapterViewHolder {
 
             val binding = ItemSellSearchCategoryBinding.inflate(LayoutInflater.from(this@PostSellSearchCategorySetActivity),parent,false)
             return PostSellSearchCategoryRecyclerViewAdapterViewHolder(binding)

@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,11 +21,10 @@ import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.FragmentPostBuySearchBinding
 import com.uos.project_new_windy.databinding.ItemPostBuySearchResultBinding
-import com.uos.project_new_windy.databinding.ItemPostSellSearchResultBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
-import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
-import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostBuySearchCategorySetActivity
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostSellSearchCategorySetActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,6 +41,7 @@ class PostBuySearch : Fragment() {
 
 
     lateinit var binding : FragmentPostBuySearchBinding
+    var categoryData: ArrayList<String> = arrayListOf()
 
 
     //원본 데이터
@@ -50,6 +49,12 @@ class PostBuySearch : Fragment() {
 
     //원본 데이터
     var contentUidList: ArrayList<String> = arrayListOf()
+
+
+    //카테고리 필터링 이후 결과값
+    var contentUidListData : ArrayList<String> = arrayListOf()
+    // 카테고리 필터링 이후 결과값
+    var contentData : ArrayList<ContentBuyDTO> = arrayListOf()
 
 
 
@@ -130,7 +135,66 @@ class PostBuySearch : Fragment() {
             binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
         }
 
+        binding.fragmentPostBuyImagebuttonCategoryOption.setOnClickListener {
+            startActivityForResult(Intent(
+                binding.root.context,
+                PostBuySearchCategorySetActivity::class.java,
+            ), 1234)
+        }
+
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1234) {
+
+            if (resultCode == 1556) {
+                System.out.println("데이터 전달 성공적으로 완수3123123123123")
+                categoryData = data?.getStringArrayListExtra("categoryList")!!
+                /*
+                categoryData.forEach {
+                    System.out.println("카테고리 리스트 목록 = $it")
+                }
+
+                 */
+
+                dataCleaning()
+            }
+
+
+        }
+
+        binding.fragmentPostBuySearchRecycler.adapter = PostBuySearchRecyclerViewAdapter(binding.root.context,mList,mContentUidList)
+        //binding.fragmentPostSellSearchRecycler.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
+        binding.fragmentPostBuySearchRecycler.layoutManager = LinearLayoutManager(activity)
+        binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
+
+    }
+
+    fun dataCleaning(){
+        contentData.clear()
+        contentUidListData.clear()
+        for(c in contentBuyTO.indices){
+            for(d in categoryData.indices)
+                if (contentBuyTO[c].categoryHash.equals(categoryData[d].toString())){
+                    System.out.println("중복됩니다." + categoryData[d] + contentBuyTO[c])
+                    contentData.add(contentBuyTO[c])
+                    contentUidListData.add(contentUidList[c])
+                }
+        }
+        /*
+        contentData.forEach {
+            System.out.println("카테고리를 포함한 데이터 $it" )
+        }
+
+         */
+        mList.clear()
+        mContentUidList.clear()
+        mList.addAll(contentData)
+        mContentUidList.addAll(contentUidListData)
+        binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
     }
 
     inner class EditWatcher: TextWatcher{

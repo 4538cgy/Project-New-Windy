@@ -20,12 +20,23 @@
             android:id="@+id/fragment_search_tablayout"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="match_parent"
+            app:layout_constraintRight_toLeftOf="@+id/fragment_search_imagebutton_category_option"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:tabMode="scrollable"
             app:tabIndicatorColor="@color/colorLightGreen"
 
+            />
+
+        <ImageButton
+            android:id="@+id/fragment_search_imagebutton_category_option"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/fragment_search_tablayout"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_list_24"
+            android:background="@android:color/transparent"
             />
 
 

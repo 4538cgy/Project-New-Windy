@@ -11,10 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.FragmentSearchBinding
-import com.uos.project_new_windy.navigationlobby.fragmentsearch.MainSearchFragment
-import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostBuySearch
-import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostNormalSearch
-import com.uos.project_new_windy.navigationlobby.fragmentsearch.PostSellSearch
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 const val NUM_PAGES = 3
@@ -35,6 +32,9 @@ class SearchFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_search,container,false)
 
         binding.fragmentSearchViewpager2.adapter
+        binding.fragmentSearchImagebuttonCategoryOption.setOnClickListener {
+
+        }
 
 
 

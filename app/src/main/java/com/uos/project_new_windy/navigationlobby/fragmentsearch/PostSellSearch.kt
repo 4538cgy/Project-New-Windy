@@ -2,7 +2,6 @@ package com.uos.project_new_windy.navigationlobby.fragmentsearch
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,28 +13,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.R
-import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.FragmentPostSellSearchBinding
 import com.uos.project_new_windy.databinding.ItemPostSellSearchResultBinding
 import com.uos.project_new_windy.databinding.ItemRecyclerSellBinding
-import com.uos.project_new_windy.databinding.ItemSellSearchCategoryBinding
-import com.uos.project_new_windy.model.CategorySellPostDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
-import com.uos.project_new_windy.navigationlobby.CommentActivity
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentSellRecyclerViewAdapter
-import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostSellSearchCategorySetActivity
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -158,14 +148,19 @@ class PostSellSearch : Fragment() {
             binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
         }
 
-        startActivityForResult(Intent(
-            binding.root.context,
-            PostSellSearchCategorySetActivity::class.java,
-        ), 1234)
+        binding.fragmentPostSellSearchImagebuttonCategoryOption.setOnClickListener {
+            startActivityForResult(Intent(
+                binding.root.context,
+                PostSellSearchCategorySetActivity::class.java,
+            ), 1234)
+        }
+
         return binding.root
     }
 
     fun dataCleaning(){
+        contentData.clear()
+        contentUidListData.clear()
         for(c in contentSellDTO.indices){
             for(d in categoryData.indices)
             if (contentSellDTO[c].category.equals(categoryData[d].toString())){
@@ -194,6 +189,7 @@ class PostSellSearch : Fragment() {
 
             if (resultCode == 1556) {
                 System.out.println("데이터 전달 성공적으로 완수3123123123123")
+                categoryData.clear()
                 categoryData = data?.getStringArrayListExtra("categoryList")!!
                 /*
                 categoryData.forEach {
@@ -250,19 +246,25 @@ class PostSellSearch : Fragment() {
 
     inner class PostSellSearchRecyclerViewAdapter(context : Context, list : ArrayList<ContentSellDTO>,postUidList : ArrayList<String>) : RecyclerView.Adapter<PostSellSearchRecyclerViewAdapter.PostSellSearchRecyclerViewAdapterViewHolder>(){
 
-       // var contentSellDTO : ArrayList<ContentSellDTO> = arrayListOf()
-        var mlist : ArrayList<ContentSellDTO> = list
+        //var contentSellDTO : ArrayList<ContentSellDTO> = arrayListOf()
+        var mlist2 : ArrayList<ContentSellDTO> = arrayListOf()
         var mpostlist : ArrayList<String> = postUidList
         //var data  = listOf<ContentSellDTO>()
         init {
 
             System.out.println("리사이클러뷰 초기화아아아아아아아아아아앜")
-            /*
-            mlist.clear()
-            mpostlist.clear()
+            mlist2.forEach {
+                println("리스트1 " + it.toString())
+            }
+            mlist2.clear()
+            mlist2 = list
+            list.forEach {
+                println("리스트2 " + it.toString())
+            }
 
-             */
-            //contentSellDTO.addAll(list)
+            mlist2.forEach {
+                println("리스트3 " + it.toString())
+            }//contentSellDTO.addAll(list)
 
           //  data = list
 
@@ -279,25 +281,25 @@ class PostSellSearch : Fragment() {
 
 
         override fun getItemCount(): Int {
-            return mlist.size
+            return mlist2.size
         }
 
         override fun onBindViewHolder(holder: PostSellSearchRecyclerViewAdapterViewHolder, position: Int) {
-            holder.onBind(mlist[position])
+            holder.onBind(mlist2[position])
 
             //아이템 자체 클릭
             holder.binding.itemPostSellSearchResultConstAll.setOnClickListener {
                 var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
                 intent.apply {
-                    putExtra("uid" , mlist[position].uid)
-                    putExtra("userId",mlist[position].userId)
+                    putExtra("uid" , mlist2[position].uid)
+                    putExtra("userId",mlist2[position].userId)
                     putExtra("postUid",mpostlist[position])
-                    putExtra("cost",mlist[position].cost)
-                    putExtra("category",mlist[position].category)
-                    putExtra("imageList",mlist[position].imageDownLoadUrlList)
-                    putExtra("contentTime",mlist[position].time)
-                    putExtra("productExplain",mlist[position].productExplain)
-                    putExtra("explain",mlist[position].explain)
+                    putExtra("cost",mlist2[position].cost)
+                    putExtra("category",mlist2[position].category)
+                    putExtra("imageList",mlist2[position].imageDownLoadUrlList)
+                    putExtra("contentTime",mlist2[position].time)
+                    putExtra("productExplain",mlist2[position].productExplain)
+                    putExtra("explain",mlist2[position].explain)
                     //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
 
 
@@ -306,9 +308,9 @@ class PostSellSearch : Fragment() {
             }
 
             //사진 추가
-            if (mlist[position].imageDownLoadUrlList?.isEmpty() == false) {
+            if (mlist2[position].imageDownLoadUrlList?.isEmpty() == false) {
                 Glide.with(holder.itemView.context)
-                    .load(mlist[position].imageDownLoadUrlList?.get(0))
+                    .load(mlist2[position].imageDownLoadUrlList?.get(0))
                     .into(holder.binding.itemPostSellSearchResultImageviewPhoto)
             }
 

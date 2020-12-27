@@ -5,33 +5,33 @@
     <data>
 
         <variable
-            name="itemsellsearchcategory"
-            type="com.uos.project_new_windy.model.CategorySellPostDTO" />
+            name="itembuysearchcategory"
+            type="com.uos.project_new_windy.model.CatgoryBuyPostDTO" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item_sell_search_category_const_all"
+        android:id="@+id/item_buy_search_category_const_all"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp">
 
         <TextView
-            android:id="@+id/item_sell_search_category_textview"
+            android:id="@+id/item_buy_search_category_textview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{itemsellsearchcategory.title}"
+            android:text="@{itembuysearchcategory.title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/item_sell_search_category_checkbox"
             app:layout_constraintTop_toTopOf="parent" />
 
         <CheckBox
-            android:id="@+id/item_sell_search_category_checkbox"
+            android:id="@+id/item_buy_search_category_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:buttonTint="@color/colorLightGreen"
-            android:checked="@{itemsellsearchcategory.check? true : false}"
+            android:checked="@{itembuysearchcategory.check? true : false}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

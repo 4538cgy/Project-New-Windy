@@ -51,6 +51,7 @@ class SplashActivity : AppCompatActivity() {
         override fun onAnimationEnd(animation: Animation?) {
             println(" 애니메이션 종료 ")
             binding.root.context.startActivity(intent)
+            finish()
         }
 
         override fun onAnimationRepeat(animation: Animation?) {

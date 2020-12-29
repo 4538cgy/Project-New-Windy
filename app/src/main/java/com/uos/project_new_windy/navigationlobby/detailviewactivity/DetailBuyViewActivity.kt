@@ -57,6 +57,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
     }
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -76,7 +77,23 @@ class DetailBuyViewActivity : AppCompatActivity() {
         imageUrl = intent.getStringExtra("imageUrl")
         contentTime = intent.getStringExtra("contentTime")
         explain = intent.getStringExtra("explain")
-        userNickName = intent.getStringExtra("userNickName")
+        //userNickName = intent.getStringExtra("userNickName")
+
+        //유저 닉네임 가져오기
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+
+                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                    //아이디 초기화
+                    binding.activityDetailBuyViewTextviewId.text = userNickName
+                }
+
+            }
+        println("유저 닉네임 가져오기 성고오오오오오옹2" + userNickName)
 
 
         //이미지 리사이클러뷰 초기화
@@ -94,8 +111,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //아이디 초기화
-        binding.activityDetailBuyViewTextviewId.text = userNickName
+
 
         //채팅으로 거래
         binding.activityDetailBuyViewButtonChat.setOnClickListener {

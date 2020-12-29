@@ -68,12 +68,26 @@ class DetailNormalViewActivity : AppCompatActivity() {
         explain = intent.getStringExtra("explain")
         userNickName = intent.getStringExtra("userNickName")
 
+        //유저 닉네임 가져오기
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+
+                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                    //아이디 초기화
+                    binding.activityDetailNormalViewTextviewNickname.text = userNickName
+                }
+
+            }
+
         //이미지 리사이클러뷰 초기화
         binding.activityDetailNormalViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
         binding.activityDetailNormalViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
-        //아이디 초기화
-        binding.activityDetailNormalViewTextviewNickname.text = userNickName
+
 
         //좋아요 갯수 초기화
         binding.activityDetailNormalViewTextviewLikeCount.text = "좋아요 "+likeCount+" 개"

@@ -86,11 +86,25 @@ class DetailSellViewActivity : AppCompatActivity() {
         explain = intent.getStringExtra("explain")
         userNickName = intent.getStringExtra("userNickName")
 
+        //유저 닉네임 가져오기
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+
+                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                    //아이디 초기화
+                    binding.activityDetailSellViewTextviewId.text = userNickName
+                }
+
+            }
+
         //이미지 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()
         binding.activityDetailSellViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
-        //아이디 초기화
-        binding.activityDetailSellViewTextviewId.text = userNickName
+
 
         //댓글 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerComment.adapter = DetailContentCommentRecyclerViewAdapter()

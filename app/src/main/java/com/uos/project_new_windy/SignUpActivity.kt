@@ -110,8 +110,12 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
             Toast.makeText(binding.root.context,"인증이 일시적으로 제한되었습니다. \n 인증 허용" , Toast.LENGTH_LONG).show()
             phoneVerify = true
-            //AutoRecieveThePhoneVerifyCode()
 
+            if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEdittextPhonenumber.text.toString())){
+                //AutoRecieveThePhoneVerifyCode()
+            }else{
+                Toast.makeText(binding.root.context,"가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",Toast.LENGTH_LONG).show()
+            }
         }
         //주소 요청
         /*

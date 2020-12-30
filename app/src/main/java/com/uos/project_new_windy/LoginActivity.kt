@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -13,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uos.project_new_windy.databinding.ActivityLobbyBinding
+import com.uos.project_new_windy.databinding.ActivityLoginBinding
 import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -22,9 +25,12 @@ class LoginActivity : AppCompatActivity() {
     var googleSignInClient : GoogleSignInClient? = null
     var GOOGLE_LOGIN_CODE = 9001
 
+    lateinit var binding : ActivityLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_login)
+        binding.activitylogin = this@LoginActivity
 
         auth = FirebaseAuth.getInstance()
 
@@ -38,13 +44,24 @@ class LoginActivity : AppCompatActivity() {
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
         //로그인
-
+        /*
         email_login_button.setOnClickListener {
             signinEmail()
         }
 
+         */
+        binding.emailLoginButton.setOnClickListener {
+            signinEmail()
+        }
+
         //구글 로그인
+        /*
         google_sign_in_button.setOnClickListener {
+            googleLogin()
+        }
+
+         */
+        binding.googleSignInButton.setOnClickListener {
             googleLogin()
         }
 
@@ -52,22 +69,41 @@ class LoginActivity : AppCompatActivity() {
 
 
         //회원가입
+        /*
         activity_login_sign_up.setOnClickListener {
 
             startActivity(Intent(this,SignUpActivity::class.java))
             finish()
         }
 
+         */
+
+        binding.activityLoginSignUp.setOnClickListener {
+            startActivity(Intent(this,SignUpActivity::class.java))
+            finish()
+        }
 
         //비밀번호 찾기
+        /*
         activity_find_password.setOnClickListener {
             //팝업으로 비밀번호 찾기 창 띄워 주기
         }
 
+         */
+        binding.activityFindPassword.setOnClickListener {
+
+        }
+
 
         //이용약관
+        /*
         activity_login_policy.setOnClickListener {
             //팝업에 리사이클러뷰나 리스트뷰 하나 꽂아넣고 이용약관 보여주기 기능 추가
+        }
+
+         */
+        binding.activityLoginPolicy.setOnClickListener {
+
         }
 
     }
@@ -115,9 +151,9 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun signinEmail() {
-        auth?.signInWithEmailAndPassword(
-            email_edittext.text.toString(),
-            password_edittext.text.toString()
+        auth?.signInWithEmailAndPassword( binding.emailEdittext.text.toString()
+            , binding.passwordEdittext.text.toString()
+
         )?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 //login

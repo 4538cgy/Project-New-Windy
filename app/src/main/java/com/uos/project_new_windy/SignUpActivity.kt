@@ -35,7 +35,7 @@ import com.uos.project_new_windy.util.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 import java.util.concurrent.TimeUnit
 
-class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
+class SignUpActivity : AppCompatActivity() {
 
     //스피너에서 선택한 작물 종류
     var pickToSpinnerPlant: String? = null
@@ -46,16 +46,17 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     val mCallback: OnVerificationStateChangedCallbacks? = null
     val mResendToken: ForceResendingToken? = null
     var phoneVerify: Boolean = false
-    var policyAcceptCheck : Boolean = false
-    var progressDialog : ProgressDialogLoadingVerifyPhone? = null
+    var policyAcceptCheck: Boolean = false
+    var progressDialog: ProgressDialogLoadingVerifyPhone? = null
+
     /*
     카카오 지번 검색에서 가져온 데이터들 변수
      */
-    var zipCode : String ? = null
-    var address : String ? = null
-    var building : String ? = null
+    var zipCode: String? = null
+    var address: String? = null
+    var building: String? = null
 
-    lateinit var binding : ActivitySignUpBinding
+    lateinit var binding: ActivitySignUpBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,11 +87,13 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         )
 
 
-
         //스피너에 어댑터 세팅
+        /*
         //activity_sign_up_spinner.adapter = spinnerAdapter
         binding.activitySignUpSpinner.adapter = spinnerAdapter
 
+
+         */
         //sms 인증 요청
         /*
         activity_search_address_button_auth_to_phone.setOnClickListener {
@@ -108,13 +111,16 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             binding.activitySearchAddressButtonAuthToPhone.isEnabled = false
 
 
-            Toast.makeText(binding.root.context,"인증이 일시적으로 제한되었습니다. \n 인증 허용" , Toast.LENGTH_LONG).show()
+            Toast.makeText(binding.root.context, "인증이 일시적으로 제한되었습니다. \n 인증 허용", Toast.LENGTH_LONG)
+                .show()
             phoneVerify = true
 
-            if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEdittextPhonenumber.text.toString())){
+            if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEdittextPhonenumber.text.toString())) {
                 //AutoRecieveThePhoneVerifyCode()
-            }else{
-                Toast.makeText(binding.root.context,"가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(binding.root.context,
+                    "가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",
+                    Toast.LENGTH_LONG).show()
             }
         }
         //주소 요청
@@ -138,6 +144,8 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
          */
 
+
+        /*
         binding.activitySignUpButtonLater.setOnClickListener {
             //현재는 테스트로 바로 로비로 이동
             startActivity(Intent(this,LobbyActivity::class.java))
@@ -151,22 +159,25 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         }
 
+         */
+
         //동의하고 회원 정보 입력하기
 
         binding.activitySignUpButtonAccept.setOnClickListener {
-            if(phoneVerify){
-                if(binding.activitySignUpEdittextName.length() < 2){
-                    Toast.makeText(binding.root.context,"닉네임을 두 글자 이상 입력해주세요.",Toast.LENGTH_LONG).show()
-                }else if(binding.activitySignUpEdittextDetailAddress.text.length < 5){
-                    Toast.makeText(binding.root.context,"주소를 입력해주세요.", Toast.LENGTH_LONG).show()
+            if (phoneVerify) {
+                if (binding.activitySignUpEdittextName.length() < 2) {
+                    Toast.makeText(binding.root.context, "닉네임을 두 글자 이상 입력해주세요.", Toast.LENGTH_LONG)
+                        .show()
+                } else if (binding.activitySignUpEdittextDetailAddress.text.length < 5) {
+                    Toast.makeText(binding.root.context, "주소를 입력해주세요.", Toast.LENGTH_LONG).show()
 
-                }else{
+                } else {
                     saveData()
                 }
 
 
-            }else{
-                Toast.makeText(this,"핸드폰 인증을 진행해주세요.",Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "핸드폰 인증을 진행해주세요.", Toast.LENGTH_LONG).show()
             }
 
         }
@@ -180,7 +191,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
          */
 
         binding.activitySignUpTextview.setOnClickListener {
-            startActivity(Intent(this,PolicyActivity::class.java))
+            startActivity(Intent(this, PolicyActivity::class.java))
             policyAcceptCheck = true
         }
 
@@ -206,7 +217,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             startActivityForResult(photoPickerIntent,
                 UserFragment.PICK_PROFILE_FROM_ALBUM
             )
-            Log.d(" 회원가입 액티비티" , "인텐트 시작")
+            Log.d(" 회원가입 액티비티", "인텐트 시작")
         }
 
     }
@@ -220,12 +231,19 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             when (requestCode) {
 
                 100 -> {
-
+                    /*
                     activity_search_address_button_address.setText(
                         data!!.getStringExtra("address_arg1").toString() +
                                 data!!.getStringExtra("address_arg2").toString() +
                                 data!!.getStringExtra("address_arg3").toString()
                     )
+
+                     */
+
+                    binding.activitySignUpEdittextDetailAddress.setText(data!!.getStringExtra("address_arg1")
+                        .toString() +
+                            data!!.getStringExtra("address_arg2").toString() +
+                            data!!.getStringExtra("address_arg3").toString())
                     zipCode = data!!.getStringExtra("address_arg1").toString()
                     address = data!!.getStringExtra("address_arg2").toString()
                     building = data!!.getStringExtra("address_arg3").toString()
@@ -233,22 +251,28 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     binding.activitySignUpEdittextDetailAddressForm.visibility = View.VISIBLE
 
 
-
                 }
 
                 UserFragment.PICK_PROFILE_FROM_ALBUM -> {
-                    activity_sign_up_circleimageview.setImageURI(data?.data)
-                    var imageUri = data?.data
-                    var uid = FirebaseAuth.getInstance().currentUser?.uid
-                    var storageRef = FirebaseStorage.getInstance().reference.child("userProfileImages").child(uid!!)
-                    storageRef.putFile(imageUri!!).continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
-                        return@continueWithTask storageRef.downloadUrl
-                    }.addOnSuccessListener { uri ->
-                        var map = HashMap<String,Any>()
-                        map["image"] = uri.toString()
-                        FirebaseFirestore.getInstance().collection("profileImages").document(uid).set(map)
+
+                    if (mAuth?.currentUser != null) {
+                        binding.activitySignUpCircleimageview.setImageURI(data?.data)
+                        var imageUri = data?.data
+                        var uid = FirebaseAuth.getInstance().currentUser?.uid
+                        var storageRef =
+                            FirebaseStorage.getInstance().reference.child("userProfileImages")
+                                .child(uid!!)
+                        storageRef.putFile(imageUri!!)
+                            .continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
+                                return@continueWithTask storageRef.downloadUrl
+                            }.addOnSuccessListener { uri ->
+                                var map = HashMap<String, Any>()
+                                map["image"] = uri.toString()
+                                FirebaseFirestore.getInstance().collection("profileImages")
+                                    .document(uid).set(map)
 
 
+                            }
                     }
                 }
 
@@ -263,7 +287,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         progressDialog?.show()
 
-        val phoneNumber = "+82" + activity_sign_up_edittext_phonenumber.text.toString()
+        val phoneNumber = "+82" + binding.activitySignUpEdittextPhonenumber.text.toString()
         var code: String? = null
         FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
             phoneNumber,
@@ -280,9 +304,11 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(p0: PhoneAuthCredential) {
                     //성공시
-                    Log.d("credential",p0.toString())
+                    Log.d("credential", p0.toString())
                     Log.d("성공", "인증에 성공 했습니다.")
-                    Toast.makeText(binding.root.context, "핸드폰 인증에 성공했습니다. \n 나머지 정보를 입력해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(binding.root.context,
+                        "핸드폰 인증에 성공했습니다. \n 나머지 정보를 입력해주세요.",
+                        Toast.LENGTH_LONG).show()
                     progressDialog?.dismiss()
 
                     binding.activitySignUpEdittextPhonenumber.isClickable = false
@@ -295,9 +321,11 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
                 override fun onVerificationFailed(p0: FirebaseException) {
                     //실패시
-                    Log.d("exception",p0.toString())
+                    Log.d("exception", p0.toString())
                     Log.d("실패", "인증에 실패 했습니다.")
-                    Toast.makeText(binding.root.context, "핸드폰 인증에 실패했습니다. \n 올바른 번호를 입력해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(binding.root.context,
+                        "핸드폰 인증에 실패했습니다. \n 올바른 번호를 입력해주세요.",
+                        Toast.LENGTH_LONG).show()
 
 
 
@@ -323,14 +351,13 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     }
 
 
-    
     //UI 변경 처리
-    private fun UpdateView(){
-        Toast.makeText(this,"인증에 실패하였습니다. \n 핸드폰 번호를 다시 한번 확인해주세요." , Toast.LENGTH_LONG).show()
+    private fun UpdateView() {
+        Toast.makeText(this, "인증에 실패하였습니다. \n 핸드폰 번호를 다시 한번 확인해주세요.", Toast.LENGTH_LONG).show()
     }
 
     //스피너 ITEM 선택 리스너
-
+    /*
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         //pickToSpinnerPlant = activity_sign_up_spinner.selectedItem.toString()
         pickToSpinnerPlant = binding.activitySignUpSpinner.selectedItem.toString()
@@ -341,7 +368,9 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         TODO("Not yet implemented")
     }
 
-    fun saveData(){
+     */
+
+    fun saveData() {
         var userModel = UserModel()
 
         //주소
@@ -370,24 +399,26 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         userModel.memberRating = "0"
         userModel.policyAccept = policyAcceptCheck
 
-        FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser?.uid.toString()).document("accountInfo").set(userModel)
+        FirebaseFirestore.getInstance().collection("userInfo").document("userData")
+            .collection(FirebaseAuth.getInstance().currentUser?.uid.toString())
+            .document("accountInfo").set(userModel)
             .addOnSuccessListener {
                 System.out.println("유저 정보 저장 성공")
 
                 //회원 정보 저장
-                SharedData.prefs.setString("userInfo","yes")
+                SharedData.prefs.setString("userInfo", "yes")
 
                 //메인으로 이동하게 startActivity 작성해주세요.
-                startActivity(Intent(this,LobbyActivity::class.java))
+                startActivity(Intent(this, LobbyActivity::class.java))
                 finish()
             }.addOnFailureListener {
                 System.out.println("유저 정보 저장 실패")
             }
     }
 
-    fun signOut(){
+    fun signOut() {
 
-        var gac : GoogleApiClient? = null
+        var gac: GoogleApiClient? = null
 
         val gso =
             GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -395,7 +426,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                 .requestEmail()
                 .build()
         gac = GoogleApiClient.Builder(binding.root.context)
-            .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
+            .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
             .build()
 
         gac?.connect()
@@ -409,7 +440,7 @@ class SignUpActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
                     Auth.GoogleSignInApi.signOut(gac).setResultCallback { status ->
                         if (status.isSuccess) {
                             Log.v("알림", "로그아웃 성공")
-                            startActivity(Intent(binding.root?.context,SplashActivity::class.java))
+                            startActivity(Intent(binding.root?.context, SplashActivity::class.java))
                             finish()
                             setResult(1)
                         } else {

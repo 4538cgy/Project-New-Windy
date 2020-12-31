@@ -15,6 +15,8 @@ data class UserModel(
     var timeStamp : Any ? = null,            //가입 시간 서버기준
     var time : String ? = null,               //가입 시간 폰 기준
     var point : Int = 0,
-    var memberRating : String ? = null
+    var memberRating : String ? = null,
+    var email : String ? = null,
+    var password : String ? = null
 
 )

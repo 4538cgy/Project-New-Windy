@@ -79,7 +79,7 @@ class LoginActivity : AppCompatActivity() {
          */
 
         binding.activityLoginSignUp.setOnClickListener {
-            startActivity(Intent(this,SignUpActivity::class.java))
+            startActivity(Intent(this,SignUpActivityEmail::class.java))
             finish()
         }
 

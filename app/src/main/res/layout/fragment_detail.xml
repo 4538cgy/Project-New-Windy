@@ -24,7 +24,7 @@
             android:id="@+id/fragment_detail_textview_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="광장"
+            android:text="새 소식"
             android:textSize="25dp"
             android:textColor="#ffffff"
             android:textStyle="bold"

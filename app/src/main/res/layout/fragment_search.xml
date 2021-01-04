@@ -37,6 +37,7 @@
             android:layout_height="50dp"
             android:src="@drawable/ic_baseline_list_24"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             />
 
 

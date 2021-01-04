@@ -199,7 +199,7 @@
                     android:layout_margin="8dp"
                     android:text="이 글을 추천" />
             </LinearLayout>
-
+            <!--
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -232,6 +232,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/activity_detail_sell_view_textview_uploaded" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+            -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

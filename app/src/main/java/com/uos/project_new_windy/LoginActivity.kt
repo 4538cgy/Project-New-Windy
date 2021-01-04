@@ -92,7 +92,7 @@ class LoginActivity : AppCompatActivity() {
 
          */
         binding.activityFindPassword.setOnClickListener {
-
+            startActivity(Intent(binding.root.context,FindPasswordActivity::class.java))
         }
 
 
@@ -182,9 +182,11 @@ class LoginActivity : AppCompatActivity() {
                         }
 
                         if (SharedData.prefs.getString("userInfo", "no").equals("yes")) {
+                            SharedData.prefs.setString("emailVerify","yes")
                             startActivity(Intent(this, LobbyActivity::class.java))
 
                         } else {
+                            SharedData.prefs.setString("emailVerify","yes")
                             startActivity(Intent(this, SignUpActivity::class.java))
                         }
                         finish()

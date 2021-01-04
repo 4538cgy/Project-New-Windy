@@ -96,6 +96,8 @@
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/background_round_windy_green"
                 android:text="@string/signin_email"
+                android:textColor="@color/colorWhite"
+                android:textStyle="bold"
                 android:theme="@style/ButtonStyle" />
 
         </LinearLayout>
@@ -173,6 +175,7 @@
                 />
 
             <TextView
+
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"

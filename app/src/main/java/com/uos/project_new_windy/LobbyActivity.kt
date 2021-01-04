@@ -7,11 +7,15 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.tasks.Task
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -23,6 +27,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
 import com.uos.project_new_windy.util.FcmPush
+import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_lobby.*
 
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +43,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
         binding = DataBindingUtil.setContentView(this,R.layout.activity_lobby)
         binding.lobbyactivity = this@LobbyActivity
 
+
+
         bottom_navigtaion.setOnNavigationItemSelectedListener(this)
         ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE),1)
 
@@ -46,6 +53,17 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
         bottom_navigtaion.selectedItemId = R.id.action_home
         registerPushToken()
 
+
+
+        if (SharedData.prefs.getString("emailVerify","no").equals("no")){
+            emailVerifyPage()
+        }
+    }
+
+    fun emailVerifyPage(){
+        startActivity(Intent(binding.root.context,EmailVerifyActivity::class.java))
+
+        finish()
     }
 
     override fun onStop() {
@@ -68,6 +86,7 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
         }
 
     }
+
 
 
 

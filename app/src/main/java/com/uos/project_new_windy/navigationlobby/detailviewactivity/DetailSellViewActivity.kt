@@ -1,6 +1,8 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -107,16 +109,52 @@ class DetailSellViewActivity : AppCompatActivity() {
 
 
         //댓글 리사이클러뷰 초기화
-        binding.activityDetailSellViewRecyclerComment.adapter = DetailContentCommentRecyclerViewAdapter()
-        binding.activityDetailSellViewRecyclerComment.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
+        //binding.activityDetailSellViewRecyclerComment.adapter = DetailContentCommentRecyclerViewAdapter()
+        //binding.activityDetailSellViewRecyclerComment.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
         //각종 버튼 초기화
 
         //채팅으로 거래
         binding.activityDetailSellViewButtonChat.setOnClickListener {
 
             if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
-                System.out.println("채팅함을 열었습니다")
-                startActivity(Intent(binding.root.context, ChatRoomList::class.java))
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("판매를 종료하시겠습니까??")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+
+                        FirebaseFirestore.getInstance().collection("contents").document("sell")
+                            .collection("data").document(
+                                contentUid!!
+                            )
+                            .delete()
+                            .addOnFailureListener {
+                                //실패
+                                System.out.println("삭제 실패")
+                            }.addOnSuccessListener {
+                                //성공
+                                System.out.println("삭제 성공")
+                                /*
+                                var intent = Intent(this, LobbyActivity::class.java)
+
+                                //startActivity(Intent(this, LobbyActivity::class.java))
+                                startActivity(intent)
+                                finish()
+
+                                 */
+
+
+                            }
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }else {
 
 

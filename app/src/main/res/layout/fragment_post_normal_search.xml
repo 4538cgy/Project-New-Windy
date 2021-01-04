@@ -76,6 +76,7 @@
                     android:background="@drawable/background_round_white"
                     android:layout_margin="12dp"
                     android:elevation="6dp"
+                    android:visibility="gone"
 
                     >
 
@@ -87,6 +88,7 @@
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
+
                         />
 
                     <TextView

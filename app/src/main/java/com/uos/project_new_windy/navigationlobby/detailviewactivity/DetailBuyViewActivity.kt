@@ -1,6 +1,8 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -21,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
+import com.uos.project_new_windy.chat.ChatActivity
+import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.databinding.ActivityDetailBuyViewBinding
 import com.uos.project_new_windy.model.AlarmDTO
@@ -79,6 +83,8 @@ class DetailBuyViewActivity : AppCompatActivity() {
         explain = intent.getStringExtra("explain")
         //userNickName = intent.getStringExtra("userNickName")
 
+
+
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
@@ -115,7 +121,53 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
         //채팅으로 거래
         binding.activityDetailBuyViewButtonChat.setOnClickListener {
+            if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+                var builder = AlertDialog.Builder(binding.root.context)
 
+                builder.apply {
+                    setMessage("구매를 종료하시겠습니까??")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        FirebaseFirestore.getInstance().collection("contents").document("buy")
+                            .collection("data").document(
+                                contentUid!!
+                            )
+                            .delete()
+                            .addOnFailureListener {
+                                //실패
+                                System.out.println("삭제 실패")
+                            }.addOnSuccessListener {
+                                //성공
+                                System.out.println("삭제 성공")
+                                /*
+                                var intent = Intent(this, LobbyActivity::class.java)
+
+                                //startActivity(Intent(this, LobbyActivity::class.java))
+                                startActivity(intent)
+                                finish()
+
+                                 */
+
+
+                            }
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }else {
+
+
+                System.out.println("채팅 보내기를 열었습니다.")
+                var intent = Intent(binding.root.context, ChatActivity::class.java)
+                intent.apply {
+                    putExtra("destinationUid", uid)
+                }
+                startActivity(intent)
+            }
         }
 
         //추천
@@ -201,7 +253,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
 
         System.out.println("좋아요 이벤트 ㅇㅅㅇ")
-        var tsDoc = firestore?.collection("contents")?.document("sell")?.collection("data")?.document(contentUid!!)
+        var tsDoc = firestore?.collection("contents")?.document("buy")?.collection("data")?.document(contentUid!!)
         firestore?.runTransaction{ transaction ->
 
 

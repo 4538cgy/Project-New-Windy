@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -65,6 +66,8 @@ class SignUpActivityEmail : AppCompatActivity() {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
+        binding.activitySignUpEmailEdittextAddress.isEnabled = false
+
 
         //핸드폰 인증
         binding.activitySignUpEmailButtonAuthToPhone.setOnClickListener {
@@ -111,9 +114,89 @@ class SignUpActivityEmail : AppCompatActivity() {
 
             println("회원 가입 버튼 클릭")
             //빈칸 다 채웠는지 확인 후 사진 부터 업로드
-            progressSignUpProcess?.show()
-            createUser()
+            if (binding.activitySignUpEmailEdittextPassword.length() < 4 || binding.activitySignUpEmailEdittextPassword.length() > 16)
+            {
+                Toast.makeText(binding.root.context, "비밀번호는 4자 이상 16자 미만으로 설정해주세요." ,Toast.LENGTH_LONG).show()
+            }else if (!binding.activitySignUpEmailEdittextEmail.text.contains("@")){
+                Toast.makeText(binding.root.context, "이메일 형식이 올바르지 않습니다.." ,Toast.LENGTH_LONG).show()
+            }else if (binding.activitySignUpEmailEdittextPhonenumber.text.contains("-"))
+            {
+                Toast.makeText(binding.root.context, "핸드폰 번호는 숫자만 입력해주세요." ,Toast.LENGTH_LONG).show()
+            }else if (binding.activitySignUpEmailEdittextDetailAddress.text.length < 2){
+                Toast.makeText(binding.root.context, "상세주소를 정확히 입력해주세요." ,Toast.LENGTH_LONG).show()
+            }else if(binding.activitySignUpEmailEdittextNickname.text.length < 2){
+                Toast.makeText(binding.root.context, "별명은 두글자 이상으로 입력해주세요." ,Toast.LENGTH_LONG).show()
+            }else if(phoneVerify == false) {
+                Toast.makeText(binding.root.context, "핸드폰 인증을 진행해주세요." ,Toast.LENGTH_LONG).show()
+
+            }else if(imageUri == null) {
+                Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
+
+            }else if(binding.activitySignUpEmailEdittextAddress.text.length < 2){
+                Toast.makeText(binding.root.context, "주소를 입력해주세요." ,Toast.LENGTH_LONG).show()
+
+            }
+            
+            else {
+                progressSignUpProcess?.show()
+                createUser()
+            }
         }
+
+        //이메일 인증 발송
+        /*
+        binding.activitySignUpEmailButtonAuthToEmail.setOnClickListener {
+            if (!binding.activitySignUpEmailEdittextEmail.text.contains("@")){
+                Toast.makeText(binding.root.context, "이메일 형식이 올바르지 않습니다." ,Toast.LENGTH_LONG).show()
+            }else {
+                sendEmailVerify(binding.activitySignUpEmailEdittextEmail.text.toString())
+            }
+
+        }
+
+         */
+
+
+    }
+
+
+
+
+
+    fun sendEmailVerify(string : String){
+
+        val actionCodeSettings = ActionCodeSettings.newBuilder()
+
+        val build = actionCodeSettings.apply {
+            //setUrl("https://uos.page.link/n3UL")
+            setUrl("http://noreply@project-new-windy.firebaseapp.com/verify")
+            setHandleCodeInApp(true)
+            setAndroidPackageName("com.uos.project_new_windy", true, "12")
+        }.build()
+
+        FirebaseAuth.getInstance().sendSignInLinkToEmail(string, build)
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    Toast.makeText(binding.root.context, "인증 이메일이 발송되었습니다. \n 앱을 종료하지마시고 \n 확인 후 가입을 계속 해주세요.." ,Toast.LENGTH_LONG).show()
+                }
+            }?.addOnFailureListener {
+                Toast.makeText(binding.root.context, "인증 메일 발송에 실패하였습니다. \n 이메일을 다시 확인해주세요." ,Toast.LENGTH_LONG).show()
+                println(it.toString() + " 으아아아아앜 ")
+            }
+
+        /*
+        mAuth.useAppLanguage()
+
+        mAuth.currentUser?.sendEmailVerification()
+            ?.addOnCompleteListener { task ->
+                if (task.isSuccessful){
+                    Toast.makeText(binding.root.context, "인증 이메일이 발송되었습니다. \n 앱을 종료하지마시고 \n 확인 후 가입을 계속 해주세요.." ,Toast.LENGTH_LONG).show()
+                }
+            }?.addOnFailureListener {
+                Toast.makeText(binding.root.context, "인증 메일 발송에 실패하였습니다. \n 이메일을 다시 확인해주세요." ,Toast.LENGTH_LONG).show()
+            }
+
+         */
     }
 
     //핸드폰 자동인증 처리
@@ -207,12 +290,15 @@ class SignUpActivityEmail : AppCompatActivity() {
                                 uploadPhoto()
                             }else{
                                 //로그인 실패
-
+                                Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다." , Toast.LENGTH_LONG).show()
+                                progressSignUpProcess?.dismiss()
                             }
                         }
 
                 }else{
                     //회원 생성 실패
+                    Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다." , Toast.LENGTH_LONG).show()
+                    progressSignUpProcess?.dismiss()
                 }
             }
     }
@@ -249,7 +335,10 @@ class SignUpActivityEmail : AppCompatActivity() {
         userModel.totalAddress = binding.activitySignUpEmailEdittextAddress.text.toString()
         //상세주소
         userModel.addressDetail = binding.activitySignUpEmailEdittextDetailAddress.text.toString()
-
+        //유저 이메일
+        userModel.email = binding.activitySignUpEmailEdittextEmail.text.toString()
+        //비밀번호
+        userModel.password = binding.activitySignUpEmailEdittextPassword.text.toString()
         //세부주소
         userModel.address = address
         userModel.building = building
@@ -277,7 +366,7 @@ class SignUpActivityEmail : AppCompatActivity() {
                 progressSignUpProcess?.dismiss()
                 //회원 정보 저장
                 SharedData.prefs.setString("userInfo", "yes")
-
+                SharedData.prefs.setString("emailVerify","no")
                 //메인으로 이동하게 startActivity 작성해주세요.
                 startActivity(Intent(this, LobbyActivity::class.java))
                 finish()

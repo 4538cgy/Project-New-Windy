@@ -14,7 +14,7 @@ import com.uos.project_new_windy.databinding.FragmentSearchBinding
 import com.uos.project_new_windy.navigationlobby.fragmentsearch.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
-const val NUM_PAGES = 3
+const val NUM_PAGES = 2
 private const val ARG_OBJECT = "object"
 
 class SearchFragment : Fragment() {
@@ -50,22 +50,23 @@ class SearchFragment : Fragment() {
 
 
             when(position){
+
                 0 ->
                 {
-                    tab.text = "농업 뉴스"
-                }
-                1 ->
-                {
+                    //tab.text = "농업 뉴스"
                     tab.text = "구매 게시판 검색"
                 }
-                2 ->
+
+
+                1 ->
                 {
                     tab.text = "새 소식 검색"
                 }
-                3 ->
+                2 ->
                 {
                     tab.text = "판매 게시판 검색"
                 }
+
             }
 
 
@@ -81,7 +82,7 @@ class SearchFragment : Fragment() {
 
     inner class DemoCollectionAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
-        override fun getItemCount(): Int = 4
+        override fun getItemCount(): Int = 3
 
         override fun createFragment(position: Int): Fragment {
             // Return a NEW fragment instance in createFragment(int)
@@ -91,22 +92,22 @@ class SearchFragment : Fragment() {
             fragment = MainSearchFragment()
 
             when(position){
+
                 0 ->
-                {
-                    fragment = MainSearchFragment()
-                }
-                1 ->
                 {
                     fragment = PostBuySearch()
                 }
-                2 ->
+
+
+                1 ->
                 {
                     fragment = PostNormalSearch()
                 }
-                3 ->
+                2 ->
                 {
                     fragment = PostSellSearch()
                 }
+
             }
             /*
             val fragment = MainSearchFragment()

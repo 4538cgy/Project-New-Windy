@@ -83,6 +83,7 @@
                     android:layout_margin="12dp"
                     android:background="@drawable/background_round_white"
                     android:elevation="6dp"
+                    android:visibility="gone"
                     >
                     <ImageView
                         android:layout_width="match_parent"

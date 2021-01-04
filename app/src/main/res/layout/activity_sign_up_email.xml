@@ -40,12 +40,12 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="6dp"
+
                 android:background="@drawable/background_white_stroke_gray_4dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/activity_sign_up_email_button_auth_to_email"
+                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <EditText
@@ -57,7 +57,7 @@
                     android:hint="이메일 주소" />
 
             </com.google.android.material.textfield.TextInputLayout>
-
+            <!--
             <Button
                 android:id="@+id/activity_sign_up_email_button_auth_to_email"
                 android:layout_width="100dp"
@@ -71,7 +71,7 @@
                 app:layout_constraintTop_toTopOf="parent"
 
                 />
-
+            -->
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

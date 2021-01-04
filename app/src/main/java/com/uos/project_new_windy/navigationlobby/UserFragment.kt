@@ -639,7 +639,7 @@ class UserFragment : Fragment() {
 
     }
 
-    fun signOut(){
+     fun signOut(){
         gac?.connect()
 
 

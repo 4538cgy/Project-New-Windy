@@ -75,13 +75,15 @@ class SignUpActivityEmail : AppCompatActivity() {
             binding.activitySignUpEmailEdittextPhonenumber.isEnabled = false
             binding.activitySignUpEmailButtonAuthToPhone.isEnabled = false
 
+            println("휴대폰 인증 버튼 눌림")
 
             Toast.makeText(binding.root.context, "인증이 일시적으로 제한되었습니다. \n 인증 허용", Toast.LENGTH_LONG)
                 .show()
             phoneVerify = true
 
             if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEmailEdittextPhonenumber.text.toString())) {
-                //AutoRecieveThePhoneVerifyCode()
+                println("사기꾼 조회 완료료")
+               AutoRecieveThePhoneVerifyCode()
             } else {
                 Toast.makeText(binding.root.context,
                     "가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",
@@ -107,6 +109,7 @@ class SignUpActivityEmail : AppCompatActivity() {
         //회원 가입 완료
         binding.activitySignUpEmailButtonAccept.setOnClickListener {
 
+            println("회원 가입 버튼 클릭")
             //빈칸 다 채웠는지 확인 후 사진 부터 업로드
             progressSignUpProcess?.show()
             createUser()
@@ -117,7 +120,7 @@ class SignUpActivityEmail : AppCompatActivity() {
     private fun AutoRecieveThePhoneVerifyCode() {
 
         progressDialogPhoneVerify?.show()
-
+        println("핸드폰 자동 인증 시작")
         val phoneNumber = "+82" + binding.activitySignUpEmailEdittextPhonenumber.text.toString()
         var code: String? = null
         FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
@@ -187,16 +190,19 @@ class SignUpActivityEmail : AppCompatActivity() {
     }
 
     fun createUser(){
+        println("유저 생성 시작")
         var email = binding.activitySignUpEmailEdittextEmail.text.toString()
         var password = binding.activitySignUpEmailEdittextPassword.text.toString()
 
         mAuth.createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener {
                 if (it.isSuccessful){
+                    println("유저 생성 성공")
                     //회원 생성 성공
                     mAuth.signInWithEmailAndPassword(email,password)
                         .addOnCompleteListener {
                             if(it.isSuccessful){
+                                println("로그인 성공")
                                 //로그인 성공
                                 uploadPhoto()
                             }else{
@@ -212,6 +218,7 @@ class SignUpActivityEmail : AppCompatActivity() {
     }
 
     fun uploadPhoto(){
+        println("프로필 사진 업로드 시작")
         //사진 저장
         var uid = FirebaseAuth.getInstance().currentUser?.uid
         var storageRef =
@@ -221,6 +228,7 @@ class SignUpActivityEmail : AppCompatActivity() {
             .continueWithTask { task: Task<UploadTask.TaskSnapshot> ->
                 return@continueWithTask storageRef.downloadUrl
             }.addOnSuccessListener { uri ->
+                println("프로필 사진 업로드 성공")
                 var map = HashMap<String, Any>()
                 map["image"] = uri.toString()
                 FirebaseFirestore.getInstance().collection("profileImages")
@@ -233,7 +241,7 @@ class SignUpActivityEmail : AppCompatActivity() {
     }
 
     fun userDataSave(){
-
+        println("DB에 회원정보 저장 시작")
         var userModel = UserModel()
 
         //회원정보 DB에 저장

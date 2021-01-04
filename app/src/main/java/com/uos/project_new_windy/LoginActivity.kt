@@ -16,6 +16,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.databinding.ActivityLoginBinding
+import com.uos.project_new_windy.policy.PolicyActivity
 import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -103,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
 
          */
         binding.activityLoginPolicy.setOnClickListener {
-
+            startActivity(Intent(this,PolicyActivity::class.java))
         }
 
     }

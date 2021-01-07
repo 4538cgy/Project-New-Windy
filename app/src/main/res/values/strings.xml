@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">New Windy</string>
+    <string name="app_name">신바람 빌리지</string>
 
     <!-- Sign In -->
     <string name="email">이메일 혹은 핸드폰번호</string>

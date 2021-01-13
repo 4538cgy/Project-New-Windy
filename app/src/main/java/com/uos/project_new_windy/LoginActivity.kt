@@ -1,8 +1,11 @@
 package com.uos.project_new_windy
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.auth.api.Auth
@@ -10,21 +13,25 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.FirebaseException
+import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.databinding.ActivityLoginBinding
+import com.uos.project_new_windy.model.log.PhoneAuthLog
 import com.uos.project_new_windy.policy.PolicyActivity
+import com.uos.project_new_windy.util.ProgressDialogLoadingVerifyPhone
 import com.uos.project_new_windy.util.SharedData
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_login.*
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
 
     var auth : FirebaseAuth?= null
     var googleSignInClient : GoogleSignInClient? = null
     var GOOGLE_LOGIN_CODE = 9001
+    var progressDialog: ProgressDialogLoadingVerifyPhone? = null
 
     lateinit var binding : ActivityLoginBinding
 
@@ -35,6 +42,14 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
+          //로딩 초기화
+        progressDialog = ProgressDialogLoadingVerifyPhone(binding.root.context)
+
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
         
         //구글 로그인 옵션 활성화
         var gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -52,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
          */
         binding.emailLoginButton.setOnClickListener {
-            signinEmail()
+            signinPhone()
         }
 
         //구글 로그인
@@ -80,7 +95,7 @@ class LoginActivity : AppCompatActivity() {
          */
 
         binding.activityLoginSignUp.setOnClickListener {
-            startActivity(Intent(this,SignUpActivityEmail::class.java))
+            startActivity(Intent(this,SignUpOnlyPhone::class.java))
             finish()
         }
 
@@ -150,7 +165,125 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+    fun signinPhone(){
+        //핸드폰 자동인증 처리
 
+
+            progressDialog?.show()
+
+            val phoneNumber = "+82" + binding.emailEdittext.text.toString()
+            var code: String? = null
+            FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
+                phoneNumber,
+                code
+            )
+
+            //auth.useAppLanguage()
+
+            PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,
+                120,
+                TimeUnit.SECONDS,
+                this,
+                object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                    override fun onVerificationCompleted(p0: PhoneAuthCredential) {
+                        //성공시
+                        Log.d("credential", p0.toString())
+                        Log.d("성공", "인증에 성공 했습니다.")
+                        Toast.makeText(binding.root.context,
+                            "핸드폰 인증에 성공했습니다.",
+                            Toast.LENGTH_LONG).show()
+                        progressDialog?.dismiss()
+
+                        FirebaseAuth.getInstance().signInWithCredential(p0).addOnFailureListener {
+
+                            var log = PhoneAuthLog()
+                            log.log = p0.toString()
+                            log.serverTimestamp = System.currentTimeMillis()
+                            log.uid = binding.emailEdittext.text.toString()
+                            log.timestamp = TimeUtil().getTime()
+                            FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("LoginLog").document().set(log)
+                                .addOnFailureListener {
+                                    println("로그 저장 실패"+ it.toString())
+                                }.addOnCompleteListener {
+                                    println("로그 저장 성공"+ it.toString())
+                                }
+                        }.addOnCompleteListener {
+                            startActivity(Intent(binding.root.context,LobbyActivity::class.java))
+                            finish()
+
+                            var log = PhoneAuthLog()
+                            log.log = p0.toString()
+                            log.serverTimestamp = System.currentTimeMillis()
+                            log.uid = binding.emailEdittext.text.toString()
+                            log.timestamp = TimeUtil().getTime()
+                            FirebaseFirestore.getInstance().collection("Log").document("SuccessLog").collection("LoginLog").document().set(log)
+                                .addOnFailureListener {
+                                    println("로그 저장 실패"+ it.toString())
+                                }.addOnCompleteListener {
+                                    println("로그 저장 성공"+ it.toString())
+                                }
+                        }
+
+
+                    }
+
+                    override fun onVerificationFailed(p0: FirebaseException) {
+                        //실패시
+                        Log.d("exception", p0.toString())
+                        Log.d("실패", "인증에 실패 했습니다.")
+                        Toast.makeText(binding.root.context,
+                            "핸드폰 인증에 실패했습니다..",
+                            Toast.LENGTH_LONG).show()
+
+                        var log = PhoneAuthLog()
+                        log.log = p0.toString()
+                        log.serverTimestamp = System.currentTimeMillis()
+                        log.uid = binding.emailEdittext.text.toString()
+                        log.timestamp = TimeUtil().getTime()
+
+                        FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
+                            .addOnFailureListener {
+                                println("로그 저장 실패"+ it.toString())
+                            }.addOnCompleteListener {
+                                println("로그 저장 성공"+ it.toString())
+                            }
+
+
+
+                        progressDialog?.dismiss()
+                    }
+
+                    override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
+                        super.onCodeSent(p0, p1)
+                        Log.d("코드가 전송됨", p0.toString())
+                    }
+
+                    override fun onCodeAutoRetrievalTimeOut(p0: String) {
+                        super.onCodeAutoRetrievalTimeOut(p0)
+                        progressDialog?.dismiss()
+
+                        var log = PhoneAuthLog()
+                        log.log = p0.toString()
+                        log.serverTimestamp = System.currentTimeMillis()
+                        log.uid = binding.emailEdittext.text.toString()
+                        log.timestamp = TimeUtil().getTime()
+
+                        FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
+                            .addOnFailureListener {
+                                println("로그 저장 실패"+ it.toString())
+                            }.addOnCompleteListener {
+                                println("로그 저장 성공"+ it.toString())
+                            }
+
+                    }
+
+                }
+            )
+
+
+    }
+    /*
     fun signinEmail() {
         auth?.signInWithEmailAndPassword( binding.emailEdittext.text.toString()
             , binding.passwordEdittext.text.toString()
@@ -165,6 +298,8 @@ class LoginActivity : AppCompatActivity() {
             }
         }
     }
+
+     */
 
     fun moveMainPage(user: FirebaseUser?) {
         if (user != null) {

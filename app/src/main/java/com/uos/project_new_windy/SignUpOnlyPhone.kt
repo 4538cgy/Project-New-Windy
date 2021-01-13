@@ -8,12 +8,10 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
-import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
@@ -21,7 +19,7 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
-import com.uos.project_new_windy.databinding.ActivitySignUpEmailBinding
+import com.uos.project_new_windy.databinding.ActivitySignUpOnlyPhoneBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.model.log.PhoneAuthLog
 import com.uos.project_new_windy.navigationlobby.UserFragment
@@ -29,30 +27,34 @@ import com.uos.project_new_windy.policy.PolicyActivity
 import com.uos.project_new_windy.util.*
 import java.util.concurrent.TimeUnit
 
-class SignUpActivityEmail : AppCompatActivity() {
+class SignUpOnlyPhone : AppCompatActivity() {
 
-    lateinit var binding: ActivitySignUpEmailBinding
+    lateinit var binding : ActivitySignUpOnlyPhoneBinding
+
+    //갤러리에서 가져온 사진 정보 저장 변수
+    var imageUri : Uri? = null
+
+    var policyAcceptCheck = false
 
     var mAuth = FirebaseAuth.getInstance()
-    var imageUri : Uri? = null
-    var policyAcceptCheck = false
-    var phoneVerify = false
+
     var progressDialogPhoneVerify: ProgressDialogLoadingVerifyPhone? = null
-    var progressSignUpProcess : ProgressDialogLoadingPost ? = null
+    var progressSignUpProcess : ProgressDialogLoadingPost? = null
+
 
     /*
-    카카오 지번 검색에서 가져온 데이터들 변수
-     */
+카카오 지번 검색에서 가져온 데이터들 변수
+ */
     var zipCode: String? = null
     var address: String? = null
     var building: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up_email)
-        binding.activitysignupemail = this@SignUpActivityEmail
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_sign_up_only_phone)
+        binding.activitysignuponlyphone = this@SignUpOnlyPhone
 
-        //이메일 인증
+
         //로딩 초기화
         progressDialogPhoneVerify = ProgressDialogLoadingVerifyPhone(binding.root.context)
         progressSignUpProcess = ProgressDialogLoadingPost(binding.root.context)
@@ -62,40 +64,24 @@ class SignUpActivityEmail : AppCompatActivity() {
         //프로그레스 꺼짐 방지
         progressDialogPhoneVerify!!.setCancelable(false)
         progressSignUpProcess!!.setCancelable(false)
+
+
         //주소 검색
-        binding.activitySignUpEmailButtonSearchAddress.setOnClickListener {
+        binding.activitySignUpOnlyPhoneButtonSearchAddress.setOnClickListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
-        binding.activitySignUpEmailEdittextAddress.isEnabled = false
 
-
-        //핸드폰 인증
-        binding.activitySignUpEmailButtonAuthToPhone.setOnClickListener {
-
-            binding.activitySignUpEmailEdittextPhonenumber.isClickable = false
-            binding.activitySignUpEmailEdittextPhonenumber.isFocusable = false
-            binding.activitySignUpEmailEdittextPhonenumber.isFocusableInTouchMode = false
-            binding.activitySignUpEmailEdittextPhonenumber.isEnabled = false
-            binding.activitySignUpEmailButtonAuthToPhone.isEnabled = false
-
-            println("휴대폰 인증 버튼 눌림")
-
-
-            phoneVerify = true
-
-            if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEmailEdittextPhonenumber.text.toString())) {
-                println("사기꾼 조회 완료료")
-               //AutoRecieveThePhoneVerifyCode()
-            } else {
-                Toast.makeText(binding.root.context,
-                    "가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",
-                    Toast.LENGTH_LONG).show()
-            }
+        //이용약관
+        binding.activitySignUpOnlyPhoneTextviewPolicy.setOnClickListener {
+            startActivity(Intent(this, PolicyActivity::class.java))
+            policyAcceptCheck = true
         }
 
+
+
         //프로필 이미지 가져오기
-        binding.activitySignUpEmailCircleimageview.setOnClickListener {
+        binding.activitySignUpOnlyPhoneCircleimageview.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
             startActivityForResult(photoPickerIntent,
@@ -103,85 +89,48 @@ class SignUpActivityEmail : AppCompatActivity() {
             )
         }
 
-        //이용약관
-        binding.activitySignUpEmailTextviewPolicy.setOnClickListener {
-            startActivity(Intent(this,PolicyActivity::class.java))
-            policyAcceptCheck = true
-        }
-
         //회원 가입 완료
-        binding.activitySignUpEmailButtonAccept.setOnClickListener {
+        binding.activitySignUpOnlyPhoneButtonAccept.setOnClickListener {
 
             println("회원 가입 버튼 클릭")
             //빈칸 다 채웠는지 확인 후 사진 부터 업로드
-            if (binding.activitySignUpEmailEdittextPassword.length() < 6 || binding.activitySignUpEmailEdittextPassword.length() > 16)
-            {
-                Toast.makeText(binding.root.context, "비밀번호는 7자 이상 12자 미만으로 설정해주세요." ,Toast.LENGTH_LONG).show()
-            }else if (!binding.activitySignUpEmailEdittextEmail.text.contains("@")){
-                Toast.makeText(binding.root.context, "이메일 형식이 올바르지 않습니다.." ,Toast.LENGTH_LONG).show()
-            }else if (binding.activitySignUpEmailEdittextPhonenumber.text.contains("-"))
+            if (binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.contains("-"))
             {
                 Toast.makeText(binding.root.context, "핸드폰 번호는 숫자만 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if (binding.activitySignUpEmailEdittextDetailAddress.text.length < 2){
+            }else if (binding.activitySignUpOnlyPhoneEdittextDetailAddress.text.length < 2){
                 Toast.makeText(binding.root.context, "상세주소를 정확히 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if(binding.activitySignUpEmailEdittextNickname.text.length < 2){
+            }else if(binding.activitySignUpOnlyPhoneEdittextNickname.text.length < 2){
                 Toast.makeText(binding.root.context, "별명은 두글자 이상으로 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if(phoneVerify == false) {
-                Toast.makeText(binding.root.context, "핸드폰 인증을 진행해주세요." ,Toast.LENGTH_LONG).show()
-
             }else if(imageUri == null) {
                 Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
 
-            }else if(binding.activitySignUpEmailEdittextAddress.text.length < 2){
+            }else if(binding.activitySignUpOnlyPhoneEdittextAddress.text.length < 2){
                 Toast.makeText(binding.root.context, "주소를 입력해주세요." ,Toast.LENGTH_LONG).show()
 
             }
-            
+
             else {
                 progressSignUpProcess?.show()
-                createUser()
+                if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString())) {
+                    println("사기꾼 조회 완료료")
+                    AutoRecieveThePhoneVerifyCode()
+                } else {
+                    Toast.makeText(binding.root.context,
+                        "가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",
+                        Toast.LENGTH_LONG).show()
+                }
             }
         }
 
-
-
-
     }
 
-
-
-
-
-    fun sendEmailVerify(string : String){
-
-        val actionCodeSettings = ActionCodeSettings.newBuilder()
-
-        val build = actionCodeSettings.apply {
-            //setUrl("https://uos.page.link/n3UL")
-            setUrl("http://noreply@project-new-windy.firebaseapp.com/verify")
-            setHandleCodeInApp(true)
-            setAndroidPackageName("com.uos.project_new_windy", true, "12")
-        }.build()
-
-        FirebaseAuth.getInstance().sendSignInLinkToEmail(string, build)
-            ?.addOnCompleteListener { task ->
-                if (task.isSuccessful){
-                    Toast.makeText(binding.root.context, "인증 이메일이 발송되었습니다. \n 앱을 종료하지마시고 \n 확인 후 가입을 계속 해주세요.." ,Toast.LENGTH_LONG).show()
-                }
-            }?.addOnFailureListener {
-                Toast.makeText(binding.root.context, "인증 메일 발송에 실패하였습니다. \n 이메일을 다시 확인해주세요." ,Toast.LENGTH_LONG).show()
-                println(it.toString() + " 으아아아아앜 ")
-            }
-
-
-    }
 
     //핸드폰 자동인증 처리
     private fun AutoRecieveThePhoneVerifyCode() {
 
         progressDialogPhoneVerify?.show()
         println("핸드폰 자동 인증 시작")
-        val phoneNumber = "+82" + binding.activitySignUpEmailEdittextPhonenumber.text.toString()
+        val phoneNumber = "+82" + binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
         var code: String? = null
         FirebaseAuth.getInstance().firebaseAuthSettings.setAutoRetrievedSmsCodeForPhoneNumber(
             phoneNumber,
@@ -201,18 +150,53 @@ class SignUpActivityEmail : AppCompatActivity() {
                     Log.d("credential", p0.toString())
                     Log.d("성공", "인증에 성공 했습니다.")
                     Toast.makeText(binding.root.context,
-                        "핸드폰 인증에 성공했습니다. \n 나머지 정보를 입력해주세요.",
+                        "핸드폰 번호 인증에 성공했습니다.",
                         Toast.LENGTH_LONG).show()
                     progressDialogPhoneVerify?.dismiss()
 
-                    binding.activitySignUpEmailEdittextPhonenumber.isClickable = false
-                    binding.activitySignUpEmailEdittextPhonenumber.isFocusable = false
-                    binding.activitySignUpEmailEdittextPhonenumber.isFocusableInTouchMode = false
-                    binding.activitySignUpEmailEdittextPhonenumber.isEnabled = false
-                    binding.activitySignUpEmailButtonAuthToPhone.isEnabled = false
-                    phoneVerify = true
+                    binding.activitySignUpOnlyPhoneEdittextPhonenumber.isClickable = false
+                    binding.activitySignUpOnlyPhoneEdittextPhonenumber.isFocusable = false
+                    binding.activitySignUpOnlyPhoneEdittextPhonenumber.isFocusableInTouchMode = false
+                    binding.activitySignUpOnlyPhoneEdittextPhonenumber.isEnabled = false
 
-                    FirebaseAuth.getInstance().signInWithCredential(p0)
+
+
+                    FirebaseAuth.getInstance().signInWithCredential(p0).addOnCompleteListener {
+
+                        Toast.makeText(binding.root.context,"회원가입 성공",Toast.LENGTH_LONG).show()
+
+                        var log = PhoneAuthLog()
+                        log.log = p0.toString()
+                        log.serverTimestamp = System.currentTimeMillis()
+                        log.uid = binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
+                        log.timestamp = TimeUtil().getTime()
+
+                        FirebaseFirestore.getInstance().collection("Log").document("SuccessLog").collection("SignInLog").document().set(log)
+                            .addOnFailureListener {
+                                println("로그 저장 실패" + it.toString())
+                            }.addOnCompleteListener {
+                                println("로그 저장 성공"+ it.toString())
+                            }
+                        //회원 가입 성공시 회원 정보 저장
+                        uploadPhoto()
+
+                    }.addOnFailureListener {
+                        Toast.makeText(binding.root.context,"회원가입 실패",Toast.LENGTH_LONG).show()
+
+                        var log = PhoneAuthLog()
+                        log.log = p0.toString()
+                        log.serverTimestamp = System.currentTimeMillis()
+                        log.uid = binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
+                        log.timestamp = TimeUtil().getTime()
+
+                        FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("SignInLog").document().set(log)
+                            .addOnFailureListener {
+                                println("로그 저장 실패" + it.toString())
+                            }.addOnCompleteListener {
+                                println("로그 저장 성공"+ it.toString())
+                            }
+
+                    }
                 }
 
                 override fun onVerificationFailed(p0: FirebaseException) {
@@ -227,7 +211,7 @@ class SignUpActivityEmail : AppCompatActivity() {
                     var log = PhoneAuthLog()
                     log.log = p0.toString()
                     log.serverTimestamp = System.currentTimeMillis()
-                    log.uid = binding.activitySignUpEmailEdittextPhonenumber.text.toString()
+                    log.uid = binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
                     log.timestamp = TimeUtil().getTime()
 
                     FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
@@ -253,7 +237,7 @@ class SignUpActivityEmail : AppCompatActivity() {
                     var log = PhoneAuthLog()
                     log.log = p0.toString()
                     log.serverTimestamp = System.currentTimeMillis()
-                    log.uid = binding.activitySignUpEmailEdittextPhonenumber.text.toString()
+                    log.uid = binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
                     log.timestamp = TimeUtil().getTime()
 
                     FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
@@ -263,74 +247,12 @@ class SignUpActivityEmail : AppCompatActivity() {
                             println("로그 저장 성공"+ it.toString())
                         }
 
-                    UpdateView()
+
                 }
 
             }
         )
 
-    }
-
-    fun logSave(collection : String , log2 : String, subject : String){
-
-        var log = PhoneAuthLog()
-        log.log = log2.toString()
-        log.serverTimestamp = System.currentTimeMillis()
-        log.uid = binding.activitySignUpEmailEdittextPhonenumber.text.toString()
-        log.timestamp = TimeUtil().getTime()
-
-        FirebaseFirestore.getInstance().collection("Log").document(subject).collection(collection).document().set(log)
-            .addOnFailureListener {
-                println("로그 저장 실패"+ it.toString())
-            }.addOnCompleteListener {
-                println("로그 저장 성공"+ it.toString())
-            }
-    }
-
-    //UI 변경 처리
-    private fun UpdateView() {
-        Toast.makeText(this, "인증에 실패하였습니다. \n 핸드폰 번호를 다시 한번 확인해주세요.", Toast.LENGTH_LONG).show()
-    }
-
-    fun createUser(){
-        println("유저 생성 시작")
-        var email = binding.activitySignUpEmailEdittextEmail.text.toString()
-        var password = binding.activitySignUpEmailEdittextPassword.text.toString()
-
-        mAuth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener {
-                if (it.isSuccessful){
-                    println("유저 생성 성공")
-                    //회원 생성 성공
-                    mAuth.signInWithEmailAndPassword(email,password)
-                        .addOnCompleteListener {
-                            if(it.isSuccessful){
-                                println("로그인 성공")
-                                //로그인 성공
-                                uploadPhoto()
-                                logSave("EmailAuthLog",it.toString(),"SuccessLog")
-                            }else{
-                                //로그인 실패
-                                Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다." , Toast.LENGTH_LONG).show()
-                                progressSignUpProcess?.dismiss()
-                                logSave("EmailAuthLog",it.toString(),"FailLog")
-                            }
-                        }.addOnFailureListener {
-                            Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다."  , Toast.LENGTH_LONG).show()
-                            logSave("EmailAuthLog",it.toString(),"FailLog")
-                        }
-
-                }else{
-                    //회원 생성 실패
-                    Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다."  , Toast.LENGTH_LONG).show()
-                    progressSignUpProcess?.dismiss()
-                    logSave("EmailAuthLog",it.toString(),"FailLog")
-                }
-            }.addOnFailureListener {
-                Toast.makeText(binding.root.context, "회원 가입에 실패하였습니다. \n 자세한 문의는 고객센터로 연락부탁드립니다."  , Toast.LENGTH_LONG).show()
-                logSave("EmailAuthLog",it.toString(),"FailLog")
-
-            }
     }
 
     fun uploadPhoto(){
@@ -349,12 +271,13 @@ class SignUpActivityEmail : AppCompatActivity() {
                 map["image"] = uri.toString()
                 FirebaseFirestore.getInstance().collection("profileImages")
                     .document(uid).set(map)
-                
+
                 //사진 저장 완료 후 DB에 유저 정보 저장
                 userDataSave()
 
             }
     }
+
 
     fun userDataSave(){
         println("DB에 회원정보 저장 시작")
@@ -362,20 +285,18 @@ class SignUpActivityEmail : AppCompatActivity() {
 
         //회원정보 DB에 저장
         //주소
-        userModel.totalAddress = binding.activitySignUpEmailEdittextAddress.text.toString()
+        userModel.totalAddress = binding.activitySignUpOnlyPhoneEdittextAddress.text.toString()
         //상세주소
-        userModel.addressDetail = binding.activitySignUpEmailEdittextDetailAddress.text.toString()
-        //유저 이메일
-        userModel.email = binding.activitySignUpEmailEdittextEmail.text.toString()
-        //비밀번호
-        userModel.password = binding.activitySignUpEmailEdittextPassword.text.toString()
+        userModel.addressDetail = binding.activitySignUpOnlyPhoneEdittextDetailAddress.text.toString()
+
+
         //세부주소
         userModel.address = address
         userModel.building = building
         userModel.zipCode = zipCode
 
         //핸드폰 번호
-        userModel.phoneNumber = binding.activitySignUpEmailEdittextPhonenumber.text.toString()
+        userModel.phoneNumber = binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.toString()
         //핸드폰 시간
         userModel.time = TimeUtil().getTime().toString()
         //서버 시간
@@ -383,7 +304,7 @@ class SignUpActivityEmail : AppCompatActivity() {
         //유저 uid
         userModel.uid = FirebaseAuth.getInstance().currentUser?.uid
         //유저 닉네임
-        userModel.userName = binding.activitySignUpEmailEdittextNickname.text.toString()
+        userModel.userName = binding.activitySignUpOnlyPhoneEdittextNickname.text.toString()
         userModel.point = 100
         userModel.memberRating = "0"
         userModel.policyAccept = policyAcceptCheck
@@ -396,7 +317,7 @@ class SignUpActivityEmail : AppCompatActivity() {
                 progressSignUpProcess?.dismiss()
                 //회원 정보 저장
                 SharedData.prefs.setString("userInfo", "yes")
-                SharedData.prefs.setString("emailVerify","no")
+                SharedData.prefs.setString("emailVerify","yes")
                 //메인으로 이동하게 startActivity 작성해주세요.
                 startActivity(Intent(this, LobbyActivity::class.java))
                 finish()
@@ -404,6 +325,7 @@ class SignUpActivityEmail : AppCompatActivity() {
                 System.out.println("유저 정보 저장 실패")
             }
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -421,25 +343,25 @@ class SignUpActivityEmail : AppCompatActivity() {
 
                      */
 
-                    binding.activitySignUpEmailEdittextAddress.setText(data!!.getStringExtra("address_arg1")
+                    binding.activitySignUpOnlyPhoneEdittextAddress.setText(data!!.getStringExtra("address_arg1")
                         .toString() +
                             data!!.getStringExtra("address_arg2").toString() +
                             data!!.getStringExtra("address_arg3").toString())
                     zipCode = data!!.getStringExtra("address_arg1").toString()
                     address = data!!.getStringExtra("address_arg2").toString()
                     building = data!!.getStringExtra("address_arg3").toString()
-                    binding.activitySignUpEmailButtonSearchAddress.isEnabled = false
+                    binding.activitySignUpOnlyPhoneButtonSearchAddress.isEnabled = false
 
 
                 }
 
                 UserFragment.PICK_PROFILE_FROM_ALBUM -> {
 
-                    binding.activitySignUpEmailCircleimageview.setImageURI(data?.data)
+                    binding.activitySignUpOnlyPhoneCircleimageview.setImageURI(data?.data)
                     imageUri = data?.data
 
                     if (mAuth?.currentUser != null) {
-                        binding.activitySignUpEmailCircleimageview.setImageURI(data?.data)
+                        binding.activitySignUpOnlyPhoneCircleimageview.setImageURI(data?.data)
                         imageUri = data?.data
                         /*
                         var uid = FirebaseAuth.getInstance().currentUser?.uid

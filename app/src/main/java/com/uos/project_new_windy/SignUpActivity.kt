@@ -29,6 +29,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.databinding.ActivitySignUpBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
+import com.uos.project_new_windy.model.log.PhoneAuthLog
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.policy.PolicyActivity
 import com.uos.project_new_windy.util.*
@@ -102,6 +103,9 @@ class SignUpActivity : AppCompatActivity() {
 
          */
 
+        binding.activitySignUpEdittextAddress.isEnabled = false
+        binding.activitySignUpEdittextAddress.isClickable = false
+
         binding.activitySearchAddressButtonAuthToPhone.setOnClickListener {
 
             binding.activitySignUpEdittextPhonenumber.isClickable = false
@@ -111,12 +115,11 @@ class SignUpActivity : AppCompatActivity() {
             binding.activitySearchAddressButtonAuthToPhone.isEnabled = false
 
 
-            Toast.makeText(binding.root.context, "인증이 일시적으로 제한되었습니다. \n 인증 허용", Toast.LENGTH_LONG)
-                .show()
+
             phoneVerify = true
 
             if (!ScamerPhoneNumberData().getExistPhoneNumber(binding.activitySignUpEdittextPhonenumber.text.toString())) {
-                //AutoRecieveThePhoneVerifyCode()
+                AutoRecieveThePhoneVerifyCode()
             } else {
                 Toast.makeText(binding.root.context,
                     "가입이 제한된 핸드폰 번호입니다. \n 고객센터에 문의해주세요.",
@@ -240,7 +243,7 @@ class SignUpActivity : AppCompatActivity() {
 
                      */
 
-                    binding.activitySignUpEdittextDetailAddress.setText(data!!.getStringExtra("address_arg1")
+                    binding.activitySignUpEdittextAddress.setText(data!!.getStringExtra("address_arg1")
                         .toString() +
                             data!!.getStringExtra("address_arg2").toString() +
                             data!!.getStringExtra("address_arg3").toString())
@@ -298,7 +301,7 @@ class SignUpActivity : AppCompatActivity() {
 
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             phoneNumber,
-            60,
+            120,
             TimeUnit.SECONDS,
             this,
             object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
@@ -327,6 +330,18 @@ class SignUpActivity : AppCompatActivity() {
                         "핸드폰 인증에 실패했습니다. \n 올바른 번호를 입력해주세요.",
                         Toast.LENGTH_LONG).show()
 
+                    var log = PhoneAuthLog()
+                    log.log = p0.toString()
+                    log.serverTimestamp = System.currentTimeMillis()
+                    log.uid = binding.activitySignUpEdittextPhonenumber.text.toString()
+                    log.timestamp = TimeUtil().getTime()
+
+                    FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
+                        .addOnFailureListener {
+                            println("로그 저장 실패"+ it.toString())
+                        }.addOnCompleteListener {
+                            println("로그 저장 성공"+ it.toString())
+                        }
 
 
 
@@ -342,6 +357,18 @@ class SignUpActivity : AppCompatActivity() {
                     super.onCodeAutoRetrievalTimeOut(p0)
                     progressDialog?.dismiss()
 
+                    var log = PhoneAuthLog()
+                    log.log = p0.toString()
+                    log.serverTimestamp = System.currentTimeMillis()
+                    log.uid = binding.activitySignUpEdittextPhonenumber.text.toString()
+                    log.timestamp = TimeUtil().getTime()
+
+                    FirebaseFirestore.getInstance().collection("Log").document("FailLog").collection("PhoneAuthLog").document().set(log)
+                        .addOnFailureListener {
+                            println("로그 저장 실패"+ it.toString())
+                        }.addOnCompleteListener {
+                            println("로그 저장 성공"+ it.toString())
+                        }
                     UpdateView()
                 }
 

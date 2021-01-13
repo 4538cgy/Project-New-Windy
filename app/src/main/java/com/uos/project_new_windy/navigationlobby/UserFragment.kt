@@ -129,6 +129,9 @@ class UserFragment : Fragment() {
             binding.fragmentUserButtonReport.text = "내 정보"
         }
 
+        binding.fragmentUserMySubscribe.setOnClickListener {
+            startActivity(Intent(binding.root.context,FollowListActivity::class.java))
+        }
 
         //팔로우&로그아웃 버튼을 눌렀을때의 이벤트
         binding.accountBtnFollowSignout.setOnClickListener {

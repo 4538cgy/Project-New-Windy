@@ -14,8 +14,10 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".FindPasswordActivity"></activity>
-        <activity android:name=".EmailVerifyActivity"></activity>
+        <activity android:name=".SignUpOnlyPhone"></activity>
+        <activity android:name=".FollowListActivity" />
+        <activity android:name=".FindPasswordActivity" />
+        <activity android:name=".EmailVerifyActivity" />
         <activity android:name=".SignUpActivityEmail" />
         <activity android:name=".navigationlobby.fragmentsearch.categoryselectactivity.PostNormalSearchCategorySetActivity" />
         <activity android:name=".navigationlobby.fragmentsearch.categoryselectactivity.PostBuySearchCategorySetActivity" />

@@ -43,7 +43,7 @@ class FollowListActivity : AppCompatActivity() {
 
         binding.activityFollowListRecycler.adapter = FollowListRecyclerViewAdapter()
         binding.activityFollowListRecycler.layoutManager = LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false)
-
+        println("팔로우 리스트 화면")
 
     }
 
@@ -63,7 +63,7 @@ class FollowListActivity : AppCompatActivity() {
 
 
                     followlist.add(documentSnapshot.toObject(FollowDTO::class.java)!!)
-
+                    println("팔로우 리스트 가져오기 성공")
                     followlist.forEach {
                         println("팔로우 리스트 목록" + it.toString())
                     }
@@ -93,6 +93,7 @@ class FollowListActivity : AppCompatActivity() {
             //var view = holder.itemView
             holder.onBind(followList[position])
 
+            holder.binding.itemFollowListTextviewNickname.text = followList[0].followers[position].toString()
             /*
             FirebaseFirestore.getInstance()
                 .collection("profileImages")
@@ -111,7 +112,7 @@ class FollowListActivity : AppCompatActivity() {
         }
 
         override fun getItemCount(): Int {
-            return followList.size
+            return followList[0].followers.size
         }
 
         inner class FollowListRecyclerViewAdapterViewHolder(val binding: ItemFollowListBinding) : RecyclerView.ViewHolder(binding.root){

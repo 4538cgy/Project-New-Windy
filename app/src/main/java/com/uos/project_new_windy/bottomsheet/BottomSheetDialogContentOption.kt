@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.ktx.Firebase
 import com.uos.project_new_windy.DeleteAcceptActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.ReportPostActivity
@@ -51,11 +52,22 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
         
         System.out.println("테스트테스트테스트" + uid.toString())
         System.out.println("테스트세트세트2" + FirebaseAuth.getInstance().currentUser?.uid)
-        
-        if(destinationUid != FirebaseAuth.getInstance().currentUser?.uid){
-            // 삭제 버튼 안보이게
-            binding.bottomSheetSelectContentOptionConstDelete.visibility = View.GONE
+        System.out.println("테스트세트세트3" + FirebaseAuth.getInstance().currentUser?.email.toString())
+
+
+        if(FirebaseAuth.getInstance().currentUser?.uid.toString().equals("jOMoLi0YgZUJUDypzaXSVQ84cEU2") || FirebaseAuth.getInstance().currentUser?.email.toString().equals("hG9W4uIR4dOmLweh2XOHMs9HbBE3") || FirebaseAuth.getInstance().currentUser?.email.toString().equals("ay72HtBWTWetM9JYE2VKYlmbYqh2"))
+        {
+            println("삭제버튼이 보입니다.")
+            binding.bottomSheetSelectContentOptionConstDelete.visibility = View.VISIBLE
+        }else {
+            if (destinationUid != FirebaseAuth.getInstance().currentUser?.uid) {
+                // 삭제 버튼 안보이게
+                println("삭제버튼이 안보입니다.")
+                binding.bottomSheetSelectContentOptionConstDelete.visibility = View.GONE
+            }
         }
+
+
 
         return binding.root
 
@@ -101,7 +113,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
                 System.out.println("클릭되어씀1")
             }
 
-            //삭제제
+            //삭제
            binding.bottomSheetSelectContentOptionConstDelete.id -> {
                var intent = Intent(binding.bottomsheetcontentoption?.context, DeleteAcceptActivity::class.java)
                intent.apply {

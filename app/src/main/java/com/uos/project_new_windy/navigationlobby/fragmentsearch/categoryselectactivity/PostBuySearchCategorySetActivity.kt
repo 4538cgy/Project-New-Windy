@@ -30,7 +30,8 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
         binding.activityPostBuySearchCategorySetRecycler.adapter = PostBuySearchCategoryRecyclerViewAdapter()
         binding.activityPostBuySearchCategorySetRecycler.layoutManager = GridLayoutManager(this,2)
 
-
+        binding.activityPostBuySearchCategorySetEdittextMinCost.setText("0")
+        binding.activityPostBuySearchCategorySetEdittextMaxCost.setText("1000")
 
         binding.activityPostBuySearchCategorySetButtonComplete.setOnClickListener {
 

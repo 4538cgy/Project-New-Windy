@@ -129,6 +129,8 @@
                 android:textColor="@color/colorBlack"
                 android:text="@{contentbuy.commentCount.toString()}"
                 />
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -183,7 +185,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorLightGreen"
                     android:textStyle="bold"
-                    android:text='@{contentbuy.cost}'
+
                     />
                 <View
                     android:layout_width="match_parent"

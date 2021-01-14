@@ -124,8 +124,24 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
+        //holder.binding.itemRecyclerSellTextviewCost.text = contentSellDTO[position].costInt
+
+        var won = contentSellDTO[position].costInt?.toLong()!! / 10000
+        var last = contentSellDTO[position].costInt?.toLong()!! % 10000
 
 
+        var cost : String ? = null
+        if (won > 0){
+            cost = won.toString() + "만"
+            if (last > 0){
+                cost = last.toString()
+            }
+        }else{
+            cost = contentSellDTO[position].costInt.toString()
+        }
+
+
+        holder.binding.itemRecyclerSellTextviewCost.text = cost + "원"
 
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {
@@ -150,7 +166,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("uid" , contentSellDTO[position].uid)
                 putExtra("userId",contentSellDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
-                putExtra("cost",contentSellDTO[position].cost)
+                putExtra("cost",cost)
                 putExtra("category",contentSellDTO[position].category)
                 putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
                 putExtra("contentTime",contentSellDTO[position].time)

@@ -101,6 +101,36 @@ class CommentActivity : AppCompatActivity() {
     }
 
     fun commentAlarm(destinationUid : String, message : String){
+
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+
+                    var userNickName = documentSnapshot.get("userName")?.toString()
+
+                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                    //아이디 초기화
+
+
+                    var alarmDTO = AlarmDTO()
+                    alarmDTO.destinationUid = destinationUid
+                    alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+                    alarmDTO.kind = 1
+                    alarmDTO.userNickName = userNickName
+                    alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+                    alarmDTO.timestamp = System.currentTimeMillis()
+                    alarmDTO.localTimestamp = TimeUtil().getTime()
+                    alarmDTO.message = message
+                    FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+                    var msg = userNickName + " " + getString(R.string.alarm_comment) + " of " + message
+                    FcmPush.instance.sendMessage(destinationUid,"Howlstagram", msg)
+                }
+
+            }
+        /*
         var alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
         alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
@@ -113,6 +143,8 @@ class CommentActivity : AppCompatActivity() {
 
         var msg = FirebaseAuth.getInstance().currentUser?.email + " " + getString(R.string.alarm_comment) + " of " + message
         FcmPush.instance.sendMessage(destinationUid,"Howlstagram", msg)
+
+         */
     }
 
     fun commentCountTest(postType: String){

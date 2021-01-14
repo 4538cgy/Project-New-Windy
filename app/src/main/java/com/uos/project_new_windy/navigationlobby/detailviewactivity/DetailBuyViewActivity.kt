@@ -288,18 +288,40 @@ class DetailBuyViewActivity : AppCompatActivity() {
     fun favoriteAlarm(destinationUid : String, postUid : String, postExplain : String){
 
         System.out.println("좋아요 알람 이벤트")
-        var alarmDTO = AlarmDTO()
-        alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
-        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
-        alarmDTO.kind = 0
-        alarmDTO.postUid = postUid
-        alarmDTO.postExplain = postExplain
-        alarmDTO.timestamp = System.currentTimeMillis()
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
-        var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+
+
+        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    userNickName = documentSnapshot.get("userName")?.toString()
+
+                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                    //아이디 초기화
+
+
+                    var alarmDTO = AlarmDTO()
+                    alarmDTO.destinationUid = destinationUid
+                    alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+                    alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+                    alarmDTO.kind = 0
+                    alarmDTO.userNickName =userNickName
+                        alarmDTO.postUid = postUid
+                    alarmDTO.postExplain = postExplain
+                    alarmDTO.timestamp = System.currentTimeMillis()
+                    FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+                    var message = userNickName + (R.string.alarm_favorite)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                }
+
+            }
+
+
+
+
     }
 
 

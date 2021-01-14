@@ -125,12 +125,25 @@
                 android:layout_height="50dp"
                 android:background="@drawable/background_round_white_stroke_black"
                 android:layout_marginTop="8dp"
-                android:layout_marginLeft="18dp"
+                android:layout_marginLeft="8dp"
                 android:hint="최소 금액"
                 android:paddingLeft="8dp"
                 android:maxLength="14"
                 android:maxLines="1"
                 android:inputType="number"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원~ "
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_post_buy_search_category_set_edittext_min_cost"
+                app:layout_constraintTop_toTopOf="@+id/activity_post_buy_search_category_set_edittext_min_cost"
+                app:layout_constraintLeft_toRightOf="@+id/activity_post_buy_search_category_set_edittext_min_cost"
+                android:layout_margin="6dp"
+                android:textSize="18dp"
                 />
             <EditText
                 android:id="@+id/activity_post_buy_search_category_set_edittext_max_cost"
@@ -140,14 +153,25 @@
                 android:layout_height="50dp"
                 android:background="@drawable/background_round_white_stroke_black"
                android:layout_marginTop="8dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginRight="26dp"
                 android:hint="최대 금액"
                 android:paddingLeft="8dp"
                 android:maxLength="14"
                 android:maxLines="1"
                 android:inputType="number"
                 />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="원"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/activity_post_buy_search_category_set_edittext_max_cost"
+                app:layout_constraintTop_toTopOf="@+id/activity_post_buy_search_category_set_edittext_max_cost"
+                app:layout_constraintLeft_toRightOf="@+id/activity_post_buy_search_category_set_edittext_max_cost"
+                android:layout_margin="6dp"
+                android:textSize="18dp"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

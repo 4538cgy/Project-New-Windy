@@ -129,6 +129,22 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
+        var won = contentBuyDTO[position].costInt?.toLong()!! / 10000
+        var last = contentBuyDTO[position].costInt?.toLong()!! % 10000
+
+
+        var cost : String ? = null
+        if (won > 0){
+            cost = won.toString() + "만"
+            if (last > 0){
+                cost = last.toString()
+            }
+        }else{
+            cost = contentBuyDTO[position].costInt.toString()
+        }
+
+        holder.binding.itemRecyclerBuyTextviewCost.text = cost + "원"
+
         //유저 닉네임 클릭
         holder.binding.itemRecyclerBuyTextviewUsername.setOnClickListener {
             var fragment = UserFragment()
@@ -166,7 +182,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 putExtra("uid" , contentBuyDTO[position].uid)
                 putExtra("userId",contentBuyDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
-                putExtra("cost",contentBuyDTO[position].cost)
+                putExtra("cost",cost)
                 putExtra("categoryHash",contentBuyDTO[position].categoryHash)
                 putExtra("imageUrl",contentBuyDTO[position].imageUrl)
                 putExtra("contentTime",contentBuyDTO[position].time)

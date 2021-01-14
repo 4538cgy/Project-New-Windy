@@ -26,22 +26,15 @@ import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyVie
 import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostBuySearchCategorySetActivity
 import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostSellSearchCategorySetActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PostBuySearch.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PostBuySearch : Fragment() {
     // TODO: Rename and change types of parameters
 
 
     lateinit var binding : FragmentPostBuySearchBinding
     var categoryData: ArrayList<String> = arrayListOf()
+    var minCost : Long ? = null
+    var maxCost : Long ? = null
 
 
     //원본 데이터
@@ -153,6 +146,9 @@ class PostBuySearch : Fragment() {
             if (resultCode == 1556) {
                 System.out.println("데이터 전달 성공적으로 완수3123123123123")
                 categoryData = data?.getStringArrayListExtra("categoryList")!!
+                minCost = data?.getStringExtra("minCost").toLong()
+                maxCost = data?.getStringExtra("maxCost").toLong()
+                println("으아아아아아아아아아아아앜" + minCost + " dsad" + maxCost)
                 /*
                 categoryData.forEach {
                     System.out.println("카테고리 리스트 목록 = $it")
@@ -179,17 +175,29 @@ class PostBuySearch : Fragment() {
         for(c in contentBuyTO.indices){
             for(d in categoryData.indices)
                 if (contentBuyTO[c].categoryHash.equals(categoryData[d].toString())){
+
+                    if (contentBuyTO[c].costInt?.toLong()!! < maxCost!!.toLong() && contentBuyTO[c].costInt?.toLong()!! > minCost!!.toLong())
+                    {
+                        contentData.add(contentBuyTO[c])
+                        contentUidListData.add(contentUidList[c])
+
+                    }
+                }
+
+        }
+
+        /*
+        for(c in contentBuyTO.indices){
+            for(d in categoryData.indices)
+                if (contentBuyTO[c].categoryHash.equals(categoryData[d].toString())){
                     System.out.println("중복됩니다." + categoryData[d] + contentBuyTO[c])
                     contentData.add(contentBuyTO[c])
                     contentUidListData.add(contentUidList[c])
                 }
         }
-        /*
-        contentData.forEach {
-            System.out.println("카테고리를 포함한 데이터 $it" )
-        }
 
          */
+
         mList.clear()
         mContentUidList.clear()
         mList.addAll(contentData)

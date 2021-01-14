@@ -97,6 +97,59 @@
 
             />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_post_sell_search_category_set_const_cost_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/activity_post_sell_search_category_set_recycler"
+            >
+
+            <TextView
+                android:id="@+id/activity_post_sell_search_category_set_textview_cost_title"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="가격"
+                android:layout_margin="8dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="18dp"
+                />
+
+            <EditText
+                android:id="@+id/activity_post_sell_search_category_set_edittext_min_cost"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_post_sell_search_category_set_textview_cost_title"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_round_white_stroke_black"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="18dp"
+                android:hint="최소 금액"
+                android:paddingLeft="8dp"
+                android:maxLength="14"
+                android:maxLines="1"
+                android:inputType="number"
+                />
+            <EditText
+                android:id="@+id/activity_post_sell_search_category_set_edittext_max_cost"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/activity_post_sell_search_category_set_textview_cost_title"
+                android:layout_width="170dp"
+                android:layout_height="50dp"
+                android:background="@drawable/background_round_white_stroke_black"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="18dp"
+                android:hint="최대 금액"
+                android:paddingLeft="8dp"
+                android:maxLength="14"
+                android:maxLines="1"
+                android:inputType="number"
+                />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <Button
             android:id="@+id/activity_post_sell_search_category_set_button_complete"
             android:layout_width="match_parent"

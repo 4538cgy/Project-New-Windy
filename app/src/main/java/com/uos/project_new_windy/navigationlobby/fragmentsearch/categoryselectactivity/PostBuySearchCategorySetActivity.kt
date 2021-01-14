@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,11 +34,25 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
 
         binding.activityPostBuySearchCategorySetButtonComplete.setOnClickListener {
 
-            var intent = Intent()
+            if (binding.activityPostBuySearchCategorySetEdittextMinCost.text.length < 1 || binding.activityPostBuySearchCategorySetEdittextMaxCost.text.length < 1) {
+                Toast.makeText(binding.root.context, "가격을 체크해주세요.", Toast.LENGTH_LONG).show()
 
-            intent.putExtra("categoryList",categoryList)
-            setResult(1556,intent)
-            finish()
+            }
+            else {
+                if (binding.activityPostBuySearchCategorySetEdittextMinCost.text.toString().toLong() > binding.activityPostBuySearchCategorySetEdittextMaxCost.text.toString().toLong()) {
+                    Toast.makeText(binding.root.context, "최대 금액이 최소 금액보다 클 수 없습니다.", Toast.LENGTH_LONG).show()
+                }else {
+                    var intent = Intent()
+
+                    intent.putExtra("categoryList", categoryList)
+                    intent.putExtra("minCost",
+                        binding.activityPostBuySearchCategorySetEdittextMinCost.text.toString())
+                    intent.putExtra("maxCost",
+                        binding.activityPostBuySearchCategorySetEdittextMaxCost.text.toString())
+                    setResult(1556, intent)
+                    finish()
+                }
+            }
         }
 
         binding.activityPostBuySearchCategorySetImagebuttonBack.setOnClickListener {
@@ -49,6 +64,7 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
 
             var intent = Intent()
             intent.putExtra("categoryList" , categoryList)
+
 
             setResult(1555, Intent())
             finish()
@@ -63,17 +79,23 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
         init {
 
 
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농기계",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농산물",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("축산물",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("소모품",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농지",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("가구",false))
-            categoryBuyPostDTO.add(CatgoryBuyPostDTO("기타",false))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농기계",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농산물",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("축산물",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("소모품",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농지",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("가구",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("기타",true))
 
 
             data = categoryBuyPostDTO
-
+            categoryList.add("농기계")
+            categoryList.add("농산물")
+            categoryList.add("축산물")
+            categoryList.add("소모품")
+            categoryList.add("농지")
+            categoryList.add("가구")
+            categoryList.add("기타")
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostBuySearchCategoryRecyclerViewAdapterViewHolder {

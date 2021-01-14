@@ -55,9 +55,7 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
 
 
-        if (SharedData.prefs.getString("emailVerify","no").equals("no")){
-            emailVerifyPage()
-        }
+
     }
 
     fun emailVerifyPage(){

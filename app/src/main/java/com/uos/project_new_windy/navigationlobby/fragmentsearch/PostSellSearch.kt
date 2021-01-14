@@ -27,21 +27,15 @@ import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.navigationlobby.fragmentsearch.categoryselectactivity.PostSellSearchCategorySetActivity
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [PostSellSearch.newInstance] factory method to
- * create an instance of this fragment.
- */
 class PostSellSearch : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     lateinit var binding: FragmentPostSellSearchBinding
+
+    var minCost : Long ? = 0
+    var maxCost : Long ? = 10000000000
 
     var categoryData: ArrayList<String> = arrayListOf()
 
@@ -163,18 +157,30 @@ class PostSellSearch : Fragment() {
         contentUidListData.clear()
         for(c in contentSellDTO.indices){
             for(d in categoryData.indices)
-            if (contentSellDTO[c].category.equals(categoryData[d].toString())){
-                    System.out.println("중복됩니다." + categoryData[d] + contentSellDTO[c])
-                contentData.add(contentSellDTO[c])
-                contentUidListData.add(contentUidList[c])
-            }
-        }
-        /*
-        contentData.forEach {
-            System.out.println("카테고리를 포함한 데이터 $it" )
+                if (contentSellDTO[c].category.equals(categoryData[d].toString())){
+                    println("중복됩니다아아아앜." + contentSellDTO[c].productExplain + "중복된 아이템의 가격" + contentSellDTO[c].costInt)
+
+                    if (contentSellDTO[c].costInt?.toLong()!! < maxCost!!.toLong() && contentSellDTO[c].costInt?.toLong()!! > minCost!!.toLong())
+                    {
+                        println("포함됩니다아아아앜" + contentSellDTO[c].costInt)
+                        contentData.add(contentSellDTO[c])
+                        contentUidListData.add(contentUidList[c])
+
+                    }
+                }
+
         }
 
-         */
+
+
+
+
+
+
+        var costFilteringData : ArrayList<ContentSellDTO> = arrayListOf()
+
+
+
         mList.clear()
         mContentUidList.clear()
         mList.addAll(contentData)
@@ -191,6 +197,9 @@ class PostSellSearch : Fragment() {
                 System.out.println("데이터 전달 성공적으로 완수3123123123123")
                 categoryData.clear()
                 categoryData = data?.getStringArrayListExtra("categoryList")!!
+                minCost = data?.getStringExtra("minCost").toLong()
+                maxCost = data?.getStringExtra("maxCost").toLong()
+                println("으아아아아아아아아아아아앜" + minCost + " dsad" + maxCost)
                 /*
                 categoryData.forEach {
                     System.out.println("카테고리 리스트 목록 = $it")

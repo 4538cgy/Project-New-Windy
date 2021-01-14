@@ -292,14 +292,13 @@ class DetailSellViewActivity : AppCompatActivity() {
     fun favoriteAlarm(destinationUid : String, postUid : String, postExplain : String){
 
         System.out.println("좋아요 알람 이벤트")
-        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+        firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
                 if (documentSnapshot != null)
                 {
                     userNickName = documentSnapshot.get("userName")?.toString()
 
-                    println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
                     //아이디 초기화
 
 

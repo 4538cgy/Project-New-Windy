@@ -102,7 +102,7 @@ class CommentActivity : AppCompatActivity() {
 
     fun commentAlarm(destinationUid : String, message : String){
 
-        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
+        firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
                 if (documentSnapshot != null)
@@ -126,7 +126,7 @@ class CommentActivity : AppCompatActivity() {
                     FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
                     var msg = userNickName + " " + getString(R.string.alarm_comment) + " of " + message
-                    FcmPush.instance.sendMessage(destinationUid,"Howlstagram", msg)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람 네트워크", msg)
                 }
 
             }

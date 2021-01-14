@@ -1,7 +1,10 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -174,6 +177,36 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }
+        //전화 걸기
+        holder.binding.itemRecyclerBuyImagebuttonPhone.setOnClickListener {
+            contentBuyDTO[position].uid
+
+            var builder = AlertDialog.Builder(holder.binding.root.context)
+
+            builder.apply {
+                setMessage("전화 걸기로 바로 이동됩니다. \n 이동하시겠습니까?")
+                setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                    return@OnClickListener
+                })
+                setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+
+                    FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(contentBuyDTO[position].uid.toString()).document("accountInfo")
+                        .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                            if (documentSnapshot != null)
+                            {
+                                var phoneNumber = documentSnapshot.get("phoneNumber")?.toString()
+                                holder.binding.root.context.startActivity(Intent(Intent.ACTION_DIAL,
+                                    Uri.parse("tel:"+phoneNumber)))
+                            }
+                        }
+                })
+
+                setTitle("안내")
+                show()
+            }
+        }
+
         //아이템 자체 클릭
         holder.binding.itemRecyclerBuyConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context, DetailBuyViewActivity::class.java)
@@ -244,6 +277,35 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun favoriteAlarm(destinationUid : String,userNickName : String){
 
+
+        firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    var userNickName = documentSnapshot.get("userName")?.toString()
+
+                    //아이디 초기화
+
+
+                    var alarmDTO = AlarmDTO()
+                    alarmDTO.destinationUid = destinationUid
+                    alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+                    alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+                    alarmDTO.kind = 0
+                    alarmDTO.timestamp = System.currentTimeMillis()
+                    alarmDTO.localTimestamp = TimeUtil().getTime()
+                    alarmDTO.userNickName = userNickName
+                    FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+                    var message = userNickName + (R.string.alarm_favorite)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                }
+
+            }
+
+
+        /*
         System.out.println("좋아요 알람 이벤트")
         var alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
@@ -257,6 +319,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
         FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+
+         */
     }
 
 

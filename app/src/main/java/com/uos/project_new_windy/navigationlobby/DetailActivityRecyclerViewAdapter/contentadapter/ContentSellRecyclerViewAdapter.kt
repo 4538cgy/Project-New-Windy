@@ -1,9 +1,12 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.getString
@@ -18,6 +21,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import com.uos.project_new_windy.LobbyActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
@@ -32,6 +36,7 @@ import com.uos.project_new_windy.navigationlobby.AddContentActivity
 import com.uos.project_new_windy.navigationlobby.CommentActivity
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.setting.SettingActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.ProgressDialogLoadingPost
@@ -45,14 +50,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     var uid : String ? = null
     var data = listOf<ContentSellDTO>()
 
-
-
-
-
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
-
-
 
         firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp",Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
@@ -71,20 +70,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                         System.out.println("데이터들2" + contentSellDTO.toString())
                         contentUidList.add(snapshot.id)
                     }
-
-
-
-
-
-
-
-
                 }
-
                 notifyDataSetChanged()
             }
-
-
         data = contentSellDTO
     }
 
@@ -93,7 +81,6 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         viewType: Int
     ): ContentSellRecyclerViewAdapterViewHolder {
         val binding = ItemRecyclerSellBinding.inflate(LayoutInflater.from(context),parent,false)
-
 
         return ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder(binding)
     }
@@ -124,11 +111,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
-        //holder.binding.itemRecyclerSellTextviewCost.text = contentSellDTO[position].costInt
-
         var won = contentSellDTO[position].costInt?.toLong()!! / 10000
         var last = contentSellDTO[position].costInt?.toLong()!! % 10000
-
 
         var cost : String ? = null
         if (won > 0){
@@ -139,15 +123,11 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         }else{
             cost = contentSellDTO[position].costInt.toString()
         }
-
-
         holder.binding.itemRecyclerSellTextviewCost.text = cost + "원"
-
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {
             favoriteEvent(position)
         }
-
         //유저 닉네임 클릭
         holder.binding.itemRecyclerSellTextviewUsername.setOnClickListener {
             var fragment = UserFragment()
@@ -158,7 +138,6 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
-
         //아이템 자체 클릭
         holder.binding.itemRecyclerSellConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
@@ -175,12 +154,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("userNickName",contentSellDTO[position].userNickName)
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
-
             }
             context.startActivity(intent)
         }
-
-        
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerSellImagebuttonOption.setOnClickListener {
             val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
@@ -196,7 +172,6 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             bottomeSheetDialog.show(fragmentManager,"dd")
         }
         //댓글 갯수
-        //viewholder.item_detail_textview_comment_count.text = contentDTOs!![position].commentCount.toString()
         holder.binding.itemRecyclerSellTextviewCommentCount.text = data[position].commentCount.toString()
 
         //프로필 이미지
@@ -212,6 +187,35 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 }
 
             }
+        //전화걸기
+        holder.binding.itemRecyclerSellImagebuttonPhone.setOnClickListener {
+
+            contentSellDTO[position].uid
+
+            var builder = AlertDialog.Builder(holder.binding.root.context)
+
+            builder.apply {
+                setMessage("전화 걸기로 바로 이동됩니다. \n 이동하시겠습니까?")
+                setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                    return@OnClickListener
+                })
+                setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+
+                    FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(contentSellDTO[position].uid.toString()).document("accountInfo")
+                        .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                            if (documentSnapshot != null)
+                            {
+                                var phoneNumber = documentSnapshot.get("phoneNumber")?.toString()
+                                holder.binding.root.context.startActivity(Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+phoneNumber)))
+                            }
+                        }
+                })
+
+                setTitle("안내")
+                show()
+            }
+        }
 
         //사진
         if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
@@ -219,14 +223,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
-
-
-
     }
 
     override fun getItemCount(): Int = data.size
-
-
 
     class ContentSellRecyclerViewAdapterViewHolder(val binding: ItemRecyclerSellBinding) : RecyclerView.ViewHolder(binding.root){
         fun onBind(data : ContentSellDTO){
@@ -271,6 +270,35 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     fun favoriteAlarm(destinationUid : String, postUid : String, postExplain : String, userNickName : String){
 
+        firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("accountInfo")
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                if (documentSnapshot != null)
+                {
+                    var userNickName = documentSnapshot.get("userName")?.toString()
+
+                    //아이디 초기화
+
+
+                    var alarmDTO = AlarmDTO()
+                    alarmDTO.destinationUid = destinationUid
+                    alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
+                    alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
+                    alarmDTO.kind = 0
+                    alarmDTO.userNickName =userNickName
+                    alarmDTO.postUid = postUid
+                    alarmDTO.postExplain = postExplain
+                    alarmDTO.timestamp = System.currentTimeMillis()
+                    FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
+
+                    var message = userNickName + (R.string.alarm_favorite)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                }
+
+            }
+
+
+/*
         System.out.println("좋아요 알람 이벤트")
         var alarmDTO = AlarmDTO()
         alarmDTO.destinationUid = destinationUid
@@ -286,6 +314,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
         FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+
+ */
     }
 
 

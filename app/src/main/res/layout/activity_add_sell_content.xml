@@ -141,7 +141,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                android:hint="제품 설명 ( 필수 기입 )"
+                android:hint="제목 ( 필수 기입 )"
                 android:paddingLeft="16dp"
                 android:background="@android:color/transparent"
                 android:layout_margin="8dp"

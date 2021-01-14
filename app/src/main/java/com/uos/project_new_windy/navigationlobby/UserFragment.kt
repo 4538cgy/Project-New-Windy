@@ -90,9 +90,12 @@ class UserFragment : Fragment() {
         //프로필 이미지 변경 이벤트
 
         binding.fragmentUserCircleImageview.setOnClickListener {
-            var photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+
+            if (FirebaseAuth.getInstance().currentUser?.uid == uid) {
+                var photoPickerIntent = Intent(Intent.ACTION_PICK)
+                photoPickerIntent.type = "image/*"
+                activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
+            }
         }
 
 

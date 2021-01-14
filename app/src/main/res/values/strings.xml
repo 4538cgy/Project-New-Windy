@@ -35,7 +35,7 @@
 
 
     <!-- Alarm -->
-    <string name="alarm_favorite">님이 이 글을 좋아합니다.</string>
+    <string name="alarm_favorite">님이 당신의 글을 좋아합니다.</string>
     <string name="alarm_comment">님이 댓글을 달았습니다.</string>
     <string name="alarm_follow">님이 팔로우 하셨습니다.</string>
     <string name="alarm_chat">님이 메세지를 보내셨습니다.</string>

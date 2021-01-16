@@ -83,11 +83,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="top"
-                android:hint="내용을 적어주세요. \n6자 이상 200자 미만"
+                android:hint="내용을 적어주세요. \n6자 이상 1000자 미만"
                 android:scrollbars="vertical"
                 android:background="@android:color/transparent"
                 android:layout_margin="12dp"
-                android:maxLength="200"
+                android:maxLength="1000"
                 android:padding="8dp"
                 />
 

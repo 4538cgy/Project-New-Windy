@@ -216,6 +216,52 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             }
         }
 
+        //문자 보내기
+        holder.binding.itemRecyclerSellImagebuttonSms.setOnClickListener {
+
+            contentSellDTO[position].uid
+
+            var builder = AlertDialog.Builder(holder.binding.root.context)
+
+            builder.apply {
+                setMessage("문자 보내기로 바로 이동됩니다. \n 이동하시겠습니까?")
+
+                setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+
+                    FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(contentSellDTO[position].uid.toString()).document("accountInfo")
+                        .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                            if (documentSnapshot != null)
+                            {
+                                var phoneNumber = documentSnapshot.get("phoneNumber")?.toString()
+
+                                var smsUri = Uri.parse("sms:"+phoneNumber)
+                                var intent = Intent(Intent.ACTION_SENDTO, smsUri)
+                                intent.apply {
+                                    putExtra("sms_body","신바람 빌리지를 통해 발송된 메세지입니다.")
+                                }
+                                holder.binding.root.context.startActivity(intent)
+                                /*
+                                holder.binding.root.context.startActivity(Intent(Intent.ACTION_DIAL,
+                                    Uri.parse("tel:"+phoneNumber)))
+
+                                 */
+                            }
+                        }
+                }
+
+                )
+
+                setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                    return@OnClickListener
+                })
+
+                setTitle("안내")
+                show()
+            }
+
+        }
+
         //사진
         if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
             Glide.with(holder.itemView.context)

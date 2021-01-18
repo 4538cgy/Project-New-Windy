@@ -227,7 +227,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             }
             context.startActivity(intent)
         }
-
+        //꾹 눌러서 클립보드에 내용 복사
         holder.binding.itemRecyclerBuyTextviewExplain.setOnLongClickListener {
             var clipboardManager: ClipboardManager =
                 holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -238,6 +238,52 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
 
             true
+        }
+        
+        //문자 보내기
+        holder.binding.itemRecyclerBuyImagebuttonSms.setOnClickListener {
+
+            contentBuyDTO[position].uid
+
+            var builder = AlertDialog.Builder(holder.binding.root.context)
+
+            builder.apply {
+                setMessage("문자 보내기로 바로 이동됩니다. \n 이동하시겠습니까?")
+
+                setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+
+                    FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(contentBuyDTO[position].uid.toString()).document("accountInfo")
+                        .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                            if (documentSnapshot != null)
+                            {
+                                var phoneNumber = documentSnapshot.get("phoneNumber")?.toString()
+
+                                var smsUri = Uri.parse("sms:"+phoneNumber)
+                                var intent = Intent(Intent.ACTION_SENDTO, smsUri)
+                                intent.apply {
+                                    putExtra("sms_body","신바람 빌리지를 통해 발송된 메세지입니다.")
+                                }
+                                holder.binding.root.context.startActivity(intent)
+                                /*
+                                holder.binding.root.context.startActivity(Intent(Intent.ACTION_DIAL,
+                                    Uri.parse("tel:"+phoneNumber)))
+
+                                 */
+                            }
+                        }
+                }
+
+                )
+
+                setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                    return@OnClickListener
+                })
+
+                setTitle("안내")
+                show()
+            }
+
         }
 
 

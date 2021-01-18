@@ -135,6 +135,17 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_local_phone_24" />
 
+            <ImageButton
+                android:id="@+id/item_recycler_sell_imagebutton_sms"
+                android:layout_marginHorizontal="4dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_baseline_sms_24"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:padding="5dp"
+                />
+
         </LinearLayout>
 
         <LinearLayout

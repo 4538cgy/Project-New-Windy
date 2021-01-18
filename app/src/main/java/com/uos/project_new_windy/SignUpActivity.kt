@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -50,12 +51,15 @@ class SignUpActivity : AppCompatActivity() {
     var policyAcceptCheck: Boolean = false
     var progressDialog: ProgressDialogLoadingVerifyPhone? = null
 
+    var imageUri : Uri? = null
+
     /*
     카카오 지번 검색에서 가져온 데이터들 변수
      */
     var zipCode: String? = null
     var address: String? = null
     var building: String? = null
+
 
     lateinit var binding: ActivitySignUpBinding
 
@@ -88,20 +92,6 @@ class SignUpActivity : AppCompatActivity() {
         )
 
 
-        //스피너에 어댑터 세팅
-        /*
-        //activity_sign_up_spinner.adapter = spinnerAdapter
-        binding.activitySignUpSpinner.adapter = spinnerAdapter
-
-
-         */
-        //sms 인증 요청
-        /*
-        activity_search_address_button_auth_to_phone.setOnClickListener {
-            AutoRecieveThePhoneVerifyCode()
-        }
-
-         */
 
         binding.activitySignUpEdittextAddress.isEnabled = false
         binding.activitySignUpEdittextAddress.isClickable = false
@@ -127,45 +117,15 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
         //주소 요청
-        /*
-        activity_search_address_button_address.setOnClickListener {
-            startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
-        }
-
-         */
-
         binding.activitySearchAddressButtonAddress.setOnClickListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
         //main으로 이동 - 저장안하고 다음에 회원 정보 입력하기
-        /*
-        activity_sign_up_button_later.setOnClickListener {
-            startActivity(Intent(this,LobbyActivity::class.java))
-            finish()
-        }
-
-         */
 
 
-        /*
-        binding.activitySignUpButtonLater.setOnClickListener {
-            //현재는 테스트로 바로 로비로 이동
-            startActivity(Intent(this,LobbyActivity::class.java))
-            /*
-            FirebaseAuth.getInstance().currentUser?.delete()
-            signOut()
-
-            finishAffinity()
-
-             */
-
-        }
-
-         */
 
         //동의하고 회원 정보 입력하기
-
         binding.activitySignUpButtonAccept.setOnClickListener {
             if (phoneVerify) {
                 if (binding.activitySignUpEdittextName.length() < 2) {
@@ -174,7 +134,11 @@ class SignUpActivity : AppCompatActivity() {
                 } else if (binding.activitySignUpEdittextDetailAddress.text.length < 5) {
                     Toast.makeText(binding.root.context, "주소를 입력해주세요.", Toast.LENGTH_LONG).show()
 
-                } else {
+                }
+                else if(imageUri == null){
+                    Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
+                }
+                else {
                     saveData()
                 }
 
@@ -186,34 +150,12 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         //이용약관 보러가기
-        /*
-        activity_sign_up_textview.setOnClickListener {
-            startActivity(Intent(this,PolicyActivity::class.java))
-        }
-
-         */
-
         binding.activitySignUpTextview.setOnClickListener {
             startActivity(Intent(this, PolicyActivity::class.java))
             policyAcceptCheck = true
         }
 
         //프로필 이미지 추가 리스너
-        /*
-        activity_sign_up_circleimageview.setOnClickListener {
-            var photoPickerIntent = Intent(Intent.ACTION_PICK)
-            photoPickerIntent.type = "image/*"
-            startActivityForResult(photoPickerIntent,
-                UserFragment.PICK_PROFILE_FROM_ALBUM
-            )
-            Log.d(" 회원가입 액티비티" , "인텐트 시작")
-
-        }
-
-
-         */
-         */
-
         binding.activitySignUpCircleimageview.setOnClickListener {
             var photoPickerIntent = Intent(Intent.ACTION_PICK)
             photoPickerIntent.type = "image/*"
@@ -260,7 +202,7 @@ class SignUpActivity : AppCompatActivity() {
 
                     if (mAuth?.currentUser != null) {
                         binding.activitySignUpCircleimageview.setImageURI(data?.data)
-                        var imageUri = data?.data
+                        imageUri = data?.data
                         var uid = FirebaseAuth.getInstance().currentUser?.uid
                         var storageRef =
                             FirebaseStorage.getInstance().reference.child("userProfileImages")

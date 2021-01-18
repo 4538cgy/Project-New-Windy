@@ -129,7 +129,12 @@ class SignUpActivityEmail : AppCompatActivity() {
             }else if(phoneVerify == false) {
                 Toast.makeText(binding.root.context, "핸드폰 인증을 진행해주세요." ,Toast.LENGTH_LONG).show()
 
-            }else if(imageUri == null) {
+            }else if(binding.activitySignUpEmailEdittextNickname.text.toString().contains(" "))
+            {
+                Toast.makeText(binding.root.context, "닉네임에는 공백을 포함할 수 없습니다..", Toast.LENGTH_LONG).show()
+            }
+
+            else if(imageUri == null) {
                 Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
 
             }else if(binding.activitySignUpEmailEdittextAddress.text.length < 2){

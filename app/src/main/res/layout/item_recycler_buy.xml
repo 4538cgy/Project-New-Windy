@@ -225,6 +225,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlack"
                     android:text='@{contentbuy.explain}'
+                    android:maxLength="200"
                     />
 
 

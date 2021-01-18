@@ -160,6 +160,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.explain}"
+                android:maxLength="200"
                 />
 
         </LinearLayout>

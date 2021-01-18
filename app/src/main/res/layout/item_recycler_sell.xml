@@ -207,6 +207,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@{contentsell.explain}"
+                android:maxLength="200"
                 android:textColor="@color/colorBlack" />
 
         </LinearLayout>

@@ -1,6 +1,8 @@
 package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -56,6 +58,9 @@ class AddContentActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_content)
         binding.addnormalcontent = this@AddContentActivity
 
+
+
+        
         //로딩 초기화
         progressDialog = ProgressDialogLoading(binding.root.context)
 

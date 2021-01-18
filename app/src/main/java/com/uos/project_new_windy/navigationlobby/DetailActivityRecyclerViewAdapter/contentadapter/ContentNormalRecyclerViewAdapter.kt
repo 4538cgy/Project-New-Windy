@@ -1,12 +1,16 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
+import android.content.Context.CLIPBOARD_SERVICE
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -28,22 +32,26 @@ import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellVi
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
 
-class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>(){
+class ContentNormalRecyclerViewAdapter(
+    private val context: Context,
+    var fragmentManager: FragmentManager,
+) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>() {
 
-    var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
+    var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     var contentNormalDTO: ArrayList<ContentNormalDTO> = arrayListOf()
     var contentUidList: ArrayList<String> = arrayListOf()
-    var contentCommentSize : ArrayList<Int> = arrayListOf()
-    var uid : String ? = null
+    var contentCommentSize: ArrayList<Int> = arrayListOf()
+    var uid: String? = null
     var data = listOf<ContentNormalDTO>()
 
     init {
-        Log.d("디테일!" , "교체완료됬습니다.")
+        Log.d("디테일!", "교체완료됬습니다.")
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
 
-        firestore?.collection("contents")?.document("normal").collection("data").orderBy("timestamp",
-            Query.Direction.DESCENDING)
+        firestore?.collection("contents")?.document("normal").collection("data")
+            .orderBy("timestamp",
+                Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 contentNormalDTO.clear()
                 contentUidList.clear()
@@ -57,11 +65,6 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
                     contentUidList.add(snapshot.id)
 
 
-
-
-
-
-
                 }
 
                 notifyDataSetChanged()
@@ -70,34 +73,40 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
     }
 
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContentNormalRecyclerViewAdapterViewHolder {
-        val binding = ItemRecyclerNormalBinding.inflate(LayoutInflater.from(context),parent,false)
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): ContentNormalRecyclerViewAdapterViewHolder {
+        val binding = ItemRecyclerNormalBinding.inflate(LayoutInflater.from(context), parent, false)
         return ContentNormalRecyclerViewAdapterViewHolder(binding)
     }
 
     override fun getItemCount(): Int = contentNormalDTO.size
 
-    override fun onBindViewHolder(holder: ContentNormalRecyclerViewAdapterViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: ContentNormalRecyclerViewAdapterViewHolder,
+        position: Int,
+    ) {
         holder.onBind(contentNormalDTO[position])
 
-        
+
         //프로필 이미지
         firestore?.collection("profileImages")?.document(contentNormalDTO[position].uid!!)
             ?.get()?.addOnCompleteListener { task ->
 
-                if (task.isSuccessful)
-                {
+                if (task.isSuccessful) {
                     var url = task.result!!["image"]
                     Glide.with(holder.itemView.context)
                         .load(url)
-                        .apply(RequestOptions().circleCrop()).into(holder.binding.itemRecyclerNormalImageviewProfile)
+                        .apply(RequestOptions().circleCrop())
+                        .into(holder.binding.itemRecyclerNormalImageviewProfile)
                 }
 
             }
 
         //사진
-        Glide.with(holder.itemView.context).load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
+        Glide.with(holder.itemView.context)
+            .load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
 
         //좋아요 버튼 클릭
@@ -111,9 +120,9 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         holder.binding.itemDetailImagebuttonComment.setOnClickListener {
             var intent = Intent(holder.itemView.context, CommentActivity::class.java)
             intent.apply {
-                putExtra("contentUid",contentUidList[position])
-                putExtra("destinationUid",contentNormalDTO[position].uid)
-                putExtra("postType","normal")
+                putExtra("contentUid", contentUidList[position])
+                putExtra("destinationUid", contentNormalDTO[position].uid)
+                putExtra("postType", "normal")
             }
             context.startActivity(intent)
         }
@@ -123,24 +132,24 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         holder.binding.itemRecyclerNormalTextviewUsername.setOnClickListener {
             var fragment = UserFragment()
             var bundle = Bundle()
-            bundle.putString("destinationUid",contentNormalDTO[position].uid)
-            bundle.putString("userId",contentNormalDTO[position].userId)
+            bundle.putString("destinationUid", contentNormalDTO[position].uid)
+            bundle.putString("userId", contentNormalDTO[position].userId)
             fragment.arguments = bundle
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
-            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content, fragment)?.commit()
         }
         //아이템 자체 클릭
         holder.binding.itemRecyclerNormalConstAll.setOnClickListener {
             var intent = Intent(holder.itemView.context, DetailNormalViewActivity::class.java)
             intent.apply {
-                putExtra("uid" , contentNormalDTO[position].uid)
-                putExtra("userId",contentNormalDTO[position].userId)
-                putExtra("postUid",contentUidList[position])
-                putExtra("imageList",contentNormalDTO[position].imageDownLoadUrlList)
-                putExtra("contentTime",contentNormalDTO[position].time)
-                putExtra("explain",contentNormalDTO[position].explain)
-                putExtra("likeCount",contentNormalDTO[position].favoriteCount)
-                putExtra("userNickName",contentNormalDTO[position].userNickName)
+                putExtra("uid", contentNormalDTO[position].uid)
+                putExtra("userId", contentNormalDTO[position].userId)
+                putExtra("postUid", contentUidList[position])
+                putExtra("imageList", contentNormalDTO[position].imageDownLoadUrlList)
+                putExtra("contentTime", contentNormalDTO[position].time)
+                putExtra("explain", contentNormalDTO[position].explain)
+                putExtra("likeCount", contentNormalDTO[position].favoriteCount)
+                putExtra("userNickName", contentNormalDTO[position].userNickName)
 
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
@@ -153,68 +162,92 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         holder.binding.itemRecyclerNormalImageviewProfile.setOnClickListener {
             var fragment = UserFragment()
             var bundle = Bundle()
-            bundle.putString("destinationUid",contentNormalDTO[position].uid)
-            bundle.putString("userId",contentNormalDTO[position].userId)
+            bundle.putString("destinationUid", contentNormalDTO[position].uid)
+            bundle.putString("userId", contentNormalDTO[position].userId)
             fragment.arguments = bundle
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
-            fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+            fragmentManager.beginTransaction().replace(R.id.main_content, fragment)?.commit()
         }
-
 
 
         //옵션 버튼 클릭
         holder.binding.itemRecyclerNormalImagebuttonOption.setOnClickListener {
-            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+            val bottomeSheetDialog: BottomSheetDialogContentOption =
+                BottomSheetDialogContentOption()
             var bundle = Bundle()
-            bundle.putString("destinationUid",contentNormalDTO[position].uid)
-            bundle.putString("userId",contentNormalDTO[position].userId)
-            bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
+            bundle.putString("destinationUid", contentNormalDTO[position].uid)
+            bundle.putString("userId", contentNormalDTO[position].userId)
+            bundle.putString("postUid", contentUidList[position])
+            bundle.putString("uid", FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "normal")
-            bundle.putString("viewType","fragment")
+            bundle.putString("viewType", "fragment")
             bottomeSheetDialog.arguments = bundle
-            bottomeSheetDialog.show(fragmentManager,"dd")
+            bottomeSheetDialog.show(fragmentManager, "dd")
         }
 
+
+        holder.binding.itemRecyclerNormalTextviewExplain.setOnLongClickListener {
+
+            var clipboardManager: ClipboardManager =
+                holder.binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                holder.binding.itemRecyclerNormalTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.",Toast.LENGTH_SHORT).show()
+
+            true
+        }
 
 
     }
 
 
-
-    class ContentNormalRecyclerViewAdapterViewHolder(val binding: ItemRecyclerNormalBinding) : RecyclerView.ViewHolder(binding.root){
-        fun onBind(data : ContentNormalDTO){
+    class ContentNormalRecyclerViewAdapterViewHolder(val binding: ItemRecyclerNormalBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun onBind(data: ContentNormalDTO) {
             binding.contentnormal = data
         }
     }
 
+    fun copyToClipboard(context: Context, str: String) {
+        /*
+        val clipboardManager : ClipboardManager = context.getSystemService() as ClipboardManager
+
+        val clipData = ClipData.newPlainText("strName",str)
+        clipboardManager.primaryClip = clipData
+
+         */
+    }
+
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun favoriteEvent(position: Int){
+    fun favoriteEvent(position: Int) {
 
 
         System.out.println("좋아요 이벤트 ㅇㅅㅇ")
-        var tsDoc = firestore?.collection("contents")?.document("normal").collection("data")?.document(contentUidList[position])
-        firestore?.runTransaction{ transaction ->
-
+        var tsDoc = firestore?.collection("contents")?.document("normal").collection("data")
+            ?.document(contentUidList[position])
+        firestore?.runTransaction { transaction ->
 
 
             System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentNormalDTO::class.java)
 
-            if (contentDTO!!.favorites.containsKey(uid)){
+            if (contentDTO!!.favorites.containsKey(uid)) {
                 //When the button is clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1
                 contentDTO?.favorites.remove(uid)
 
                 System.out.println("uid 존재")
-            }else{
+            } else {
                 System.out.println("uid 미존재")
                 //When the button is not clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! + 1
                 contentDTO?.favorites[uid!!] = true
-                favoriteAlarm(contentNormalDTO[position].uid!!,contentNormalDTO[position].userNickName.toString())
+                favoriteAlarm(contentNormalDTO[position].uid!!,
+                    contentNormalDTO[position].userNickName.toString())
             }
-            transaction.set(tsDoc,contentDTO)
+            transaction.set(tsDoc, contentDTO)
 
 
         }
@@ -223,7 +256,7 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-    fun favoriteAlarm(destinationUid : String, userNickName : String){
+    fun favoriteAlarm(destinationUid: String, userNickName: String) {
 
         System.out.println("좋아요 알람 이벤트")
         var alarmDTO = AlarmDTO()
@@ -237,6 +270,6 @@ class ContentNormalRecyclerViewAdapter (private val context: Context,var fragmen
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
         var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+        FcmPush.instance.sendMessage(destinationUid, "신바람", message)
     }
 }

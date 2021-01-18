@@ -1,9 +1,7 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -12,6 +10,7 @@ import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -222,6 +221,18 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             Glide.with(holder.itemView.context)
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
+        }
+
+        holder.binding.itemRecyclerSellTextviewExplain.setOnLongClickListener {
+            var clipboardManager: ClipboardManager =
+                holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                holder.binding.itemRecyclerSellTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
         }
     }
 

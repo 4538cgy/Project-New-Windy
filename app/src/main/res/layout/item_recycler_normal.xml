@@ -151,6 +151,7 @@
                 />
 
             <TextView
+                android:id="@+id/item_recycler_normal_textview_explain"
                 android:linksClickable="true"
                 android:textColorLink="@color/colorLinkColor"
                 android:autoLink="web"

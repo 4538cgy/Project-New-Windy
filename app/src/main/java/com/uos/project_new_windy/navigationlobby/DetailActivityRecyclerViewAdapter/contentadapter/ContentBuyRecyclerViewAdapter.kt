@@ -1,15 +1,14 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
@@ -227,6 +226,18 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
             }
             context.startActivity(intent)
+        }
+
+        holder.binding.itemRecyclerBuyTextviewExplain.setOnLongClickListener {
+            var clipboardManager: ClipboardManager =
+                holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                holder.binding.itemRecyclerBuyTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
         }
 
 

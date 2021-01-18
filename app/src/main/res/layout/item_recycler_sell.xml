@@ -188,6 +188,7 @@
                 android:background="@color/colorGray" />
 
             <TextView
+                android:id="@+id/item_recycler_sell_textview_explain"
                 android:linksClickable="true"
                 android:textColorLink="@color/colorLinkColor"
                 android:autoLink="web"

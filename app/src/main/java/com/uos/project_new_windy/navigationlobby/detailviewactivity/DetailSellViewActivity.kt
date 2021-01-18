@@ -2,6 +2,8 @@ package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +14,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -247,6 +250,18 @@ class DetailSellViewActivity : AppCompatActivity() {
                 bottomSheetDialog.arguments = bundle
                 bottomSheetDialog.show(supportFragmentManager,"lol")
             }
+        }
+
+        binding.activityDetailSellViewTextviewExplain.setOnLongClickListener {
+            var clipboardManager: ClipboardManager =
+                binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                binding.activityDetailSellViewTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
         }
 
 

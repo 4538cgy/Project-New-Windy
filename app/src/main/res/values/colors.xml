@@ -15,4 +15,5 @@
     <color name="colorEmailSignIn">#009688</color>
     <color name="colorEmailSignInPressed">#004D40</color>
     <color name="colorNaverGreen">#00FF00</color>
+    <color name="colorLinkColor">#0900FF</color>
 </resources>

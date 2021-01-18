@@ -133,6 +133,9 @@
                 android:background="@color/colorGray" />
 
             <TextView
+                android:linksClickable="true"
+                android:textColorLink="@color/colorLinkColor"
+                android:autoLink="web"
                 android:id="@+id/activity_detail_buy_view_textview_explain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

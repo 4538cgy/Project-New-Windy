@@ -124,12 +124,21 @@ class UserFragment : Fragment() {
              binding.accountBtnFollowSignout.text = "구독"
             binding.fragmentUserButtonMessage.text = "메세지 보내기"
             binding.fragmentUserButtonReport.text = "신고하기"
+            binding.fragmentUserTextviewMyPostCount.text = "글 갯수"
+            binding.fragmentUserTextviewMySubscriberCount.text = "구독자"
+            binding.fragmentUserTextviewMySubscribeCount.text = "구독"
+
             
         }else if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid))
         {
             binding.accountBtnFollowSignout.text = "로그아웃"
             binding.fragmentUserButtonMessage.text = "메세지함"
             binding.fragmentUserButtonReport.text = "내 정보"
+
+            binding.fragmentUserTextviewMyPostCount.text = "내 글 갯수"
+            binding.fragmentUserTextviewMySubscriberCount.text = "내 구독자"
+            binding.fragmentUserTextviewMySubscribeCount.text = "나의 구독"
+
         }
         /*
         binding.fragmentUserMySubscribe.setOnClickListener {

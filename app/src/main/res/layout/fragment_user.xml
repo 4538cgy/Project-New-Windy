@@ -94,6 +94,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/fragment_user_textview_my_post_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -119,12 +120,13 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/fragment_user_textview_my_subscriber_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textStyle="bold"
+                        android:text="@string/follower"
                         android:textColor="@color/colorBlack"
                         android:textSize="18dp"
-                        android:text="@string/follower" />
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/account_tv_follower_count"
@@ -145,6 +147,7 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/fragment_user_textview_my_subscribe_count"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"

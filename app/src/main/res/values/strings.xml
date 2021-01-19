@@ -26,6 +26,8 @@
     <string name="following">나의 구독</string>
     <string name="follower">내 구독자</string>
     <string name="follow">구독</string>
+    <string name="myfollowing">구독</string>
+    <string name="myfollower">구독자</string>
     <string name="follow_cancel">구독 취소</string>
     <string name="profile">정보</string>
     <string name="count_0">0</string>

@@ -258,7 +258,34 @@ class ChatActivity : AppCompatActivity() {
                     .into(holder.binding.messageItemImageviewProfile)
 
                  */
-                holder.binding.messageItemTextviewName.text = "테스트 유저" /*userModel.userName*/
+
+                FirebaseFirestore.getInstance()?.collection("profileImages")?.document(destinationUid!!)?.get()?.addOnCompleteListener {
+                        task ->
+                    if (task.isSuccessful)
+                    {
+                        var url = task.result!!["image"]
+                        Glide.with(holder.binding.root.context).load(url).apply(RequestOptions().circleCrop()).into(holder.binding.messageItemImageviewProfile)
+
+                    }
+                }
+
+                //유저 닉네임 가져오기
+                FirebaseFirestore.getInstance()?.collection("userInfo")?.document("userData")?.collection(destinationUid!!)?.document("accountInfo")
+                    ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+
+                        if (documentSnapshot != null)
+                        {
+                            userNickName = documentSnapshot.get("userName")?.toString()
+
+                            println("유저 닉네임 가져오기 성고오오오오오옹" + userNickName)
+                            //아이디 초기화
+                            //binding.activityDetailNormalViewTextviewNickname.text = userNickName
+                            holder.binding.messageItemTextviewName.text = userNickName
+                        }
+
+                    }
+
+
                 holder.binding.messageItemLinearlayoutDestination.visibility = View.VISIBLE
                 holder.binding.messageItemTextViewMessage.setBackgroundResource(R.drawable.background_round_gray)
                 holder.binding.messageItemTextViewMessage.text = comments[position].message

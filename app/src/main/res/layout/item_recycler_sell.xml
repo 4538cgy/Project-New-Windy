@@ -159,11 +159,12 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <TextView
+                android:id="@+id/item_recycler_sell_textview_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:gravity="right"
-                android:text="@{contentsell.time.toString()}"
+
                 android:textColor="@color/colorBlack" />
 
             <View

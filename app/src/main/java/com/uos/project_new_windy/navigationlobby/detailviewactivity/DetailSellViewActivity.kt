@@ -35,6 +35,7 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.util.FcmPush
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.item_comment.view.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
@@ -58,7 +59,7 @@ class DetailSellViewActivity : AppCompatActivity() {
     var productExplain : String ? = null
     var explain : String ? = null
     var userNickName : String ? = null
-
+    var timeStamp : Long ? = null
 
     companion object{
         var activity : Activity ? = null
@@ -90,6 +91,7 @@ class DetailSellViewActivity : AppCompatActivity() {
         productExplain = intent.getStringExtra("productExplain")
         explain = intent.getStringExtra("explain")
         userNickName = intent.getStringExtra("userNickName")
+        timeStamp = intent.getLongExtra("timeStamp",0)
 
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
@@ -216,7 +218,7 @@ class DetailSellViewActivity : AppCompatActivity() {
         }
 
         //시간 초기화
-        binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ contentTime.toString()
+        binding.activityDetailSellViewTextviewTime.text = "게시일 : "+ TimeUtil().formatTimeString(timeStamp!!)
 
         //프로필 이미지
         firestore?.collection("profileImages")?.document(uid!!)?.get()?.addOnCompleteListener {

@@ -8,6 +8,7 @@ import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.TimeUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.ActivityDetailNormalViewBinding
 import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.navigationlobby.CommentActivity
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class DetailNormalViewActivity : AppCompatActivity() {
@@ -38,7 +40,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
     var explain : String ? = null
     var likeCount : Int ? = null
     var userNickName : String ? = null
-
+    var timeStamp : Long ? = null
 
     lateinit var binding : ActivityDetailNormalViewBinding
 
@@ -70,6 +72,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
         likeCount = intent.getIntExtra("likeCount",0)
         explain = intent.getStringExtra("explain")
         userNickName = intent.getStringExtra("userNickName")
+        timeStamp = intent.getLongExtra("timeStamp",0)
 
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
@@ -142,7 +145,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
 
 
         //시간 초기화
-        binding.activityDetailNormalViewTextviewTime.text = contentTime
+        binding.activityDetailNormalViewTextviewTime.text = "게시일 : "+ TimeUtil().formatTimeString(timeStamp!!)
 
         //내용 초기화
         binding.activityDetailNormalViewTextviewContent.text = explain

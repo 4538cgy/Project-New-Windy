@@ -36,6 +36,7 @@ import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.util.FcmPush
+import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class DetailBuyViewActivity : AppCompatActivity() {
@@ -57,7 +58,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
     var explain : String ? = null
     var imageUrl : String ? = null
     var userNickName : String ? = null
-
+    var timeStamp : Long ? = null
 
     companion object{
         var activity : Activity? = null
@@ -84,6 +85,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
         imageUrl = intent.getStringExtra("imageUrl")
         contentTime = intent.getStringExtra("contentTime")
         explain = intent.getStringExtra("explain")
+        timeStamp = intent.getLongExtra("timeStamp",0)
         //userNickName = intent.getStringExtra("userNickName")
 
 
@@ -216,7 +218,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
         }
 
         //시간 초기화
-        binding.activityDetailBuyViewTextviewTime.text = "게시일 : " + contentTime.toString()
+        binding.activityDetailBuyViewTextviewTime.text = "게시일 : " + TimeUtil().formatTimeString(timeStamp!!)
 
         //프로필 이미지
         firestore?.collection("profileImages")?.document(uid!!)?.get()?.addOnCompleteListener {

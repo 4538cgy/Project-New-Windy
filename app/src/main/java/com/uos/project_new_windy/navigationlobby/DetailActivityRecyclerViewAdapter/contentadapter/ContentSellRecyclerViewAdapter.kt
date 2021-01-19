@@ -151,6 +151,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 putExtra("productExplain",contentSellDTO[position].productExplain)
                 putExtra("explain",contentSellDTO[position].explain)
                 putExtra("userNickName",contentSellDTO[position].userNickName)
+                putExtra("timeStamp",contentSellDTO[position].timeStamp)
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
             }
@@ -215,6 +216,10 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 show()
             }
         }
+
+        //시간 표시
+        holder.binding.itemRecyclerSellTextviewTime.text = TimeUtil().formatTimeString(
+            contentSellDTO[position].timeStamp!!)
 
         //문자 보내기
         holder.binding.itemRecyclerSellImagebuttonSms.setOnClickListener {

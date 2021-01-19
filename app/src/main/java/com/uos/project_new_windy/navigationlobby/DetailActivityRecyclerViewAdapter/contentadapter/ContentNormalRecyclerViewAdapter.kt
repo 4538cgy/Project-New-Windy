@@ -150,7 +150,7 @@ class ContentNormalRecyclerViewAdapter(
                 putExtra("explain", contentNormalDTO[position].explain)
                 putExtra("likeCount", contentNormalDTO[position].favoriteCount)
                 putExtra("userNickName", contentNormalDTO[position].userNickName)
-
+                putExtra("timeStamp",contentNormalDTO[position].timestamp)
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
@@ -169,6 +169,9 @@ class ContentNormalRecyclerViewAdapter(
             fragmentManager.beginTransaction().replace(R.id.main_content, fragment)?.commit()
         }
 
+        //시간 표시
+        holder.binding.itemRecyclerNormalTextviewTime.text = TimeUtil().formatTimeString(
+            contentNormalDTO[position].timestamp!!)
 
         //옵션 버튼 클릭
         holder.binding.itemRecyclerNormalImagebuttonOption.setOnClickListener {

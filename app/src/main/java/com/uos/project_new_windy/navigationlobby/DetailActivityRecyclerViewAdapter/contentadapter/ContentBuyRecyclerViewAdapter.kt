@@ -220,6 +220,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 putExtra("contentTime",contentBuyDTO[position].time)
                 putExtra("explain",contentBuyDTO[position].explain)
                 putExtra("userNickName",contentBuyDTO[position].userNickName)
+                putExtra("timeStamp",contentBuyDTO[position].timeStamp as Long)
 
                 //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
@@ -239,7 +240,11 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
             true
         }
-        
+
+        //시간 표시
+        holder.binding.itemRecyclerBuyTextviewTime.text = TimeUtil().formatTimeString(
+            contentBuyDTO[position].timeStamp!! as Long)
+
         //문자 보내기
         holder.binding.itemRecyclerBuyImagebuttonSms.setOnClickListener {
 

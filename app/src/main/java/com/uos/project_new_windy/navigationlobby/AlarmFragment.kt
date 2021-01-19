@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.model.AlarmDTO
 import com.uos.project_new_windy.R
 import kotlinx.android.synthetic.main.fragment_alarm.view.*
@@ -42,7 +43,7 @@ class AlarmFragment : Fragment() {
         init {
             val uid = FirebaseAuth.getInstance().currentUser?.uid
 
-            FirebaseFirestore.getInstance().collection("alarms").whereEqualTo("destinationUid", uid)
+            FirebaseFirestore.getInstance().collection("alarms").whereEqualTo("destinationUid", uid).orderBy("timestamp",Query.Direction.DESCENDING)
                 .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
 
                     alarmDTOList.clear()

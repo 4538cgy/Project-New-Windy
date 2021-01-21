@@ -240,8 +240,10 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         contentSellDTO.time = TimeUtil().getTime()
         //유저 닉네임
         contentSellDTO.userNickName = userNickName
+
        //유저 주소
-        contentSellDTO.sellerAddress = address
+        if (address != null)
+        contentSellDTO.sellerAddress = getAddressCityAndLoad()
 
         //비교 전용 cost
         contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()
@@ -260,6 +262,25 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         finish()
 
 
+    }
+
+    fun getAddressCityAndLoad() : String{
+
+        var city = "city"
+        var path = "null"
+        var load = "load"
+
+        if (address != null) {
+            var index = address?.indexOf(" ")
+            city = address?.substring(0, index!!)!!
+            path = address?.substring(index!! +1)!!
+            var index2 = path?.indexOf(" ")
+            load = path?.substring(0,index2!!)
+        }
+
+
+
+        return city+" "+load
     }
 
 

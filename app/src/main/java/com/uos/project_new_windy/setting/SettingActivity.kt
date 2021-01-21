@@ -60,7 +60,11 @@ class SettingActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_setting)
         binding.activitysetting = this@SettingActivity
 
-        
+        //체크박스들 최초는 전부 체크된것으로 초기화
+        binding.activitySettingSwitchNotice.isChecked = true
+        binding.activitySettingSwitchMaketting.isChecked = true
+        binding.activitySettingSwitchPush.isChecked = true
+
         //프로필 이미지
         firestore?.collection("profileImages")?.document(auth.currentUser?.uid!!)
             ?.get()?.addOnCompleteListener { task ->

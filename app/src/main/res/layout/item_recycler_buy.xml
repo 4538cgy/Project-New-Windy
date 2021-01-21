@@ -218,7 +218,7 @@
                 <TextView
                     android:linksClickable="true"
                     android:textColorLink="@color/colorLinkColor"
-                    android:autoLink="web"
+                    android:autoLink="web|phone|email"
                     android:layout_margin="8dp"
                     android:id="@+id/item_recycler_buy_textview_explain"
                     android:layout_width="match_parent"

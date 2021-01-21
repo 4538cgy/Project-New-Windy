@@ -66,6 +66,11 @@ class SignUpOnlyPhone : AppCompatActivity() {
         progressSignUpProcess!!.setCancelable(false)
 
 
+        //주소 에딧텍스트 터치방지
+        binding.activitySignUpOnlyPhoneEdittextAddress.isEnabled = false
+        binding.activitySignUpOnlyPhoneEdittextAddress.setOnClickListener {
+            Toast.makeText(binding.root.context,"주소 검색 버튼을 눌러주세요.",Toast.LENGTH_SHORT).show()
+        }
         //주소 검색
         binding.activitySignUpOnlyPhoneButtonSearchAddress.setOnClickListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
@@ -105,7 +110,7 @@ class SignUpOnlyPhone : AppCompatActivity() {
                 Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
 
             }else if(binding.activitySignUpOnlyPhoneEdittextAddress.text.length < 2){
-                Toast.makeText(binding.root.context, "주소를 입력해주세요." ,Toast.LENGTH_LONG).show()
+                Toast.makeText(binding.root.context, "주소 검색 버튼을 눌러 주소를 입력해주세요." ,Toast.LENGTH_LONG).show()
 
             }
 

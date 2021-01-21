@@ -81,6 +81,10 @@ class SignUpActivity : AppCompatActivity() {
 
         //파이어베이스 auth 초기화
         mAuth = FirebaseAuth.getInstance()
+        
+        //주소 에딧텍스트 사용금지
+        binding.activitySignUpEdittextAddress.isEnabled = false
+
 
         //스피너에 삽입될 아이템 초기화
         val items = resources.getStringArray(R.array.plant)
@@ -132,7 +136,7 @@ class SignUpActivity : AppCompatActivity() {
                     Toast.makeText(binding.root.context, "닉네임을 두 글자 이상 입력해주세요.", Toast.LENGTH_LONG)
                         .show()
                 } else if (binding.activitySignUpEdittextDetailAddress.text.length < 5) {
-                    Toast.makeText(binding.root.context, "주소를 입력해주세요.", Toast.LENGTH_LONG).show()
+                    Toast.makeText(binding.root.context, "주소 검색 버튼을 눌러 주소를 입력해주세요.", Toast.LENGTH_LONG).show()
 
                 }else if(binding.activitySignUpEdittextName.text.toString().contains(" "))
                 {

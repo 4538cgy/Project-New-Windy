@@ -44,6 +44,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     var auth: FirebaseAuth? = null
     var firestore: FirebaseFirestore? = null
     var imageUriList: ArrayList<Uri> = arrayListOf()
+    var address : String ? = null
 
     //이미지 갯수 체크를 위한 변수
     var count: Int = 0;
@@ -73,13 +74,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         firestore = FirebaseFirestore.getInstance()
 
 
-        //유저 닉네임 가져오기
+        //유저 닉네임,유저 주소 가져오기
         firestore!!.collection("userInfo").document("userData")
             .collection(auth!!.currentUser?.uid!!).document("accountInfo")
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
                 if (documentSnapshot != null) {
                     userNickName = documentSnapshot.get("userName")?.toString()
+                    address = documentSnapshot.get("address")?.toString()
                 }
 
             }
@@ -238,6 +240,8 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         contentSellDTO.time = TimeUtil().getTime()
         //유저 닉네임
         contentSellDTO.userNickName = userNickName
+       //유저 주소
+        contentSellDTO.sellerAddress = address
 
         //비교 전용 cost
         contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()

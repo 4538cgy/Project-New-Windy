@@ -39,7 +39,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     var contentUidList: ArrayList<String> = arrayListOf()
     var uid : String ? = null
     var data = listOf<ContentBuyDTO>()
-
+    var won : Long = 0
+    var last : Long = 0
     init {
         Log.d("디테일!" , "교체완료됬습니다.")
 
@@ -130,9 +131,13 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
-
-        var won = contentBuyDTO[position].costInt?.toLong()!! / 10000
-        var last = contentBuyDTO[position].costInt?.toLong()!! % 10000
+        if(contentBuyDTO[position].costInt != "") {
+            won = contentBuyDTO[position].costInt?.toLong()!! / 10000
+            last = contentBuyDTO[position].costInt?.toLong()!! % 10000
+        }else{
+            won = 0
+            last = 0
+        }
 
 
         var cost : String ? = null

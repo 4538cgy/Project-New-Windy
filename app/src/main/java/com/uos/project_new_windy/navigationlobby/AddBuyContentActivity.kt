@@ -1,6 +1,8 @@
 package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -24,6 +26,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.util.ProgressDialogLoading
+import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
 
 class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener {
@@ -99,6 +102,73 @@ class AddBuyContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedLi
         //사진 추가
         binding.activityAddBuyContentImageviewProductImage.setOnClickListener {
             addPhoto()
+        }
+
+        checkSaveData()
+    }
+
+    fun checkSaveData() {
+        if (SharedData.prefs.getString("addBuyData", "null").toString().equals("exist")) {
+            var builder = AlertDialog.Builder(binding.root.context)
+
+            builder.apply {
+                setMessage("임시 저장된 게시글이 존재합니다. \n 불러오시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    binding.activityAddBuyContentEdittextExplain.setText(SharedData.prefs.getString(
+                        "addBuyDataExplain",
+                        ""))
+                    binding.activityAddBuyContentEdittextCost.setText(SharedData.prefs.getString("addBuyDataCost",
+                        ""))
+
+                    Toast.makeText(binding.root.context, "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.", Toast.LENGTH_LONG).show()
+
+
+
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+
+
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        var builder = AlertDialog.Builder(binding.root.context)
+
+        if (binding.activityAddBuyContentEdittextCost.text.length > 1 || binding.activityAddBuyContentEdittextExplain.text.length > 1) {
+
+            builder.apply {
+                setMessage("게시글을 임시 저장 하시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addBuyData", "exist")
+                    SharedData.prefs.setString("addBuyDataCost",
+                        binding.activityAddBuyContentEdittextCost.text.toString())
+                    SharedData.prefs.setString("addBuyDataExplain",
+                        binding.activityAddBuyContentEdittextExplain.text.toString())
+                    finish()
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addBuyData", "none")
+                    SharedData.prefs.setString("addBuyDataCost",
+                        "")
+                    SharedData.prefs.setString("addBuyDataExplain",
+                        "")
+                    finish()
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        } else {
+            super.onBackPressed()
         }
     }
 

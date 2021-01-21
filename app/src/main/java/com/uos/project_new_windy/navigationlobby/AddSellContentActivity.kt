@@ -1,6 +1,8 @@
 package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -25,31 +27,34 @@ import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddSellContentActivityRecyclerViewAdapter
+import com.uos.project_new_windy.util.PreferenceUtil
 import com.uos.project_new_windy.util.ProgressDialogLoading
+import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
-class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedListener {
+class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
-    lateinit var binding : ActivityAddSellContentBinding
+    lateinit var binding: ActivityAddSellContentBinding
 
     var PICK_IMAGE_FROM_ALBUM = 0
-    var storage : FirebaseStorage? = null
-    var photoUri : Uri? = null
-    var auth : FirebaseAuth? = null
-    var firestore : FirebaseFirestore? = null
-    var imageUriList : ArrayList<Uri> = arrayListOf()
+    var storage: FirebaseStorage? = null
+    var photoUri: Uri? = null
+    var auth: FirebaseAuth? = null
+    var firestore: FirebaseFirestore? = null
+    var imageUriList: ArrayList<Uri> = arrayListOf()
+
     //이미지 갯수 체크를 위한 변수
     var count: Int = 0;
-    var imageDownLoadUriList : ArrayList<String> = arrayListOf()
-    var pickCategoryData : String ? = null
-    var progressDialog : ProgressDialogLoading? = null
-    var userNickName : String ? = null
+    var imageDownLoadUriList: ArrayList<String> = arrayListOf()
+    var pickCategoryData: String? = null
+    var progressDialog: ProgressDialogLoading? = null
+    var userNickName: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_add_sell_content)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_sell_content)
         binding.sellcontent = this@AddSellContentActivity
 
 
@@ -63,22 +68,22 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         progressDialog!!.setCancelable(false)
 
         //파이어베이스 초기화
-        storage  = FirebaseStorage.getInstance()
+        storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
 
         //유저 닉네임 가져오기
-        firestore!!.collection("userInfo").document("userData").collection(auth!!.currentUser?.uid!!).document("accountInfo")
+        firestore!!.collection("userInfo").document("userData")
+            .collection(auth!!.currentUser?.uid!!).document("accountInfo")
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-                if (documentSnapshot != null)
-                {
+                if (documentSnapshot != null) {
                     userNickName = documentSnapshot.get("userName")?.toString()
                 }
 
             }
-        
+
         val items = resources.getStringArray(R.array.content_category)
         val spinnerAdapter = ArrayAdapter(
             this,
@@ -94,8 +99,10 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
             finish()
         }
         //사진이 추가될 리사이클러뷰 초기화
-        binding.activityAddSellContentRecyclerPhoto.adapter = AddSellContentActivityRecyclerViewAdapter(this,imageUriList)
-        binding.activityAddSellContentRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
+        binding.activityAddSellContentRecyclerPhoto.adapter =
+            AddSellContentActivityRecyclerViewAdapter(this, imageUriList)
+        binding.activityAddSellContentRecyclerPhoto.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         //사진추가
         binding.activityAddSellContentImagebuttonAddphoto.setOnClickListener {
@@ -105,23 +112,99 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         //게시글 업로드
         binding.activityAddSellContentButtonUpload.setOnClickListener {
             if (imageUriList.size <= 0) {
-                Toast.makeText(this,"사진을 한장 이상 포함해주세요." ,Toast.LENGTH_LONG).show()
-            }else {
+                Toast.makeText(this, "사진을 한장 이상 포함해주세요.", Toast.LENGTH_LONG).show()
+            } else {
                 contentUpload()
             }
         }
 
 
+        //임시 저장된 게시글 확인
+        checkSaveData()
     }
 
-    fun contentUpload(){
+    fun checkSaveData() {
+        if (SharedData.prefs.getString("addSellData", "null").toString().equals("exist")) {
+            var builder = AlertDialog.Builder(binding.root.context)
+
+            builder.apply {
+                setMessage("임시 저장된 게시글이 존재합니다. \n 불러오시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    binding.activityAddSellContentEdittextExplain.setText(SharedData.prefs.getString(
+                        "addSellDataExplain",
+                        ""))
+                    binding.activityAddSellContentEdittextProductExplain.setText(SharedData.prefs.getString(
+                        "addSellDataTitle",
+                        ""))
+                    binding.activityAddSellContentEdittextCost.setText(SharedData.prefs.getString("addSellDataCost",
+                        ""))
+
+                    Toast.makeText(binding.root.context, "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.", Toast.LENGTH_LONG).show()
+
+
+
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+
+
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        var builder = AlertDialog.Builder(binding.root.context)
+
+        if (binding.activityAddSellContentEdittextExplain.text.length > 1 || binding.activityAddSellContentEdittextProductExplain.text.length > 1 || binding.activityAddSellContentEdittextCost.text.length > 1) {
+
+            builder.apply {
+                setMessage("게시글을 임시 저장 하시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addSellData", "exist")
+                    SharedData.prefs.setString("addSellDataCost",
+                        binding.activityAddSellContentEdittextCost.text.toString())
+                    SharedData.prefs.setString("addSellDataTitle",
+                        binding.activityAddSellContentEdittextProductExplain.text.toString())
+                    SharedData.prefs.setString("addSellDataCategory", pickCategoryData.toString())
+                    SharedData.prefs.setString("addSellDataExplain",
+                        binding.activityAddSellContentEdittextExplain.text.toString())
+                    finish()
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addSellData", "none")
+                    SharedData.prefs.setString("addSellDataCost",
+                        "")
+                    SharedData.prefs.setString("addSellDataTitle",
+                        "")
+                    SharedData.prefs.setString("addSellDataCategory", "")
+                    SharedData.prefs.setString("addSellDataExplain",
+                        "")
+                    finish()
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    fun contentUpload() {
         progressDialog?.show()
-        if(count < imageUriList.size && imageUriList.size != 0) {
+        if (count < imageUriList.size && imageUriList.size != 0) {
             uploadPhoto(imageUriList[count])
-        }else if(imageUriList.size == 0){
+        } else if (imageUriList.size == 0) {
             //사진을 제외한 컨텐츠 내용만 Firestore에 업로드
             uploadContentDetail()
-        }else if(count == imageUriList.size){
+        } else if (count == imageUriList.size) {
             //컨텐츠 내용 Firestore에 업로드
             uploadContentDetail()
 
@@ -130,14 +213,15 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
 
     }
 
-    fun uploadContentDetail(){
+    fun uploadContentDetail() {
 
         var contentSellDTO = ContentSellDTO()
 
         //게시글 내용
         contentSellDTO.explain = binding.activityAddSellContentEdittextExplain.text.toString()
         //제품 설명
-        contentSellDTO.productExplain = binding.activityAddSellContentEdittextProductExplain.text.toString()
+        contentSellDTO.productExplain =
+            binding.activityAddSellContentEdittextProductExplain.text.toString()
         //제품 가격
         contentSellDTO.cost = binding.activityAddSellContentEdittextCost.text.toString() + "원"
         //카테고리
@@ -159,7 +243,8 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()
 
         //파스에 set
-        firestore?.collection("contents")?.document("sell")?.collection("data")?.document()?.set(contentSellDTO)
+        firestore?.collection("contents")?.document("sell")?.collection("data")?.document()
+            ?.set(contentSellDTO)
             ?.addOnSuccessListener {
                 progressDialog?.dismiss()
             }?.addOnFailureListener {
@@ -171,63 +256,60 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
         finish()
 
 
-
     }
 
 
-    fun uploadPhoto(uri : Uri){
+    fun uploadPhoto(uri: Uri) {
         //var timestamp = SimpleDateFormat("yy-MM-dd HH:mm:ss").format(Date(System.currentTimeMillis()))
         var timestamp = TimeUtil().getTime()
         var imageFileName = "Windy_IMAGE_" + timestamp + "_.png"
 
         var storageRef = storage?.reference?.child("contents_sell")?.child(imageFileName)
 
-        storageRef?.putFile(uri)?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
+        storageRef?.putFile(uri)
+            ?.continueWithTask { task: com.google.android.gms.tasks.Task<UploadTask.TaskSnapshot> ->
 
-            return@continueWithTask storageRef.downloadUrl
-        }?.addOnSuccessListener { uri ->
+                return@continueWithTask storageRef.downloadUrl
+            }?.addOnSuccessListener { uri ->
 
-            count ++
-            imageDownLoadUriList.add(uri.toString())
+                count++
+                imageDownLoadUriList.add(uri.toString())
 
-            imageDownLoadUriList.forEach {i ->
-                Log.d("URI 리스트으으으으으" , i.toString())
+                imageDownLoadUriList.forEach { i ->
+                    Log.d("URI 리스트으으으으으", i.toString())
+                }
+                contentUpload()
+
             }
-            contentUpload()
-
-        }
     }
 
 
-
     //앨범에서 선택된 이미지 파일을 가져오는 메서드
-    fun addPhoto(){
+    fun addPhoto() {
         val intent = Intent(Intent.ACTION_PICK).apply {
 
             type = "image/*"
-            putExtra(Intent.EXTRA_ALLOW_MULTIPLE,true)
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
             setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         }
-        startActivityForResult(intent,PICK_IMAGE_FROM_ALBUM)
+        startActivityForResult(intent, PICK_IMAGE_FROM_ALBUM)
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode == PICK_IMAGE_FROM_ALBUM)
-        {
-            if (resultCode == Activity.RESULT_OK){
+        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
+            if (resultCode == Activity.RESULT_OK) {
                 //this is path to the selected image
                 photoUri = data?.data
                 imageUriList.add(photoUri!!)
 
-                imageUriList.forEach {
-                        i->
-                    System.out.println("이미지 Uri = "+ i)
+                imageUriList.forEach { i ->
+                    System.out.println("이미지 Uri = " + i)
                 }
 
-            }else{
+            } else {
                 //exit the addphoto activity if you leave the album without selecting it
                 finish()
             }
@@ -241,16 +323,14 @@ class AddSellContentActivity : AppCompatActivity() , AdapterView.OnItemSelectedL
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
-          pickCategoryData = binding.activityAddSellContentSpinnerCategory.selectedItem.toString()
-            System.out.println("으아아아" + pickCategoryData)
+        pickCategoryData = binding.activityAddSellContentSpinnerCategory.selectedItem.toString()
+        System.out.println("으아아아" + pickCategoryData)
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
 
     }
-
-
 
 
 }

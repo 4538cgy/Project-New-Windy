@@ -1,8 +1,10 @@
 package com.uos.project_new_windy.navigationlobby
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -28,6 +30,7 @@ import com.uos.project_new_windy.databinding.ActivityAddContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
 import com.uos.project_new_windy.util.ProgressDialogLoading
+import com.uos.project_new_windy.util.SharedData
 
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.activity_add_content.*
@@ -123,7 +126,7 @@ class AddContentActivity : AppCompatActivity() {
         }
 
 
-
+        checkSaveData()
     }
     
     //게시글을 DB에 올리는 메서드
@@ -141,6 +144,67 @@ class AddContentActivity : AppCompatActivity() {
         }
 
 
+    }
+
+    fun checkSaveData() {
+        if (SharedData.prefs.getString("addNormalData", "null").toString().equals("exist")) {
+            var builder = AlertDialog.Builder(binding.root.context)
+
+            builder.apply {
+                setMessage("임시 저장된 게시글이 존재합니다. \n 불러오시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+
+                    binding.activityAddContentEdittextContent.setText(SharedData.prefs.getString(
+                        "addNormalDataExplain",
+                        ""))
+
+
+                    Toast.makeText(binding.root.context, "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.", Toast.LENGTH_LONG).show()
+
+
+
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+
+
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        //super.onBackPressed()
+        var builder = AlertDialog.Builder(binding.root.context)
+
+        if (binding.activityAddContentEdittextContent.text.length > 1 ) {
+
+            builder.apply {
+                setMessage("게시글을 임시 저장 하시겠습니까?")
+                setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addNormalData", "exist")
+                    SharedData.prefs.setString("addNormalDataExplain",
+                        binding.activityAddContentEdittextContent.text.toString())
+                    finish()
+                })
+                setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
+                    SharedData.prefs.setString("addNormalData", "none")
+
+                    SharedData.prefs.setString("addNormalDataExplain",
+                        "")
+                    finish()
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+        } else {
+            super.onBackPressed()
+        }
     }
 
     fun uploadContentDetail(){

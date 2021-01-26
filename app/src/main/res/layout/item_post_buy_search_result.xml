@@ -41,11 +41,24 @@
             />
 
         <TextView
-            android:id="@+id/item_post_buy_search_result_textview_cost"
+            android:id="@+id/item_post_buy_search_result_textview_costmin"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:text="@{itempostbuysearchresult.cost}"
+            android:text="@{itempostbuysearchresult.costMin}"
             app:layout_constraintLeft_toRightOf="@+id/item_post_buy_search_result_imageview_photo"
+            app:layout_constraintTop_toBottomOf="@+id/item_post_buy_search_result_textview_explain"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:gravity="center"
+            android:layout_margin="12dp"
+
+            />
+
+        <TextView
+            android:id="@+id/item_post_buy_search_result_textview_costmax"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:text="@{itempostbuysearchresult.costMax}"
+            app:layout_constraintLeft_toRightOf="@+id/item_post_buy_search_result_textview_costmin"
             app:layout_constraintTop_toBottomOf="@+id/item_post_buy_search_result_textview_explain"
             app:layout_constraintBottom_toBottomOf="parent"
             android:gravity="center"

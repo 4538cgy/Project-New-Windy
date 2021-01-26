@@ -18,10 +18,10 @@ data class ContentBuyDTO(
     var userId : String ? = null,
     //유저 닉네임
     var userNickName : String ? = null,
-    //가격
-    var cost : String ? = null,
-    //제시가격
-    var costCustom : Boolean ? = null,
+    //최소 가격
+    var costMin : Int ? = 0,
+    //최대 가격
+    var costMax : Int ? = 0,
     //카테고리
     var categoryHash: String ? = null,
     //핸드폰 번호

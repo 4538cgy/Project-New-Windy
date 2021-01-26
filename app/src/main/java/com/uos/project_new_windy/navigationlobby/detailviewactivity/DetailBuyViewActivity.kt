@@ -54,6 +54,8 @@ class DetailBuyViewActivity : AppCompatActivity() {
     var sellerAddress : String ? = null
     var contentTime : String ? = null
     var cost : String ? = null
+    var costMin : Int ? = 0
+    var costMax : Int ? = 0
     var category : String ? = null
     var explain : String ? = null
     var imageUrl : String ? = null
@@ -80,7 +82,9 @@ class DetailBuyViewActivity : AppCompatActivity() {
         System.out.println("가져온 uid" + uid.toString())
         userId = intent.getStringExtra("userId")
         contentUid = intent.getStringExtra("postUid")
-        cost = intent.getStringExtra("cost")
+        //cost = intent.getStringExtra("cost")
+        costMin = intent.getIntExtra("costMin",0)
+        costMax = intent.getIntExtra("costMax",1000)
         category = intent.getStringExtra("categoryHash")
         imageUrl = intent.getStringExtra("imageUrl")
         contentTime = intent.getStringExtra("contentTime")
@@ -113,6 +117,10 @@ class DetailBuyViewActivity : AppCompatActivity() {
         binding.activityDetailBuyViewRecyclerPhoto.layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
 
          */
+
+        //가격 최소 최대 초기화
+        binding.activityDetailSellViewTextviewCostmin.text ="최소 가격 " + costMin.toString()
+        binding.activityDetailSellViewTextviewCostmax.text ="최대 가격 " + costMax.toString()
 
 
         //사진클릭
@@ -184,8 +192,6 @@ class DetailBuyViewActivity : AppCompatActivity() {
         //이미지
         Glide.with(binding.root.context).load(imageUrl)
             .into(binding.activityDetailBuyViewImageviewPhoto)
-        //가격 초기화
-        binding.activityDetailSellViewTextviewCost.text = cost
 
         //카테고리 초기화
         binding.activityDetailBuyViewTextviewCategory.text = category

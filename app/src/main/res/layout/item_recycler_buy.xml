@@ -222,7 +222,20 @@
                     />
                 <TextView
                     android:layout_margin="8dp"
-                    android:id="@+id/item_recycler_buy_textview_cost"
+                    android:id="@+id/item_recycler_buy_textview_costmin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorLightGreen"
+                    android:textStyle="bold"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorGray"
+                    />
+                <TextView
+                    android:layout_margin="8dp"
+                    android:id="@+id/item_recycler_buy_textview_costmax"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorLightGreen"

@@ -131,6 +131,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
+
+        /*
         if(contentBuyDTO[position].costInt != "") {
             won = contentBuyDTO[position].costInt?.toLong()!! / 10000
             last = contentBuyDTO[position].costInt?.toLong()!! % 10000
@@ -138,6 +140,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             won = 0
             last = 0
         }
+
+         */
 
 
         var cost : String ? = null
@@ -150,7 +154,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             cost = contentBuyDTO[position].costInt.toString()
         }
 
-        holder.binding.itemRecyclerBuyTextviewCost.text = cost + "원"
+        holder.binding.itemRecyclerBuyTextviewCostmin.text = "최소 가격 " + contentBuyDTO[position].costMin.toString()
+        holder.binding.itemRecyclerBuyTextviewCostmax.text = "최대 가격 " + contentBuyDTO[position].costMax.toString()
 
         //유저 닉네임 클릭
         holder.binding.itemRecyclerBuyTextviewUsername.setOnClickListener {
@@ -219,7 +224,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 putExtra("uid" , contentBuyDTO[position].uid)
                 putExtra("userId",contentBuyDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
-                putExtra("cost",cost)
+                putExtra("costMin",contentBuyDTO[position].costMin)
+                putExtra("costMax",contentBuyDTO[position].costMax)
                 putExtra("categoryHash",contentBuyDTO[position].categoryHash)
                 putExtra("imageUrl",contentBuyDTO[position].imageUrl)
                 putExtra("contentTime",contentBuyDTO[position].time)

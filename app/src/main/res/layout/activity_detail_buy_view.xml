@@ -117,7 +117,23 @@
                 android:background="@color/colorGray" />
 
             <TextView
-                android:id="@+id/activity_detail_sell_view_textview_cost"
+                android:id="@+id/activity_detail_sell_view_textview_costmin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                android:textColor="@color/colorBlack"
+                android:text="가격" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="4dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/activity_detail_sell_view_textview_costmax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="8dp"

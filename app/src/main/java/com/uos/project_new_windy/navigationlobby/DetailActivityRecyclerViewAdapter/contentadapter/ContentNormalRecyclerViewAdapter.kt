@@ -23,6 +23,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.AlarmDTO
+import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.CommentActivity
@@ -156,6 +157,7 @@ class ContentNormalRecyclerViewAdapter(
 
             }
             context.startActivity(intent)
+            viewCountIncrease(position)
         }
 
         //프로필 이미지 클릭
@@ -221,6 +223,32 @@ class ContentNormalRecyclerViewAdapter(
         clipboardManager.primaryClip = clipData
 
          */
+    }
+
+    //조회수 증가
+    fun viewCountIncrease(position: Int){
+        var tsDoc = firestore?.collection("contents")?.document("normal").collection("data")?.document(contentUidList[position])
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentNormalDTO::class.java)
+
+
+            if(contentDTO!!.viewers.containsKey(uid)){
+
+            }else{
+                contentDTO?.viewCount = contentDTO?.viewCount!! + 1
+                contentDTO.viewers[uid!!] = true
+            }
+
+            transaction.set(tsDoc,contentDTO)
+
+
+        }.addOnFailureListener {
+            println("viewCountIncreaseFail ${it.toString()}")
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)

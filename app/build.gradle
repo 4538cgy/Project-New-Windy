@@ -13,13 +13,18 @@ android {
     buildFeatures{
         dataBinding = true
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
     defaultConfig {
         applicationId "com.uos.project_new_windy"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 9
-        versionName "1.9"
+        versionCode 10
+        versionName "1.10"
         multiDexEnabled true
 
 

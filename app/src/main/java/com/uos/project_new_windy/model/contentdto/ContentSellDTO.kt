@@ -41,7 +41,9 @@ data class ContentSellDTO(
     //좋아요 누른사람
     var favorites: MutableMap<String,Boolean> = HashMap(),
     //비교 전용 cost
-    var costInt : String ? = null
+    var costInt : String ? = null,
+    //조회한 사람 uid
+    var viewers : MutableMap<String,Boolean> = HashMap()
 ){
     data class Comment(
 

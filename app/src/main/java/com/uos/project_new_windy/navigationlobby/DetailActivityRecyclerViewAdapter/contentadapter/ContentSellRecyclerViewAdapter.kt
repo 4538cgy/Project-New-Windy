@@ -156,6 +156,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
             }
             context.startActivity(intent)
+            viewCountIncrease(position)
         }
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerSellImagebuttonOption.setOnClickListener {
@@ -292,6 +293,32 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     class ContentSellRecyclerViewAdapterViewHolder(val binding: ItemRecyclerSellBinding) : RecyclerView.ViewHolder(binding.root){
         fun onBind(data : ContentSellDTO){
             binding.contentsell = data
+        }
+    }
+
+    //조회수 증가
+    fun viewCountIncrease(position: Int){
+        var tsDoc = firestore?.collection("contents")?.document("sell").collection("data")?.document(contentUidList[position])
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentSellDTO::class.java)
+
+
+            if(contentDTO!!.viewers.containsKey(uid)){
+
+            }else{
+                contentDTO?.viewCount = contentDTO?.viewCount!! + 1
+                contentDTO.viewers[uid!!] = true
+            }
+
+            transaction.set(tsDoc,contentDTO)
+
+
+        }.addOnFailureListener {
+            println("viewCountIncreaseFail ${it.toString()}")
         }
     }
 

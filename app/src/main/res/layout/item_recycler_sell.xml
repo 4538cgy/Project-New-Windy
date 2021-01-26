@@ -139,6 +139,24 @@
                 android:textColor="@color/colorBlack" />
 
             <ImageButton
+                android:id="@+id/item_recycler_sell_imagebutton_viewcount"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginHorizontal="4dp"
+                android:background="@android:color/transparent"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_remove_red_eye_24" />
+
+            <TextView
+                android:id="@+id/item_recycler_sell_textview_view_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="4dp"
+                android:text="@{contentsell.viewCount.toString()}"
+                android:textColor="@color/colorBlack" />
+
+            <ImageButton
                 android:id="@+id/item_recycler_sell_imagebutton_phone"
                 android:layout_width="35dp"
                 android:layout_height="35dp"

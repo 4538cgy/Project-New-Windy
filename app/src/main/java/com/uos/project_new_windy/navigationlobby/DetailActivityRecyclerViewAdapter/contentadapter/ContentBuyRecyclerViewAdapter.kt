@@ -231,7 +231,11 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
             }
+
+            //FirebaseFirestore.getInstance().collection("content").document("buy").collection("data")
+
             context.startActivity(intent)
+            viewCountIncrease(position)
         }
         //꾹 눌러서 클립보드에 내용 복사
         holder.binding.itemRecyclerBuyTextviewExplain.setOnLongClickListener {
@@ -304,6 +308,32 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     class ContentBuyRecyclerViewAdapterViewHolder(val binding: ItemRecyclerBuyBinding) : RecyclerView.ViewHolder(binding.root){
         fun onBind(data : ContentBuyDTO){
             binding.contentbuy = data
+        }
+    }
+        
+    //조회수 증가
+    fun viewCountIncrease(position: Int){
+        var tsDoc = firestore?.collection("contents")?.document("buy").collection("data")?.document(contentUidList[position])
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentBuyDTO::class.java)
+
+
+            if(contentDTO!!.viewers.containsKey(uid)){
+
+            }else{
+                contentDTO?.viewCount = contentDTO?.viewCount!! + 1
+                contentDTO.viewers[uid!!] = true
+            }
+
+            transaction.set(tsDoc,contentDTO)
+
+
+        }.addOnFailureListener {
+            println("viewCountIncreaseFail ${it.toString()}")
         }
     }
 

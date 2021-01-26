@@ -23,7 +23,9 @@ data class ContentNormalDTO(
     //조회수
     var viewCount : Int ? = 0,
     //좋아요 누른 사람 uid
-    var favorites: MutableMap<String,Boolean> = HashMap()
+    var favorites: MutableMap<String,Boolean> = HashMap(),
+    //조회한 사람 uid
+    var viewers : MutableMap<String,Boolean> = HashMap()
 
 
 

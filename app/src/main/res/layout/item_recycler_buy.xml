@@ -130,6 +130,25 @@
                 android:text="@{contentbuy.commentCount.toString()}"
                 />
 
+            <ImageButton
+                android:id="@+id/item_recycler_buy_imagebutton_viewcount"
+                android:layout_marginHorizontal="4dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_baseline_remove_red_eye_24"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:padding="5dp"
+                />
+            <TextView
+                android:id="@+id/item_recycler_buy_textview_viewcount"
+                android:layout_marginHorizontal="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@{contentbuy.viewCount.toString()}"
+                />
+
 
             <ImageButton
                 android:id="@+id/item_recycler_buy_imagebutton_phone"

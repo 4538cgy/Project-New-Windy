@@ -129,6 +129,25 @@
                 android:textColor="@color/colorBlack"
                 android:text="@{contentnormal.commentCount.toString()}"
                 />
+
+            <ImageButton
+                android:id="@+id/item_detail_imagebutton_viewcount"
+                android:layout_marginHorizontal="4dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/ic_baseline_remove_red_eye_24"
+                android:scaleType="centerCrop"
+                android:background="@android:color/transparent"
+                android:padding="5dp"
+                />
+            <TextView
+                android:id="@+id/item_detail_textview_view_count"
+                android:layout_marginHorizontal="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:text="@{contentnormal.viewCount.toString()}"
+                />
         </LinearLayout>
 
         <LinearLayout

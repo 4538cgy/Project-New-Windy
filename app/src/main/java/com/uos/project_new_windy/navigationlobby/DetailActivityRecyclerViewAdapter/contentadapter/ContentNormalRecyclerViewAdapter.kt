@@ -190,7 +190,7 @@ class ContentNormalRecyclerViewAdapter(
             bottomeSheetDialog.show(fragmentManager, "dd")
         }
 
-
+        /*
         holder.binding.itemRecyclerNormalTextviewExplain.setOnLongClickListener {
 
             var clipboardManager: ClipboardManager =
@@ -203,6 +203,8 @@ class ContentNormalRecyclerViewAdapter(
 
             true
         }
+
+         */
 
 
     }

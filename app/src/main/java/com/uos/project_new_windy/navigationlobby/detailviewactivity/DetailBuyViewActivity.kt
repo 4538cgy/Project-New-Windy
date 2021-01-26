@@ -94,6 +94,19 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
 
 
+        //본문 복사
+        binding.activityDetailBuyButtonCopy.setOnClickListener {
+            var clipboardManager: ClipboardManager =
+                binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                binding.activityDetailBuyViewTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
+        }
+
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->

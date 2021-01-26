@@ -55,6 +55,8 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         binding.activityAddBuyContentSpinnerCategory.onItemSelectedListener = this
 
 
+
+
         //가격 초기화
         binding.activityAddBuyContentEdittextCostmin.setText("0")
         binding.activityAddBuyContentEdittextCostmax.setText("100000000")

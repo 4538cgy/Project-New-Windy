@@ -107,6 +107,20 @@ class DetailSellViewActivity : AppCompatActivity() {
                 }
 
             }
+        
+        
+        //본문 복사
+        binding.activityDetailSellButtonCopy.setOnClickListener {
+            var clipboardManager: ClipboardManager =
+                binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                binding.activityDetailSellViewTextviewExplain.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
+        }
 
         //이미지 리사이클러뷰 초기화
         binding.activityDetailSellViewRecyclerPhoto.adapter = DetailContentRecyclerViewAdapter()

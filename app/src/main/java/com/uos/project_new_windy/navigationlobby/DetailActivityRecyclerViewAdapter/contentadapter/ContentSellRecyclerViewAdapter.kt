@@ -274,7 +274,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
-
+        /*
         holder.binding.itemRecyclerSellTextviewExplain.setOnLongClickListener {
             var clipboardManager: ClipboardManager =
                 holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -286,6 +286,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
             true
         }
+
+         */
     }
 
     override fun getItemCount(): Int = data.size

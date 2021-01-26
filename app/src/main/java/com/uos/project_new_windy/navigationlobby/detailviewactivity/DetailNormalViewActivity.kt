@@ -74,6 +74,20 @@ class DetailNormalViewActivity : AppCompatActivity() {
         userNickName = intent.getStringExtra("userNickName")
         timeStamp = intent.getLongExtra("timeStamp",0)
 
+
+        //본문 복사
+        binding.activityDetailNormalButtonCopy.setOnClickListener {
+            var clipboardManager: ClipboardManager =
+                binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
+            var clipData = ClipData.newPlainText("strName",
+                binding.activityDetailNormalViewTextviewContent.text.toString())
+            clipboardManager.setPrimaryClip(clipData)
+
+            Toast.makeText(binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
+
+            true
+        }
+
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->

@@ -237,6 +237,21 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
             -->
 
+            <Button
+                android:id="@+id/activity_detail_sell_button_copy"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/background_roung_white_stroke_green_16dp"
+                android:text="+ 본문 복사"
+                app:layout_constraintTop_toBottomOf="@+id/activity_detail_sell_view_button_bar"
+                app:layout_constraintRight_toRightOf="parent"
+                android:layout_margin="12dp"
+                android:textColor="@color/colorBlack"
+                android:textStyle="bold"
+                android:textSize="16dp"
+                android:paddingHorizontal="12dp"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </layout>

@@ -244,6 +244,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             viewCountIncrease(position)
         }
         //꾹 눌러서 클립보드에 내용 복사
+        /*
         holder.binding.itemRecyclerBuyTextviewExplain.setOnLongClickListener {
             var clipboardManager: ClipboardManager =
                 holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -255,6 +256,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
             true
         }
+
+         */
 
         //시간 표시
         holder.binding.itemRecyclerBuyTextviewTime.text = TimeUtil().formatTimeString(

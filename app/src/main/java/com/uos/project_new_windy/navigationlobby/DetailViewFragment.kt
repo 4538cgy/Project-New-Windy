@@ -1,16 +1,19 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.FragmentDetailBinding
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentBuyRecyclerViewAdapter
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentNormalRecyclerViewAdapter
@@ -43,6 +46,16 @@ class DetailViewFragment : Fragment() {
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
 
 
+        binding.fragmentDetailButttonWrite.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(binding.root.context,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
+                val bottomSheetDialog : BottomSheetDialogWriteCategory = BottomSheetDialogWriteCategory()
+
+                bottomSheetDialog.show(fragmentManager!!,"lol")
+
+                //startActivity(Intent(this,AddContentActivity::class.java))
+            }
+        }
 
 
         binding.fragmentDetailTextviewBuys.setOnClickListener {

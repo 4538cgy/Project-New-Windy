@@ -302,7 +302,7 @@ class ContentNormalRecyclerViewAdapter(
         alarmDTO.userNickName = userNickName
         FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
-        var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid, "신바람", message)
+        var message = userNickName + (R.string.alarm_favorite)
+        FcmPush.instance.sendMessage(destinationUid, "신바람 네트워크", message)
     }
 }

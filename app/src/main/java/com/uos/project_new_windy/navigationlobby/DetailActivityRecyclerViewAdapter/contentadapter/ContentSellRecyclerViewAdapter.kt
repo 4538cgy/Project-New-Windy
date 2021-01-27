@@ -138,7 +138,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
         //아이템 자체 클릭
-        holder.binding.itemRecyclerSellConstAll.setOnClickListener {
+        /*
+        holder.itemView.setOnClickListener {
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
             intent.apply {
                 putExtra("uid" , contentSellDTO[position].uid)
@@ -158,6 +159,36 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             context.startActivity(intent)
             viewCountIncrease(position)
         }
+
+         */
+
+
+
+
+        holder.binding.itemRecyclerSellConstAll.setOnClickListener {
+            println("판매 게시판의 아이템 클릭 ")
+            var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
+            intent.apply {
+                putExtra("uid" , contentSellDTO[position].uid)
+                putExtra("userId",contentSellDTO[position].userId)
+                putExtra("postUid",contentUidList[position])
+                putExtra("cost",cost)
+                putExtra("category",contentSellDTO[position].category)
+                putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
+                putExtra("contentTime",contentSellDTO[position].time)
+                putExtra("productExplain",contentSellDTO[position].productExplain)
+                putExtra("explain",contentSellDTO[position].explain)
+                putExtra("userNickName",contentSellDTO[position].userNickName)
+                putExtra("timeStamp",contentSellDTO[position].timeStamp)
+                //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
+                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
+            }
+            println("판매 게시판의 아이템 클릭 ")
+            context.startActivity(intent)
+            viewCountIncrease(position)
+        }
+
+
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerSellImagebuttonOption.setOnClickListener {
             val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
@@ -274,20 +305,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
-        /*
-        holder.binding.itemRecyclerSellTextviewExplain.setOnLongClickListener {
-            var clipboardManager: ClipboardManager =
-                holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            var clipData = ClipData.newPlainText("strName",
-                holder.binding.itemRecyclerSellTextviewExplain.text.toString())
-            clipboardManager.setPrimaryClip(clipData)
 
-            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-            true
-        }
-
-         */
     }
 
     override fun getItemCount(): Int = data.size
@@ -383,7 +401,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                     FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
                     var message = userNickName + (R.string.alarm_favorite)
-                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람 네트워크",message)
                 }
 
             }

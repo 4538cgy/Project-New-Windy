@@ -248,14 +248,13 @@
                     android:background="@color/colorGray"
                     />
                 <TextView
-                    android:linksClickable="true"
                     android:textColorLink="@color/colorLinkColor"
-                    android:autoLink="web|phone|email"
                     android:layout_margin="8dp"
                     android:id="@+id/item_recycler_buy_textview_explain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorBlack"
+                    android:maxLines="7"
                     android:text='@{contentbuy.explain}'
                     android:maxLength="200"
                     />

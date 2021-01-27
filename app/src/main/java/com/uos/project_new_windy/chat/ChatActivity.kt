@@ -133,7 +133,7 @@ class ChatActivity : AppCompatActivity() {
         var message = userNickName + ": " + chatMessageData
 
         System.out.println("푸쉬 알람이 도착하는 id 주소" + destinationUid.toString())
-        FcmPush.instance.sendMessage(destinationUid,"메세지 도착 :",message)
+        FcmPush.instance.sendMessage(destinationUid!!,"신바람 네트워크:",message)
         //FcmPush.instance.sendMessage("1XTFiOeUFTcK4J8vzqnfctCiC1h1", "hi2", "bye2")
 
     }

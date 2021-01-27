@@ -227,6 +227,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
         //프로필 이미지 클릭
         binding.activityDetailBuyViewCircleimageviewProfile.setOnClickListener {
+            /*
             var fragment = UserFragment()
             var bundle = Bundle()
             bundle.putString("destinationUid",uid)
@@ -234,6 +235,8 @@ class DetailBuyViewActivity : AppCompatActivity() {
             fragment.arguments = bundle
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             supportFragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
+
+             */
         }
 
         //시간 초기화
@@ -349,7 +352,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
                     FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
                     var message = userNickName + (R.string.alarm_favorite)
-                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람 네트워크",message)
                 }
 
             }

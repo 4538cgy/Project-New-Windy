@@ -405,7 +405,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                     FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
 
                     var message = userNickName + (R.string.alarm_favorite)
-                    FcmPush.instance.sendMessage(destinationUid,"신바람",message)
+                    FcmPush.instance.sendMessage(destinationUid,"신바람 네트워크",message)
                 }
 
             }

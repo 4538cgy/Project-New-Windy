@@ -41,39 +41,21 @@ import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.ProgressDialogLoadingPost
 import com.uos.project_new_windy.util.TimeUtil
 
-class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder>() {
+class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentManager: FragmentManager,page : Int,dataList : ArrayList<ContentSellDTO> , dataUidList : ArrayList<String>) : RecyclerView.Adapter<ContentSellRecyclerViewAdapter.ContentSellRecyclerViewAdapterViewHolder>() {
 
     var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     var contentSellDTO: ArrayList<ContentSellDTO> = arrayListOf()
     var contentUidList: ArrayList<String> = arrayListOf()
     var uid : String ? = null
     var data = listOf<ContentSellDTO>()
-
+    var cost : String ? = null
+    var lastVisible : Any ? = null
     init {
-        uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        firestore?.collection("contents")?.document("sell").collection("data").orderBy("timeStamp",Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                contentSellDTO.clear()
-                contentUidList.clear()
-
-                if (querySnapshot == null)
-                    return@addSnapshotListener
-
-                for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject(ContentSellDTO::class.java)
-                    System.out.println("데이터들 " + item.toString())
-                    //거래완료 상품이 아니면 보여줌
-                    if (item?.checkSellComplete == false) {
-                        contentSellDTO.add(item!!)
-                        System.out.println("데이터들2" + contentSellDTO.toString())
-                        contentUidList.add(snapshot.id)
-                    }
-                }
-                notifyDataSetChanged()
-            }
+        contentSellDTO = dataList
+        contentUidList = dataUidList
         data = contentSellDTO
     }
+
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -109,19 +91,33 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
+        if(!contentSellDTO[position].costInt?.equals(0)!!) {
+            var won = contentSellDTO[position].costInt?.toLong()!! / 10000
+            var last = contentSellDTO[position].costInt?.toLong()!! % 10000
 
-        var won = contentSellDTO[position].costInt?.toLong()!! / 10000
-        var last = contentSellDTO[position].costInt?.toLong()!! % 10000
-
-        var cost : String ? = null
-        if (won > 0){
-            cost = won.toString() + "만"
-            if (last > 0){
-                cost = last.toString()
+            if(won > 0){
+                cost = won.toString() + "만"
+                if (last >0){
+                    cost += last.toString()
+                }
+            }else{
+                cost = contentSellDTO[position].costInt.toString()
             }
         }else{
-            cost = contentSellDTO[position].costInt.toString()
+            var won = 0
+            var last = 0
+
+            if (won > 0){
+                cost = won.toString() + "만"
+                if (last > 0){
+                    cost = last.toString()
+                }
+            }else{
+                cost = contentSellDTO[position].costInt.toString()
+            }
         }
+
+
         holder.binding.itemRecyclerSellTextviewCost.text = cost + "원"
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {

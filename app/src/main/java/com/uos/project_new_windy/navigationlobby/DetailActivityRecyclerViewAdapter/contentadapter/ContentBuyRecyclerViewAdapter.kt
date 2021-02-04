@@ -32,7 +32,7 @@ import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellVi
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
 
-class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentManager: FragmentManager) : RecyclerView.Adapter<ContentBuyRecyclerViewAdapter.ContentBuyRecyclerViewAdapterViewHolder>() {
+class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentManager: FragmentManager,dataList: ArrayList<ContentBuyDTO>,dataUidList:ArrayList<String>) : RecyclerView.Adapter<ContentBuyRecyclerViewAdapter.ContentBuyRecyclerViewAdapterViewHolder>() {
 
     var firestore : FirebaseFirestore = FirebaseFirestore.getInstance()
     var contentBuyDTO: ArrayList<ContentBuyDTO> = arrayListOf()
@@ -42,6 +42,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     var won : Long = 0
     var last : Long = 0
     init {
+        /*
         Log.d("디테일!" , "교체완료됬습니다.")
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -75,6 +76,10 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
                 notifyDataSetChanged()
             }
+
+         */
+        contentBuyDTO = dataList
+        contentUidList = dataUidList
         data = contentBuyDTO
     }
 

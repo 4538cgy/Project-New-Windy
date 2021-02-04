@@ -36,6 +36,8 @@ import com.uos.project_new_windy.util.TimeUtil
 class ContentNormalRecyclerViewAdapter(
     private val context: Context,
     var fragmentManager: FragmentManager,
+    dataList: ArrayList<ContentNormalDTO>,
+    dataUidList: ArrayList<String>,
 ) : RecyclerView.Adapter<ContentNormalRecyclerViewAdapter.ContentNormalRecyclerViewAdapterViewHolder>() {
 
     var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
@@ -46,6 +48,7 @@ class ContentNormalRecyclerViewAdapter(
     var data = listOf<ContentNormalDTO>()
 
     init {
+        /*
         Log.d("디테일!", "교체완료됬습니다.")
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -70,6 +73,11 @@ class ContentNormalRecyclerViewAdapter(
 
                 notifyDataSetChanged()
             }
+        data = contentNormalDTO
+
+         */
+        contentNormalDTO = dataList
+        contentUidList = dataUidList
         data = contentNormalDTO
     }
 
@@ -151,7 +159,7 @@ class ContentNormalRecyclerViewAdapter(
                 putExtra("explain", contentNormalDTO[position].explain)
                 putExtra("likeCount", contentNormalDTO[position].favoriteCount)
                 putExtra("userNickName", contentNormalDTO[position].userNickName)
-                putExtra("timeStamp",contentNormalDTO[position].timestamp)
+                putExtra("timeStamp", contentNormalDTO[position].timestamp)
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
@@ -228,24 +236,24 @@ class ContentNormalRecyclerViewAdapter(
     }
 
     //조회수 증가
-    fun viewCountIncrease(position: Int){
-        var tsDoc = firestore?.collection("contents")?.document("normal").collection("data")?.document(contentUidList[position])
-        firestore?.runTransaction{ transaction ->
-
+    fun viewCountIncrease(position: Int) {
+        var tsDoc = firestore?.collection("contents")?.document("normal").collection("data")
+            ?.document(contentUidList[position])
+        firestore?.runTransaction { transaction ->
 
 
             System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentNormalDTO::class.java)
 
 
-            if(contentDTO!!.viewers.containsKey(uid)){
+            if (contentDTO!!.viewers.containsKey(uid)) {
 
-            }else{
+            } else {
                 contentDTO?.viewCount = contentDTO?.viewCount!! + 1
                 contentDTO.viewers[uid!!] = true
             }
 
-            transaction.set(tsDoc,contentDTO)
+            transaction.set(tsDoc, contentDTO)
 
 
         }.addOnFailureListener {

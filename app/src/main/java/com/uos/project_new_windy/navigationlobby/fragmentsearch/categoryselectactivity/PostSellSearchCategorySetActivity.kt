@@ -91,6 +91,10 @@ class PostSellSearchCategorySetActivity : AppCompatActivity() {
             categorySellPostDTO.add(CategorySellPostDTO("농지", true))
             categorySellPostDTO.add(CategorySellPostDTO("가구", true))
             categorySellPostDTO.add(CategorySellPostDTO("기타", true))
+            categorySellPostDTO.add(CategorySellPostDTO("축산자재",true))
+            categorySellPostDTO.add(CategorySellPostDTO("농자재",true))
+            categorySellPostDTO.add(CategorySellPostDTO("화물트럭",true))
+            categorySellPostDTO.add(CategorySellPostDTO("산업기계",true))
 
 
             data = categorySellPostDTO
@@ -101,6 +105,10 @@ class PostSellSearchCategorySetActivity : AppCompatActivity() {
             categoryList.add("농지")
             categoryList.add("가구")
             categoryList.add("기타")
+            categoryList.add("축산자재")
+            categoryList.add("농자재")
+            categoryList.add("화물트럭")
+            categoryList.add("산업기계")
         }
 
         override fun onCreateViewHolder(

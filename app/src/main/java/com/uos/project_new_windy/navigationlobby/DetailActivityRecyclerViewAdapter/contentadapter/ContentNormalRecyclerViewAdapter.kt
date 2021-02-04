@@ -19,6 +19,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.google.firebase.ktx.Firebase
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
@@ -76,9 +77,12 @@ class ContentNormalRecyclerViewAdapter(
         data = contentNormalDTO
 
          */
+        uid = FirebaseAuth.getInstance().currentUser?.uid
         contentNormalDTO = dataList
         contentUidList = dataUidList
         data = contentNormalDTO
+
+
     }
 
 
@@ -97,6 +101,7 @@ class ContentNormalRecyclerViewAdapter(
         position: Int,
     ) {
         holder.onBind(contentNormalDTO[position])
+
 
 
         //프로필 이미지
@@ -162,6 +167,7 @@ class ContentNormalRecyclerViewAdapter(
                 putExtra("timeStamp", contentNormalDTO[position].timestamp)
 
                 System.out.println("입력된 uid으아아아아앙아" + uid.toString())
+                println("으아아아아앙" + contentUidList[position].toString())
 
             }
             context.startActivity(intent)
@@ -274,6 +280,7 @@ class ContentNormalRecyclerViewAdapter(
             System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentNormalDTO::class.java)
 
+            println("트랙재애애애애액션 " + contentDTO.toString())
             if (contentDTO!!.favorites.containsKey(uid)) {
                 //When the button is clicked
                 contentDTO?.favoriteCount = contentDTO?.favoriteCount!! - 1

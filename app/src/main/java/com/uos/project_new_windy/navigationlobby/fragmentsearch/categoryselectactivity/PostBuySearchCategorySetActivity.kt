@@ -87,7 +87,10 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
             categoryBuyPostDTO.add(CatgoryBuyPostDTO("농지",true))
             categoryBuyPostDTO.add(CatgoryBuyPostDTO("가구",true))
             categoryBuyPostDTO.add(CatgoryBuyPostDTO("기타",true))
-
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("농자재",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("축산자재",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("화물트럭",true))
+            categoryBuyPostDTO.add(CatgoryBuyPostDTO("산업기계",true))
 
             data = categoryBuyPostDTO
             categoryList.add("농기계")
@@ -96,6 +99,10 @@ class PostBuySearchCategorySetActivity : AppCompatActivity() {
             categoryList.add("소모품")
             categoryList.add("농지")
             categoryList.add("가구")
+            categoryList.add("축산자재")
+            categoryList.add("농자재")
+            categoryList.add("화물트럭")
+            categoryList.add("산업기계")
             categoryList.add("기타")
         }
 

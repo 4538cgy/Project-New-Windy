@@ -51,6 +51,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     var cost : String ? = null
     var lastVisible : Any ? = null
     init {
+        uid = FirebaseAuth.getInstance().currentUser?.uid
         contentSellDTO = dataList
         contentUidList = dataUidList
         data = contentSellDTO

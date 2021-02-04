@@ -78,6 +78,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             }
 
          */
+        uid = FirebaseAuth.getInstance().currentUser?.uid
         contentBuyDTO = dataList
         contentUidList = dataUidList
         data = contentBuyDTO

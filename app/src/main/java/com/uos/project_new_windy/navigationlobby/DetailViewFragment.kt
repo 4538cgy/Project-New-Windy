@@ -206,6 +206,7 @@ class DetailViewFragment : Fragment() {
                     lastVisible = normalDataList[normalDataList.size - 1].timestamp
                     setContentNormalRecycler()
                     binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
+                    println("데이터 uid 리스트" + normalDataUidList.toString())
                 }
 
 
@@ -228,7 +229,6 @@ class DetailViewFragment : Fragment() {
                     //거래완료 상품이 아니면 보여줌
                     if (item?.checkSellComplete == false) {
                         sellDataList.add(item!!)
-
                         sellDataUidList.add(snapshot.id)
 
                         lastVisible = sellDataList[sellDataList.size - 1].timeStamp

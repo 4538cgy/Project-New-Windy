@@ -59,6 +59,8 @@ class DetailViewFragment : Fragment() {
 
         //전체 게시글 초기화
         getData("normal", page)
+        setContentNormalRecycler()
+        page = 2
 
         /*
         binding.fragmentDetailRecycler.adapter = ContentNormalRecyclerViewAdapter(binding.root.context,fragmentManager!!)
@@ -91,6 +93,7 @@ class DetailViewFragment : Fragment() {
             boardCheck = 2
             page = 1
             getData("buy", page)
+            setContentBuyRecycler()
         }
 
         binding.fragmentDetailTextviewSales.setOnClickListener {
@@ -100,8 +103,12 @@ class DetailViewFragment : Fragment() {
             buttonBackgroundChanger(3)
             boardCheck = 1
             page = 1
-            getData("sell", page)
 
+            getData("sell", page)
+            setContentSellRecycler()
+            sellDataUidList.forEach {
+                println("판매 게시판 uid 리스트" + it.toString())
+            }
         }
 
         binding.fragmentDetailTextviewAll.setOnClickListener {
@@ -113,31 +120,62 @@ class DetailViewFragment : Fragment() {
             boardCheck = 0
             page = 1
             getData("normal", page)
+            setContentNormalRecycler()
         }
+        if (counter == 0) {
 
-        binding.fragmentDetailRecycler.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            var j =
-                (binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
-            println("page =" + page.toString() + " boardCheck" + boardCheck.toString())
+            binding.fragmentDetailRecycler.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                var j =
+                    (binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
-            when (boardCheck) {
+                println("page =" + page.toString() + " boardCheck" + boardCheck.toString())
+                if(!v.canScrollVertically(1)){
+                    counter = 1
+                    when (boardCheck) {
 
-                //normal
-                0 -> {
-                    pageController(j, "normal")
+                        //normal
+                        0 -> {
+                            pageController(j, "normal")
+                        }
+                        //sell
+                        1 -> {
+                            pageController(j, "sell")
+                        }
+                        //buy
+                        2 -> {
+                            pageController(j, "buy")
+                        }
+                    }
                 }
-                //sell
-                1 -> {
-                    pageController(j, "sell")
+                /*
+                if (((binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).itemCount % 25) == 0) {
+                    if ((binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).itemCount == j + 1) {
+                        counter = 1
+                        when (boardCheck) {
+
+                            //normal
+                            0 -> {
+                                pageController(j, "normal")
+                            }
+                            //sell
+                            1 -> {
+                                pageController(j, "sell")
+                            }
+                            //buy
+                            2 -> {
+                                pageController(j, "buy")
+                            }
+                        }
+
+
+                    }
                 }
-                //buy
-                2 -> {
-                    pageController(j, "buy")
-                }
+
+                 */
+
+
             }
-
-
         }
 
 
@@ -148,25 +186,21 @@ class DetailViewFragment : Fragment() {
     }
 
     fun pageController(lastPosition: Int, boardType: String) {
-        if (((binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).itemCount % 25) == 0) {
-            if ((binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).itemCount == lastPosition + 1) {
 
-                if (counter == 0) {
-                    getData(boardType, page)
-                    page++
-                    counter = 1
-                    Toast.makeText(binding.root.context, "데이터를 추가로 가져옵니다.", Toast.LENGTH_LONG)
-                        .show()
+        counter = 1
+        getData(boardType, page)
+        counter = 1
+        page++
 
-                }
+        Toast.makeText(binding.root.context, "데이터를 추가로 가져옵니다.", Toast.LENGTH_LONG)
+            .show()
 
-            }
-        }
+
     }
 
     fun getBuyData(page: Int) {
-        firestore?.collection("contents")?.document("buy")?.collection("data")
-            ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.limit(25)
+        firestore?.collection("contents")?.document("buy")?.collection("data")?.limit(25)
+            ?.orderBy("timeStamp", Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 buyDataList.clear()
                 buyDataUidList.clear()
@@ -182,16 +216,19 @@ class DetailViewFragment : Fragment() {
                     buyDataList.add(item!!)
                     buyDataUidList.add(snapshot.id)
                     lastVisible = buyDataList[buyDataList.size - 1].timeStamp as Long
-                    setContentBuyRecycler()
+
                     binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                 }
+
+                counter = 0
             }
+
     }
 
     fun getNormalData(page: Int) {
-        firestore?.collection("contents")?.document("normal")?.collection("data")
+        firestore?.collection("contents")?.document("normal")?.collection("data")?.limit(25)
             ?.orderBy("timestamp",
-                Query.Direction.DESCENDING)?.limit(25)
+                Query.Direction.DESCENDING)
             ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 normalDataList.clear()
                 normalDataUidList.clear()
@@ -204,11 +241,12 @@ class DetailViewFragment : Fragment() {
                     normalDataList.add(item!!)
                     normalDataUidList.add(snapshot.id)
                     lastVisible = normalDataList[normalDataList.size - 1].timestamp
-                    setContentNormalRecycler()
+
                     binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                     println("데이터 uid 리스트" + normalDataUidList.toString())
                 }
 
+                counter = 0
 
             }
     }
@@ -232,10 +270,13 @@ class DetailViewFragment : Fragment() {
                         sellDataUidList.add(snapshot.id)
 
                         lastVisible = sellDataList[sellDataList.size - 1].timeStamp
-                        setContentSellRecycler()
+
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                     }
+                    println("데이터 uid 리스트" + sellDataUidList.toString())
                 }
+                //setContentSellRecycler()
+                counter = 0
             }
     }
 
@@ -295,6 +336,8 @@ class DetailViewFragment : Fragment() {
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                         counter = 0
 
+                        println("판매 게시판 게시글 갯수 " + sellDataList.size.toString() + "판매 게시판 uid 갯수" + sellDataUidList.size.toString())
+
                     }
             }
             "buy" -> {
@@ -315,10 +358,11 @@ class DetailViewFragment : Fragment() {
                             buyDataList.add(item!!)
                             buyDataUidList.add(snapshot.id)
                             lastVisible = buyDataList[buyDataList.size - 1].timeStamp as Long
-                            setContentBuyRecycler()
+                            //setContentBuyRecycler()
                             binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
-                            counter = 0
+
                         }
+                        counter = 0
                     }
             }
             "normal" -> {
@@ -333,12 +377,13 @@ class DetailViewFragment : Fragment() {
                             var item = snapshot.toObject(ContentNormalDTO::class.java)
                             normalDataList.add(item!!)
                             normalDataUidList.add(snapshot.id)
-                            setContentNormalRecycler()
+                            lastVisible = normalDataList[normalDataList.size - 1].timestamp
+                            //setContentNormalRecycler()
                             binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
-                            counter = 0
+
                         }
-
-
+                        counter = 0
+                        println("일반 게시판 게시글 갯수 " + normalDataList.size.toString() + "일반 게시판 uid 갯수" + normalDataUidList.size.toString())
                     }
             }
         }
@@ -381,7 +426,7 @@ class DetailViewFragment : Fragment() {
         }
     }
 
-    fun setContentBuyRecycler() {
+    private fun setContentBuyRecycler() {
         val contentBuyViewRecyclerViewAdapter = ContentBuyRecyclerViewAdapter(binding.root.context,
             fragmentManager!!,
             buyDataList,
@@ -392,7 +437,7 @@ class DetailViewFragment : Fragment() {
         contentBuyViewRecyclerViewAdapter.notifyDataSetChanged()
     }
 
-    fun setContentSellRecycler() {
+    private fun setContentSellRecycler() {
         val contentSellViewRecyclerViewAdapter =
             ContentSellRecyclerViewAdapter(binding.root.context,
                 fragmentManager!!,
@@ -403,10 +448,14 @@ class DetailViewFragment : Fragment() {
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentDetailRecycler.adapter = contentSellViewRecyclerViewAdapter
         //contentSellViewRecyclerViewAdapter.notifyDataSetChanged()
+        println("아니 이게왜? 끼아아아아아아아" + page.toString())
+        println("끼아아아아아아아" + page.toString())
+        println("끼아아아아아아아" + page.toString())
+        println("끼아아아아아아아" + page.toString())
         println("끼아아아아아아아" + page.toString())
     }
 
-    fun setContentNormalRecycler() {
+    private fun setContentNormalRecycler() {
         val contentNormalRecyclerViewAdapter =
             ContentNormalRecyclerViewAdapter(binding.root.context,
                 fragmentManager!!,

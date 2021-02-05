@@ -93,6 +93,8 @@ class DetailSellViewActivity : AppCompatActivity() {
         userNickName = intent.getStringExtra("userNickName")
         timeStamp = intent.getLongExtra("timeStamp",0)
 
+        println("가겨어어어어엌" + cost.toString())
+            
         //유저 닉네임 가져오기
         firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("accountInfo")
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->

@@ -49,34 +49,7 @@ class ContentNormalRecyclerViewAdapter(
     var data = listOf<ContentNormalDTO>()
 
     init {
-        /*
-        Log.d("디테일!", "교체완료됬습니다.")
 
-        uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        firestore?.collection("contents")?.document("normal").collection("data")
-            .orderBy("timestamp",
-                Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                contentNormalDTO.clear()
-                contentUidList.clear()
-
-                if (querySnapshot == null)
-                    return@addSnapshotListener
-
-                for (snapshot in querySnapshot!!.documents) {
-                    var item = snapshot.toObject(ContentNormalDTO::class.java)
-                    contentNormalDTO.add(item!!)
-                    contentUidList.add(snapshot.id)
-
-
-                }
-
-                notifyDataSetChanged()
-            }
-        data = contentNormalDTO
-
-         */
         uid = FirebaseAuth.getInstance().currentUser?.uid
         contentNormalDTO = dataList
         contentUidList = dataUidList

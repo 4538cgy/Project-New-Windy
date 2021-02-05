@@ -82,6 +82,9 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             context.startActivity(intent)
         }
 
+
+
+
         //프로필 이미지 클릭
         holder.binding.itemRecyclerSellImageviewProfile.setOnClickListener {
             var fragment = UserFragment()
@@ -92,36 +95,13 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
-        if(!contentSellDTO[position].costInt?.equals(0)!!) {
-            var won = contentSellDTO[position].costInt?.toLong()!! / 10000
-            var last = contentSellDTO[position].costInt?.toLong()!! % 10000
-
-            if(won > 0){
-                cost = won.toString() + "만"
-                if (last >0){
-                    cost += last.toString()
-                }
-            }else{
-                cost = contentSellDTO[position].costInt.toString()
-            }
-        }else{
-            var won = 0
-            var last = 0
-
-            if (won > 0){
-                cost = won.toString() + "만"
-                if (last > 0){
-                    cost = last.toString()
-                }
-            }else{
-                cost = contentSellDTO[position].costInt.toString()
-            }
-        }
 
 
-        holder.binding.itemRecyclerSellTextviewCost.text = cost + "원"
+
+        holder.binding.itemRecyclerSellTextviewCost.text = getCost(position) + "원"
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonLike.setOnClickListener {
+
             favoriteEvent(position)
         }
         //유저 닉네임 클릭
@@ -134,42 +114,20 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
-        //아이템 자체 클릭
-        /*
-        holder.itemView.setOnClickListener {
-            var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
-            intent.apply {
-                putExtra("uid" , contentSellDTO[position].uid)
-                putExtra("userId",contentSellDTO[position].userId)
-                putExtra("postUid",contentUidList[position])
-                putExtra("cost",cost)
-                putExtra("category",contentSellDTO[position].category)
-                putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
-                putExtra("contentTime",contentSellDTO[position].time)
-                putExtra("productExplain",contentSellDTO[position].productExplain)
-                putExtra("explain",contentSellDTO[position].explain)
-                putExtra("userNickName",contentSellDTO[position].userNickName)
-                putExtra("timeStamp",contentSellDTO[position].timeStamp)
-                //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
-                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
-            }
-            context.startActivity(intent)
-            viewCountIncrease(position)
-        }
 
-         */
 
 
 
 
         holder.binding.itemRecyclerSellConstAll.setOnClickListener {
             println("판매 게시판의 아이템 클릭 ")
+            println("클릭전 가격" + cost.toString())
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
             intent.apply {
                 putExtra("uid" , contentSellDTO[position].uid)
                 putExtra("userId",contentSellDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
-                putExtra("cost",cost)
+                putExtra("cost",getCost(position))
                 putExtra("category",contentSellDTO[position].category)
                 putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
                 putExtra("contentTime",contentSellDTO[position].time)
@@ -404,6 +362,36 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             }
 
 
+    }
+
+    fun getCost(position: Int) : String{
+        cost = ""
+        if(!contentSellDTO[position].costInt?.equals(0)!!) {
+            var won = contentSellDTO[position].costInt?.toLong()!! / 10000
+            var last = contentSellDTO[position].costInt?.toLong()!! % 10000
+
+            if(won > 0){
+                cost = won.toString() + "만"
+                if (last >0){
+                    cost += last.toString()
+                }
+            }else{
+                cost = contentSellDTO[position].costInt.toString()
+            }
+        }else{
+            var won = 0
+            var last = 0
+
+            if (won > 0){
+                cost = won.toString() + "만"
+                if (last > 0){
+                    cost = last.toString()
+                }
+            }else{
+                cost = contentSellDTO[position].costInt.toString()
+            }
+        }
+        return cost as String
     }
 
 

@@ -243,7 +243,7 @@ class AddMemberShipContentActivity : AppCompatActivity(), AdapterView.OnItemSele
         contentSellDTO.costInt = binding.activityAddMemberShipContentEdittextCost.text.toString()
 
         //파스에 set
-        firestore?.collection("contents")?.document("sell")?.collection("data")?.document()
+        firestore?.collection("contents")?.document("membership")?.collection("data")?.document()
             ?.set(contentSellDTO)
             ?.addOnSuccessListener {
                 progressDialog?.dismiss()

@@ -58,9 +58,9 @@ class DetailViewFragment : Fragment() {
 
 
         //전체 게시글 초기화
-        getData("normal", page)
-        setContentNormalRecycler()
-        page = 2
+        getData("sell", page)
+        setContentSellRecycler()
+        page = 1
 
         /*
         binding.fragmentDetailRecycler.adapter = ContentNormalRecyclerViewAdapter(binding.root.context,fragmentManager!!)

@@ -20,9 +20,11 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.FragmentDetailBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
+import com.uos.project_new_windy.model.contentdto.ContentMemberShipDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentBuyRecyclerViewAdapter
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentMemberShipRecyclerViewAdapter
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentNormalRecyclerViewAdapter
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentSellRecyclerViewAdapter
 
@@ -33,13 +35,15 @@ class DetailViewFragment : Fragment() {
     var page = 1
     var lastVisible: Long? = null
     var counter = 0
-    var boardCheck = 0 // 0 = normal , 1 = sell , 2 = buy
+    var boardCheck = 0 // 0 = normal , 1 = sell , 2 = buy , 3 = memberShip
     var sellDataList: ArrayList<ContentSellDTO> = arrayListOf()
     var sellDataUidList: ArrayList<String> = arrayListOf()
     var normalDataList: ArrayList<ContentNormalDTO> = arrayListOf()
     var normalDataUidList: ArrayList<String> = arrayListOf()
     var buyDataList: ArrayList<ContentBuyDTO> = arrayListOf()
     var buyDataUidList: ArrayList<String> = arrayListOf()
+    var memberShipDataList : ArrayList<ContentMemberShipDTO> = arrayListOf()
+    var memberShipDataUidList : ArrayList<String> = arrayListOf()
 
     lateinit var binding: FragmentDetailBinding
 
@@ -122,6 +126,16 @@ class DetailViewFragment : Fragment() {
             getData("normal", page)
             setContentNormalRecycler()
         }
+
+        binding.fragmentDetailTextviewMembership.setOnClickListener {
+            //제휴 게시글 출력
+            buttonBackgroundChanger(4)
+            boardCheck = 3
+            page = 1
+            getData("membership",page)
+            setContentMemberShipRecycler()
+
+        }
         if (counter == 0) {
 
 
@@ -145,6 +159,10 @@ class DetailViewFragment : Fragment() {
                         //buy
                         2 -> {
                             pageController(j, "buy")
+                        }
+                        //제휴
+                        3 -> {
+                            pageController(j,"membership")
                         }
                     }
                 }
@@ -280,6 +298,35 @@ class DetailViewFragment : Fragment() {
             }
     }
 
+    fun getMemberShipData(page: Int){
+        firestore?.collection("contents")?.document("membership")?.collection("data")?.limit(25)
+            ?.orderBy("timeStamp", Query.Direction.DESCENDING)
+            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                memberShipDataList.clear()
+                memberShipDataUidList.clear()
+
+                if (querySnapshot == null)
+                    return@addSnapshotListener
+
+                for (snapshot in querySnapshot!!.documents) {
+                    var item = snapshot.toObject(ContentMemberShipDTO::class.java)
+                    //sell
+                    //거래완료 상품이 아니면 보여줌
+                    if (item?.checkSellComplete == false) {
+                        memberShipDataList.add(item!!)
+                        memberShipDataUidList.add(snapshot.id)
+
+                        lastVisible = memberShipDataList[memberShipDataList.size - 1].timeStamp
+
+                        binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
+                    }
+                    println("데이터 uid 리스트" + memberShipDataUidList.toString())
+                }
+                //setContentSellRecycler()
+                counter = 0
+            }
+    }
+
     fun getData(type: String, page: Int) {
         if (page == 1) {
 
@@ -295,6 +342,9 @@ class DetailViewFragment : Fragment() {
                 //buy
                 "buy" -> {
                     getBuyData(page)
+                }
+                "membership" -> {
+                    getMemberShipData(page)
                 }
             }
         } else {
@@ -386,6 +436,42 @@ class DetailViewFragment : Fragment() {
                         println("일반 게시판 게시글 갯수 " + normalDataList.size.toString() + "일반 게시판 uid 갯수" + normalDataUidList.size.toString())
                     }
             }
+
+            "membership" -> {
+                firestore?.collection("contents")?.document(type)?.collection("data")
+                    ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.startAfter(lastVisible)
+                    ?.limit(25)
+                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+
+
+                        if (querySnapshot == null)
+                            return@addSnapshotListener
+
+                        for (snapshot in querySnapshot!!.documents) {
+                            var item = snapshot.toObject(ContentMemberShipDTO::class.java)
+
+                            //거래완료 상품이 아니면 보여줌
+                            if (item?.checkSellComplete == false) {
+                                memberShipDataList.add(item!!)
+
+                                memberShipDataUidList.add(snapshot.id)
+
+
+                                println("snapshotidddddddddddddddd" + snapshot.id)
+                            }
+                        }
+                        println("갸르르르르르르" + querySnapshot.documents[querySnapshot.size() - 1].id)
+                        //lastVisible = querySnapshot.documents[querySnapshot.size()-1].id
+                        lastVisible = memberShipDataList[memberShipDataList.size - 1].timeStamp
+                        println("lastVisible =====" + lastVisible.toString())
+                        //setContentSellRecycler()
+                        binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
+                        counter = 0
+
+                        println("판매 게시판 게시글 갯수 " + memberShipDataList.size.toString() + "판매 게시판 uid 갯수" + memberShipDataUidList.size.toString())
+
+                    }
+            }
         }
 
     }
@@ -397,20 +483,24 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_black)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewMembership.setBackgroundColor(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.WHITE)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
             }
             2 -> {
                 //buy
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_black)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewMembership.setBackgroundColor(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.WHITE)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
 
             }
             3 -> {
@@ -418,10 +508,25 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewMembership.setBackgroundColor(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.WHITE)
+                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
+            }
+
+            4 -> {
+                //memberShip
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewMembership.setBackgroundColor(R.drawable.background_round_black)
+
+                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewMembership.setTextColor(Color.WHITE)
             }
         }
     }
@@ -435,6 +540,17 @@ class DetailViewFragment : Fragment() {
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentDetailRecycler.adapter = contentBuyViewRecyclerViewAdapter
         contentBuyViewRecyclerViewAdapter.notifyDataSetChanged()
+    }
+
+    private fun setContentMemberShipRecycler(){
+        val contentMemberShipViewRecyclerViewAdapter = ContentMemberShipRecyclerViewAdapter(binding.root.context,
+            fragmentManager!!,
+            page,
+            memberShipDataList,
+            memberShipDataUidList)
+
+        binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
+        binding.fragmentDetailRecycler.adapter = contentMemberShipViewRecyclerViewAdapter
     }
 
     private fun setContentSellRecycler() {

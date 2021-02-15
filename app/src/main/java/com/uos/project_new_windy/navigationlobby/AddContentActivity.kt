@@ -90,7 +90,7 @@ class AddContentActivity : AppCompatActivity() {
             }
 
         //앨범 열기
-        addPhoto()
+        //addPhoto()
 
 
 

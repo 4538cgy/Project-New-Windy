@@ -24,6 +24,8 @@ import com.uos.project_new_windy.databinding.ActivityChatRoomListBinding
 import com.uos.project_new_windy.databinding.ItemChatRoomListBinding
 import com.uos.project_new_windy.model.chatmodel.ChatDTO
 import com.uos.project_new_windy.model.chatmodel.UserModel
+import com.uos.project_new_windy.navigationlobby.AlarmActivity
+import com.uos.project_new_windy.navigationlobby.AlarmFragment
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,6 +50,12 @@ class ChatRoomList : AppCompatActivity() {
         binding.activityChatRoomListRecyclerChatList.layoutManager = LinearLayoutManager(this,
             LinearLayoutManager.VERTICAL,
             false)
+
+        binding.activityChatRoomListImagebuttonAlarm.setOnClickListener {
+
+           startActivity(Intent(this,AlarmActivity::class.java))
+
+        }
 
 
 

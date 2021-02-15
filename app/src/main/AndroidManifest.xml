@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".navigationlobby.AddMemberShipContentActivity"></activity>
+        <activity android:name=".navigationlobby.AlarmActivity"></activity>
+        <activity android:name=".navigationlobby.AddMemberShipContentActivity" />
         <activity android:name=".SignUpOnlyPhone" />
         <activity android:name=".FollowListActivity" />
         <activity android:name=".FindPasswordActivity" />

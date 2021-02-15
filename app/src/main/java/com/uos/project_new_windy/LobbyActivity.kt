@@ -24,6 +24,7 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
+import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
 import com.uos.project_new_windy.util.FcmPush
@@ -113,9 +114,13 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 return true
             }
             R.id.action_favorite_alarm -> {
+                /*
                 var alarmFragment = AlarmFragment()
                 supportFragmentManager.beginTransaction().replace(R.id.main_content,alarmFragment).commit()
                 return true
+
+                 */
+                startActivity(Intent(binding.root.context,ChatRoomList::class.java))
             }
             R.id.action_account -> {
                 var userFragment = UserFragment()

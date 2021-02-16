@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityPhotoDetailViewBinding
 import kotlinx.android.synthetic.main.activity_photo_detail_view.view.*
+import kotlinx.android.synthetic.main.item_photo.view.*
 
 class PhotoDetailViewActivity : AppCompatActivity() {
 
@@ -28,33 +29,11 @@ class PhotoDetailViewActivity : AppCompatActivity() {
 
         url = intent.getStringExtra("photoUrl")
 
+
         Glide.with(this).load(url).apply(RequestOptions()).into(binding.activityPhotoDetailViewImageviewPhoto)
 
+
+
     }
 
-    inner class photoPagerAdapter : RecyclerView.Adapter<photoPagerAdapter.photoPagerViewHolder>(){
-
-
-        inner class photoPagerViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
-
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): photoPagerViewHolder {
-            //val view = LayoutInflater.from(parent.context).inflate(R.layout.activity_photo_detail_view,parent,false)
-            return photoPagerViewHolder(LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_photo_detail_view, parent, false))
-
-        }
-
-        override fun onBindViewHolder(holder: photoPagerViewHolder, position: Int) {
-            var view = holder.itemView
-            //view.activity_photo_detail_view_imageview_photo.setImageURI(Uri.parse(photoList!![position]))
-
-            binding.activityPhotoDetailViewImageviewPhoto.setImageURI(Uri.parse(photoList!![position]))
-
-
-        }
-
-        override fun getItemCount(): Int = photoList?.size!!
-    }
 }

@@ -463,9 +463,10 @@ class DetailSellViewActivity : AppCompatActivity() {
                     i ->
 
                 Log.d("클릭완료",position.toString())
-                var intent = Intent(viewHolder.context,PhotoDetailViewActivity::class.java)
+                var intent = Intent(viewHolder.context,PhotoDetailSlideViewActivity::class.java)
                 System.out.println("우와아아아아아아아앜")
                 intent.putExtra("photoUrl",contentImageList[position])
+                intent.putExtra("photoList",contentImageList)
                 viewHolder.context.startActivity(intent)
             }
 

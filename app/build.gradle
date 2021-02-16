@@ -95,6 +95,8 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
 
+    //circle indicator
+    implementation 'me.relex:circleindicator:1.2.2'
 
 
     //okhttp

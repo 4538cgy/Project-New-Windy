@@ -152,6 +152,8 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
                 if(documentSnapshot != null){
                     if (documentSnapshot.exists()){
 
+                        imageUriList.clear()
+
                         var contentData = documentSnapshot.toObject(ContentSellDTO::class.java)
                         binding.activityAddSellContentEdittextCost.setText(contentData?.costInt.toString())
                         binding.activityAddSellContentEdittextProductExplain.setText(contentData?.productExplain)
@@ -176,6 +178,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     }
 
     fun updateContent(){
+        progressDialog?.show()
         var tsDoc = firestore?.collection("contents")?.document("sell")?.collection("data")?.document(postUid!!)
         firestore?.runTransaction{ transaction ->
 
@@ -184,6 +187,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentSellDTO::class.java)
 
+            contentDTO?.imageDownLoadUrlList?.clear()
 
             contentDTO?.cost = binding.activityAddSellContentEdittextCost.text.toString()
             contentDTO?.productExplain = binding.activityAddSellContentEdittextProductExplain.text.toString()
@@ -198,11 +202,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
             transaction.set(tsDoc, contentDTO!!)
 
-            Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
-            finish()
+
 
         }?.addOnFailureListener {
             println("viewCountIncreaseFail ${it.toString()}")
+        }?.addOnCompleteListener {
+            Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
+            progressDialog?.dismiss()
+            finish()
         }
     }
 

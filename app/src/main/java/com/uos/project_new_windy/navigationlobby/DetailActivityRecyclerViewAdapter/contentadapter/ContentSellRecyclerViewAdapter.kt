@@ -155,6 +155,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "sell")
             bundle.putString("viewType","fragment")
+            bundle.putString("boardType","sell")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }

@@ -42,42 +42,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     var won : Long = 0
     var last : Long = 0
     init {
-        /*
-        Log.d("디테일!" , "교체완료됬습니다.")
 
-        uid = FirebaseAuth.getInstance().currentUser?.uid
-
-        firestore?.collection("contents")?.document("buy").collection("data").orderBy("timeStamp", Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
-                contentBuyDTO.clear()
-                contentUidList.clear()
-                
-                
-                System.out.println("구매하기 데이터 가져오기 성공")
-                if (querySnapshot == null)
-                    return@addSnapshotListener
-
-                for (snapshot in querySnapshot!!.documents) {
-
-                    var item = snapshot.toObject(ContentBuyDTO::class.java)
-
-                    System.out.println("데이터들 " + item.toString())
-                    contentBuyDTO.add(item!!)
-                    System.out.println("데이터들2" + contentBuyDTO.toString())
-                    contentUidList.add(snapshot.id)
-
-
-
-
-
-
-
-                }
-
-                notifyDataSetChanged()
-            }
-
-         */
         uid = FirebaseAuth.getInstance().currentUser?.uid
         contentBuyDTO = dataList
         contentUidList = dataUidList
@@ -138,16 +103,6 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
 
-        /*
-        if(contentBuyDTO[position].costInt != "") {
-            won = contentBuyDTO[position].costInt?.toLong()!! / 10000
-            last = contentBuyDTO[position].costInt?.toLong()!! % 10000
-        }else{
-            won = 0
-            last = 0
-        }
-
-         */
 
 
         var cost : String ? = null
@@ -189,6 +144,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             bundle.putString("uid" , contentBuyDTO[position].uid)
             bundle.putString("postType", "buy")
             bundle.putString("viewType","fragment")
+            bundle.putString("boardType","buy")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }

@@ -17,6 +17,8 @@ import com.uos.project_new_windy.ReportPostActivity
 import com.uos.project_new_windy.databinding.BottomSheetSelectCategoryBinding
 import com.uos.project_new_windy.databinding.BottomSheetSelectContentOptionBinding
 import com.uos.project_new_windy.navigationlobby.AddBuyContentActivity
+import com.uos.project_new_windy.navigationlobby.AddContentActivity
+import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
 import java.lang.ClassCastException
 
 class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
@@ -31,6 +33,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
     var uid : String ? = null
     var postType : String ? = null
     var viewType : String ? = null
+    var boardType : String ? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +52,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
         postUid = bundle?.getString("postUid")
         postType = bundle?.getString("postType")
         viewType = bundle?.getString("viewType")
+        boardType = bundle?.getString("boardType")
         
         System.out.println("테스트테스트테스트" + uid.toString())
         System.out.println("테스트세트세트2" + FirebaseAuth.getInstance().currentUser?.uid)
@@ -129,6 +133,45 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment(){
 
 
                 System.out.println("클릭되어씀2")
+            }
+            
+            //수정하기
+            binding.bottomSheetSelectContentOptionConstUpdate.id -> {
+                var intent : Intent ? = null
+
+
+                when(boardType){
+                    "sell" -> {
+                        intent = Intent(binding.bottomsheetcontentoption?.context, AddSellContentActivity::class.java)
+                        intent.apply {
+                            putExtra("postUid",postUid)
+                            putExtra("postType",postType)
+                            putExtra("viewType",viewType)
+                            putExtra("updateCheck",true)
+                        }
+                    }
+                    "buy" -> {
+                        intent = Intent(binding.bottomsheetcontentoption?.context, AddBuyContentActivity::class.java)
+                        intent.apply {
+                            putExtra("postUid",postUid)
+                            putExtra("postType",postType)
+                            putExtra("viewType",viewType)
+                            putExtra("updateCheck",true)
+                        }
+                    }
+                    "normal" -> {
+                        intent = Intent(binding.bottomsheetcontentoption?.context, AddContentActivity::class.java)
+                        intent.apply {
+                            putExtra("postUid",postUid)
+                            putExtra("postType",postType)
+                            putExtra("viewType",viewType)
+                            putExtra("updateCheck",true)
+                        }
+                    }
+
+                }
+
+                startActivity(intent)
             }
 
 

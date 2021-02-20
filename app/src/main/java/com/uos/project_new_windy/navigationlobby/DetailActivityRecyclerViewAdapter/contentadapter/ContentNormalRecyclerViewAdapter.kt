@@ -173,25 +173,12 @@ class ContentNormalRecyclerViewAdapter(
             bundle.putString("uid", FirebaseAuth.getInstance().currentUser?.uid)
             bundle.putString("postType", "normal")
             bundle.putString("viewType", "fragment")
+            bundle.putString("boardType","normal")
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager, "dd")
         }
 
-        /*
-        holder.binding.itemRecyclerNormalTextviewExplain.setOnLongClickListener {
 
-            var clipboardManager: ClipboardManager =
-                holder.binding.root.context.getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
-            var clipData = ClipData.newPlainText("strName",
-                holder.binding.itemRecyclerNormalTextviewExplain.text.toString())
-            clipboardManager.setPrimaryClip(clipData)
-
-            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.",Toast.LENGTH_SHORT).show()
-
-            true
-        }
-
-         */
 
 
     }

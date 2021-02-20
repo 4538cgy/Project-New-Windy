@@ -169,6 +169,7 @@
             android:onClick="@{bottomsheet.groupClick}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             >
             <ImageView
                 app:layout_constraintLeft_toLeftOf="parent"

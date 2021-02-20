@@ -119,7 +119,11 @@ class AddContentActivity : AppCompatActivity() {
             if (binding.activityAddContentEdittextContent.text.length < 6)
             {
                 Toast.makeText(this,"내용을 6자 이상 적어주세요.",Toast.LENGTH_LONG).show()
-            }else {
+            }else if(imageUriList.size < 1){
+                Toast.makeText(this,"사진을 추가해주세요.",Toast.LENGTH_LONG).show()
+            }
+
+            else {
                 contentUpload()
             }
             

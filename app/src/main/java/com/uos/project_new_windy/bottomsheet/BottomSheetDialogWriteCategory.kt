@@ -43,7 +43,7 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
             || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("dZvFUbfbL9NZ5SYygiFsmSrAmM63"))
         {
             println("삭제버튼이 보입니다.")
-            binding.bottomSheetSelectCategoryViewgroupMembership.visibility = View.VISIBLE
+            binding.bottomSheetSelectCategoryViewgroupMembership.visibility = View.GONE
         }else {
                 // 삭제 버튼 안보이게
                 println("삭제버튼이 안보입니다.")

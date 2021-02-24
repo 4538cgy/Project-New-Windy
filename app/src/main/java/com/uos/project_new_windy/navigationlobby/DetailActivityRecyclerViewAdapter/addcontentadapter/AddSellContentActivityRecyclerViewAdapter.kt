@@ -35,6 +35,12 @@ class AddSellContentActivityRecyclerViewAdapter (var activity: AddSellContentAct
 
         }
 
+        viewHolder.item_image_list_const_all.setOnClickListener {
+            imageUriList.removeAt(position)
+
+            notifyDataSetChanged()
+        }
+
 
     }
 

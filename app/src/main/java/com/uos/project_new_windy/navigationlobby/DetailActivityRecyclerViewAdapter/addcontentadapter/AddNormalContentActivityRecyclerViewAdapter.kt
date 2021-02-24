@@ -35,6 +35,11 @@ class AddNormalContentActivityRecyclerViewAdapter(var activity: AddContentActivi
                 .into(viewHolder.item_image_list_imageview)
         }
 
+        viewHolder.item_image_list_const_all.setOnClickListener {
+            imageUriList.removeAt(position)
+
+            notifyDataSetChanged()
+        }
 
 
 

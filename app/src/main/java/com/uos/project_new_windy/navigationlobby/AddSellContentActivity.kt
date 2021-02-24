@@ -127,12 +127,17 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
         //게시글 업로드
         binding.activityAddSellContentButtonUpload.setOnClickListener {
+
             if (imageUriList.size <= 0) {
                 Toast.makeText(this, "사진을 한장 이상 포함해주세요.", Toast.LENGTH_LONG).show()
             } else {
                 //게시글 작성
                 if (updateCheck == false) {
-                    contentUpload()
+                    if(binding.activityAddSellContentEdittextCost.text.isNotEmpty()) {
+                        contentUpload()
+                    }else{
+                        Toast.makeText(this,"가격을 입력해주세요.", Toast.LENGTH_LONG).show()
+                    }
                 }
                 //게시글 수정
                 else{

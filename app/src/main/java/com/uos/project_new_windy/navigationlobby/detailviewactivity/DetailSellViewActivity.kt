@@ -262,11 +262,13 @@ class DetailSellViewActivity : AppCompatActivity() {
 
                 val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
                 var bundle = Bundle()
-                bundle.putString("destinationUid",destinationUid)
+                bundle.putString("destinationUid",uid)
                 bundle.putString("userId", userId)
                 bundle.putString("postUid",contentUid)
-                bundle.putString("uid" , uid)
+                bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
                 bundle.putString("postType", "sell")
+                bundle.putString("viewType","fragment")
+                bundle.putString("boardType","sell")
 
                 bottomSheetDialog.arguments = bundle
                 bottomSheetDialog.show(supportFragmentManager,"lol")

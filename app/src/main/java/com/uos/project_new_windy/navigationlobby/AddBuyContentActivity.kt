@@ -16,6 +16,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.ServerValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -25,9 +26,11 @@ import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
+import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
+import kotlinx.android.synthetic.main.item_image_list.view.*
 
 class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -42,6 +45,10 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     var pickCategory: String? = null
     var userNickName: String? = null
 
+    //새 게시글 작성인지 or 수정 인지 확인하기 위한 변수
+    var updateCheck : Boolean ? = null
+    var postUid : String ? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_buy_content)
@@ -55,7 +62,14 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         binding.activityAddBuyContentSpinnerCategory.onItemSelectedListener = this
 
 
+        // true = 수정로직 / false = 새게시글 작성 로직
+        updateCheck = intent.getBooleanExtra("updateCheck",false)
+        postUid = intent.getStringExtra("postUid")
 
+        //수정하기면 해당 게시글의 정보 불러오기
+        if(updateCheck == true){
+            updateDataLoad()
+        }
 
         //가격 초기화
         binding.activityAddBuyContentEdittextCostmin.setText("0")
@@ -110,7 +124,14 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
                     Toast.makeText(this, "최소 금액이 최대 금액보다 클 수 없습니다.", Toast.LENGTH_LONG).show()
                 }else{
-                    uploadPhoto()
+
+                    if (updateCheck == false){
+
+                        uploadPhoto()
+                    }else{
+                        updateContent()
+                    }
+
                 }
             } else {
                 if (photoUri == null)
@@ -173,6 +194,68 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                 setTitle("안내")
                 show()
             }
+        }
+    }
+
+    fun updateDataLoad(){
+        firestore?.collection("contents")?.document("buy")?.collection("data")?.document(postUid!!)
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                if(documentSnapshot != null){
+                    if (documentSnapshot.exists()){
+
+
+
+                        var contentData = documentSnapshot.toObject(ContentBuyDTO::class.java)
+
+                        binding.activityAddBuyContentEdittextCostmin.setText(contentData?.costMin.toString())
+                        binding.activityAddBuyContentEdittextCostmax.setText(contentData?.costMax.toString())
+                        binding.activityAddBuyContentEdittextExplain.setText(contentData?.explain.toString())
+
+                        //binding.activityAddBuyContentImageviewPhoto.setImageURI(Uri.parse(contentData?.imageUrl))
+                        Glide.with(binding.root.context)
+                            .load(contentData?.imageUrl)
+                            .into(binding.activityAddBuyContentImageviewPhoto)
+
+
+
+
+
+
+                    }
+                }
+            }
+    }
+
+    fun updateContent(){
+        progressDialog?.show()
+        var tsDoc = firestore?.collection("contents")?.document("buy")?.collection("data")?.document(postUid!!)
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentBuyDTO::class.java)
+
+            contentDTO?.costMin = binding.activityAddBuyContentEdittextCostmin.text.toString().toInt()
+            contentDTO?.costMax = binding.activityAddBuyContentEdittextCostmax.text.toString().toInt()
+            contentDTO?.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
+            contentDTO?.imageUrl = photoUri.toString()
+
+
+
+
+
+
+            transaction.set(tsDoc, contentDTO!!)
+
+
+
+        }?.addOnFailureListener {
+            println("viewCountIncreaseFail ${it.toString()}")
+        }?.addOnCompleteListener {
+            Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
+            progressDialog?.dismiss()
+            finish()
         }
     }
 

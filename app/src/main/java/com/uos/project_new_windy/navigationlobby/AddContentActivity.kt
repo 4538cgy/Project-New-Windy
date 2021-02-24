@@ -28,6 +28,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddBuyContentBinding
 import com.uos.project_new_windy.databinding.ActivityAddContentBinding
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
+import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddNormalContentActivityRecyclerViewAdapter
 import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.SharedData
@@ -53,6 +54,10 @@ class AddContentActivity : AppCompatActivity() {
     var progressDialog : ProgressDialogLoading ? = null
     var userNickName : String ? = null
 
+    //새 게시글 작성인지 or 수정 인지 확인하기 위한 변수
+    var updateCheck : Boolean ? = null
+    var postUid : String ? = null
+
     lateinit var binding : ActivityAddContentBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,6 +82,15 @@ class AddContentActivity : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
 
+        // true = 수정 로직 / false = 새 게시글 작성 로직
+        updateCheck = intent.getBooleanExtra("updateCheck",false)
+        postUid = intent.getStringExtra("postUid")
+
+
+        //수정하기면 해당 게시글의 정보 가져오기
+        if(updateCheck == true){
+            updateDataLoad()
+        }
 
         //유저 닉네임 가져오기
         firestore!!.collection("userInfo").document("userData").collection(auth!!.currentUser?.uid!!).document("accountInfo")
@@ -124,7 +138,16 @@ class AddContentActivity : AppCompatActivity() {
             }
 
             else {
-                contentUpload()
+
+                //게시글 작성
+                if (updateCheck == false){
+                    contentUpload()
+                    
+                }
+                //게시글 수정
+                else {
+                    updateContent()
+                }
             }
             
         }
@@ -132,6 +155,72 @@ class AddContentActivity : AppCompatActivity() {
 
         checkSaveData()
     }
+
+    //수정할 게시글 가져오기
+    fun updateDataLoad(){
+        firestore?.collection("contents")?.document("normal")?.collection("data")?.document(postUid!!)
+            ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                if(documentSnapshot != null){
+                    if (documentSnapshot.exists()){
+
+                        imageUriList.clear()
+
+                        var contentData = documentSnapshot.toObject(ContentNormalDTO::class.java)
+                        binding.activityAddContentEdittextContent.setText(contentData?.explain)
+
+                        contentData?.imageDownLoadUrlList?.forEachIndexed { index, s ->
+
+                            imageUriList.add(Uri.parse(s))
+                            println("이미지다운로드유알엘리스트 " + index.toString() + " & " + s.toString())
+                            println("이미지 유알엘 리스트" + imageUriList[index].toString() + "&" + s.toString())
+
+                        }
+
+
+
+                        binding.activityAddContentRecyclerPhoto.adapter?.notifyDataSetChanged()
+
+
+                    }
+                }
+            }
+    }
+
+    //게시글 업데이트
+    fun updateContent(){
+        progressDialog?.show()
+        var tsDoc = firestore?.collection("contents")?.document("normal")?.collection("data")?.document(postUid!!)
+        firestore?.runTransaction{ transaction ->
+
+
+
+            System.out.println("트랜잭션 시작")
+            var contentDTO = transaction.get(tsDoc!!).toObject(ContentNormalDTO::class.java)
+
+            contentDTO?.imageDownLoadUrlList?.clear()
+
+            contentDTO?.explain = binding.activityAddContentEdittextContent.text.toString()
+
+
+            imageUriList.forEach {
+                contentDTO?.imageDownLoadUrlList?.add(it.toString())
+            }
+
+
+
+            transaction.set(tsDoc, contentDTO!!)
+
+
+
+        }?.addOnFailureListener {
+            println("viewCountIncreaseFail ${it.toString()}")
+        }?.addOnCompleteListener {
+            Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
+            progressDialog?.dismiss()
+            finish()
+        }
+    }
+
     
     //게시글을 DB에 올리는 메서드
     fun contentUpload(){

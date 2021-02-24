@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.navigationlobby.AddMemberShipContentActivity
 import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
@@ -25,7 +26,9 @@ class AddMemberShipContentActivityRecyclerViewAdapter  (var activity: AddMemberS
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
 
-            viewHolder.item_image_list_imageview.setImageURI(imageUriList[position])
+            Glide.with(holder.itemView.context)
+                .load(imageUriList[position])
+                .into(viewHolder.item_image_list_imageview)
         }
 
 

@@ -259,7 +259,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
 
                 val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
                 var bundle = Bundle()
-                bundle.putString("destinationUid",destinationUid)
+                bundle.putString("destinationUid",uid)
                 bundle.putString("userId", userId)
                 bundle.putString("postUid",contentUid)
                 bundle.putString("uid" , uid)

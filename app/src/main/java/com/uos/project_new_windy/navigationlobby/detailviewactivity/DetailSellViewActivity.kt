@@ -37,8 +37,9 @@ import com.uos.project_new_windy.navigationlobby.UserFragment
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
 import kotlinx.android.synthetic.main.item_comment.view.*
+import kotlinx.android.synthetic.main.item_detail_view_image_list.view.*
 import kotlinx.android.synthetic.main.item_image_list.view.*
-
+import kotlinx.android.synthetic.main.item_image_list.view.item_image_list_imageview
 
 
 class DetailSellViewActivity : AppCompatActivity() {
@@ -442,7 +443,7 @@ class DetailSellViewActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            var view = LayoutInflater.from(parent.context).inflate(R.layout.item_image_list,parent,false)
+            var view = LayoutInflater.from(parent.context).inflate(R.layout.item_detail_view_image_list,parent,false)
             return CustomViewHolder(view)
         }
 
@@ -460,8 +461,8 @@ class DetailSellViewActivity : AppCompatActivity() {
                 Log.d("이미지 리스트" , i)
             }
 
-            Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_image_list_imageview)
-            viewHolder.item_image_list_imageview.setOnClickListener {
+            Glide.with(holder.itemView.context).load(contentImageList[position]).apply(RequestOptions().centerCrop()).into(viewHolder.item_detail_view_image_list_imageview)
+            viewHolder.item_detail_view_image_list_imageview.setOnClickListener {
                     i ->
 
                 Log.d("클릭완료",position.toString())

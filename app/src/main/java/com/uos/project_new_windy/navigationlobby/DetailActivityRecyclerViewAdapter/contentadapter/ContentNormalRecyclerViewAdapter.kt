@@ -9,7 +9,9 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
@@ -76,6 +78,11 @@ class ContentNormalRecyclerViewAdapter(
         holder.onBind(contentNormalDTO[position])
 
 
+        //뷰페이저 초기화
+        holder.binding.itemRecyclerNormalViewpager.adapter = photoAdapter(data[position].imageDownLoadUrlList!!)
+
+        //인디케이터 초기화
+        holder.binding.activityPhotoDetailSlideViewIndicator.setViewPager(holder.binding.itemRecyclerNormalViewpager)
 
         //프로필 이미지
         firestore?.collection("profileImages")?.document(contentNormalDTO[position].uid!!)
@@ -92,9 +99,12 @@ class ContentNormalRecyclerViewAdapter(
             }
 
         //사진
+        /*
         Glide.with(holder.itemView.context)
             .load(contentNormalDTO!![position].imageDownLoadUrlList?.get(0))
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+         */
 
         //좋아요 버튼 클릭
         holder.binding.itemDetailImagebuttonLike.setOnClickListener {
@@ -199,6 +209,24 @@ class ContentNormalRecyclerViewAdapter(
         clipboardManager.primaryClip = clipData
 
          */
+    }
+
+    inner class photoAdapter(var photoList : ArrayList<String>) : RecyclerView.Adapter<ViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_content_photo,parent,false))
+
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            Glide.with(context).load(photoList[position]).thumbnail().centerInside().into(holder.imageUrl)
+
+            println("photoAdapter의 photoUri = " + photoList[position].toString() )
+        }
+
+        override fun getItemCount(): Int = photoList?.size!!
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        val imageUrl : ImageView = view.findViewById(R.id.item_content_photo_imageview)
     }
 
     //조회수 증가

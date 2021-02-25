@@ -9,7 +9,9 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.github.chrisbanes.photoview.PhotoView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -81,6 +84,13 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                 }
             context.startActivity(intent)
         }
+
+
+        //뷰페이저 초기화
+        holder.binding.itemRecyclerSellViewpager.adapter = photoAdapter(data[position].imageDownLoadUrlList!!)
+
+        //인디케이터 초기화
+        holder.binding.activityPhotoDetailSlideViewIndicator.setViewPager(holder.binding.itemRecyclerSellViewpager)
 
 
 
@@ -256,11 +266,14 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         }
 
         //사진
+        /*
         if (data[position].imageDownLoadUrlList?.isEmpty() == false) {
             Glide.with(holder.itemView.context)
                 .load(data[position].imageDownLoadUrlList?.get(0))
                 .into(holder.binding.itemRecyclerSellImageviewImage)
         }
+
+         */
 
     }
 
@@ -393,6 +406,24 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             }
         }
         return cost as String
+    }
+
+    inner class photoAdapter(var photoList : ArrayList<String>) : RecyclerView.Adapter<ViewHolder>(){
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_content_photo,parent,false))
+
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            Glide.with(context).load(photoList[position]).thumbnail().centerInside().into(holder.imageUrl)
+
+            println("photoAdapter의 photoUri = " + photoList[position].toString() )
+        }
+
+        override fun getItemCount(): Int = photoList?.size!!
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        val imageUrl : ImageView = view.findViewById(R.id.item_content_photo_imageview)
     }
 
 

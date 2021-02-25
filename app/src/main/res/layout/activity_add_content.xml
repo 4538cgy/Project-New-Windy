@@ -79,7 +79,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/activity_add_content_recycler_photo"
+                app:layout_constraintBottom_toTopOf="@+id/activity_add_content_line"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="top"
@@ -90,14 +90,21 @@
                 android:maxLength="10000"
                 android:padding="8dp"
                 />
-
+            <View
+                android:id="@+id/activity_add_content_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorLightGray"
+                app:layout_constraintTop_toBottomOf="@+id/activity_add_content_edittext_content"
+                app:layout_constraintBottom_toTopOf="@+id/activity_add_content_recycler_photo"
+                />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_add_content_recycler_photo"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="100dp"
                 />
 
             <Button

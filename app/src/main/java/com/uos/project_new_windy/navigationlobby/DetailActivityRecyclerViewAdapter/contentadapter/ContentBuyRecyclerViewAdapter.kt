@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -132,7 +133,11 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
         //사진
 
         Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
+            .placeholder(R.drawable.ic_sand_clock)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(holder.binding.itemRecyclerNormalImageviewImage)
+
+
 
         //옵션 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonOption.setOnClickListener {

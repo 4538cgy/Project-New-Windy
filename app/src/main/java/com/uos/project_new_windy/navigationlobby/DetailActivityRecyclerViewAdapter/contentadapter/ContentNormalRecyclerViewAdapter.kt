@@ -17,6 +17,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -217,7 +218,16 @@ class ContentNormalRecyclerViewAdapter(
 
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            Glide.with(context).load(photoList[position]).thumbnail().centerInside().into(holder.imageUrl)
+            //Glide.with(context).load(photoList[position]).thumbnail().centerInside().into(holder.imageUrl)
+
+            Glide.with(context)
+                .load(photoList[position])
+                .placeholder(R.drawable.ic_sand_clock)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(
+                    Glide.with(context).load(photoList[position]).fitCenter()
+                )
+                .into(holder.imageUrl)
 
             println("photoAdapter의 photoUri = " + photoList[position].toString() )
         }

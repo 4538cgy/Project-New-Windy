@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.github.chrisbanes.photoview.PhotoView
 import com.google.firebase.auth.FirebaseAuth
@@ -414,7 +415,14 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            Glide.with(context).load(photoList[position]).thumbnail().centerInside().into(holder.imageUrl)
+            Glide.with(context)
+                .load(photoList[position])
+                .placeholder(R.drawable.ic_sand_clock)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(
+                    Glide.with(context).load(photoList[position]).fitCenter()
+                )
+                .into(holder.imageUrl)
 
             println("photoAdapter의 photoUri = " + photoList[position].toString() )
         }

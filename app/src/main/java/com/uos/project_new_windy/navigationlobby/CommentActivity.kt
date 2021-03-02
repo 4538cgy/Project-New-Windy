@@ -69,15 +69,20 @@ class CommentActivity : AppCompatActivity() {
         
         //댓글 발송
         binding.activityCommentButtonUploadComment.setOnClickListener {
-            var comment = ContentDTO.Comment()
-            comment.userId = FirebaseAuth.getInstance().currentUser?.email
-            comment.uid = FirebaseAuth.getInstance().currentUser?.uid
-            comment.comment = activity_comment_edittext_explain.text.toString()
-            comment.timestamp = System.currentTimeMillis()
-            comment.time = TimeUtil().getTime()
 
-            commentSave(postType,comment)
-            commentAlarm(destinationUid!!,activity_comment_edittext_explain.text.toString())
+            if(binding.activityCommentEdittextExplain.text.length > 1) {
+
+                var comment = ContentDTO.Comment()
+                comment.userId = FirebaseAuth.getInstance().currentUser?.email
+                comment.uid = FirebaseAuth.getInstance().currentUser?.uid
+                comment.comment = activity_comment_edittext_explain.text.toString()
+                comment.timestamp = System.currentTimeMillis()
+                comment.time = TimeUtil().getTime()
+
+                commentSave(postType, comment)
+                commentAlarm(destinationUid!!, activity_comment_edittext_explain.text.toString())
+                binding.activityCommentEdittextExplain.setText("")
+            }
 
 
         }
@@ -257,6 +262,8 @@ class CommentActivity : AppCompatActivity() {
 
                     }
                 }
+
+            holder.binding.itemCommentTextviewTime.text = TimeUtil().formatTimeString(comments[position].timestamp!!)
         }
 
         override fun getItemCount(): Int {

@@ -167,6 +167,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             bundle.putString("postType", "sell")
             bundle.putString("viewType","fragment")
             bundle.putString("boardType","sell")
+            bundle.putLong("contentUploadTime", contentSellDTO[position].timeStamp!!)
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager,"dd")
         }

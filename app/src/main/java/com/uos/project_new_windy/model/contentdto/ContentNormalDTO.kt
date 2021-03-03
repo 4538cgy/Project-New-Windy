@@ -14,6 +14,9 @@ data class ContentNormalDTO(
     var timestamp : Long ? = null,
     //게시 시간
     var time : String ? = null,
+    //게시글이 작성된 원래 시간
+    var uploadTimeStamp : Long ? = null,
+
     //유저 닉네임
     var userNickName : String ? = null,
     //댓글 갯수
@@ -22,6 +25,7 @@ data class ContentNormalDTO(
     var favoriteCount : Int ? = 0,
     //조회수
     var viewCount : Int ? = 0,
+
     //좋아요 누른 사람 uid
     var favorites: MutableMap<String,Boolean> = HashMap(),
     //조회한 사람 uid

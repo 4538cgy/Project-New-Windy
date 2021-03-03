@@ -12,6 +12,8 @@ data class ContentBuyDTO(
     var explain : String ? = null,
     //시간
     var time : String ? = null,
+    //게시글이 작성된 원래 시간
+    var uploadTimeStamp : Long ? = null,
     //좋아요 갯수
     var favoriteCount : Int  ? = 0,
     //유저 닉네임 혹은 이메일 주소

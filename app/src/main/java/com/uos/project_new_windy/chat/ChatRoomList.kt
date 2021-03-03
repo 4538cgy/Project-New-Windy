@@ -120,24 +120,7 @@ class ChatRoomList : AppCompatActivity() {
                     destinationUsers.add(destinationUid)
                 }
             }
-            /*
 
-            FirebaseDatabase.getInstance().reference.child("users").child(destinationUid!!)
-                .addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        val userModel = dataSnapshot.getValue(UserModel::class.java)
-                        Glide.with(customViewHolder.itemView.getContext())
-                            .load(userModel.profileImageUrl)
-                            .apply(RequestOptions().circleCrop())
-                            .into(customViewHolder.imageView)
-                        customViewHolder.textView_title.setText(userModel!!.userName)
-                    }
-
-                    override fun onCancelled(databaseError: DatabaseError) {}
-                })
-
-
-             */
 
 
             //프로필 이미지

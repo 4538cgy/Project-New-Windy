@@ -185,6 +185,7 @@ class ContentNormalRecyclerViewAdapter(
             bundle.putString("postType", "normal")
             bundle.putString("viewType", "fragment")
             bundle.putString("boardType","normal")
+            bundle.putLong("contentUploadTime", contentNormalDTO[position].timestamp!!)
             bottomeSheetDialog.arguments = bundle
             bottomeSheetDialog.show(fragmentManager, "dd")
         }

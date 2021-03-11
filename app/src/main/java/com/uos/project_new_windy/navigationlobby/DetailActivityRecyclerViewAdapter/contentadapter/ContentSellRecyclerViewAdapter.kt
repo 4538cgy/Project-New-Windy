@@ -76,6 +76,8 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     override fun onBindViewHolder(holder: ContentSellRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentSellDTO[position])
 
+        //조회수 증가
+        viewCountIncrease(position)
         //댓글 버튼 클릭
         holder.binding.itemRecyclerSellImagebuttonComment.setOnClickListener {
             var intent = Intent(holder.itemView.context,CommentActivity::class.java)
@@ -151,7 +153,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             }
             println("판매 게시판의 아이템 클릭 ")
             context.startActivity(intent)
-            viewCountIncrease(position)
+
         }
 
 

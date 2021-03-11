@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -88,11 +89,10 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
 
         //뷰페이저 초기화
-        holder.binding.itemRecyclerSellViewpager.adapter = photoAdapter(data[position].imageDownLoadUrlList!!)
+        holder.binding.itemRecyclerSellViewpager.adapter = photoAdapter(data[position].imageDownLoadUrlList!!,position)
 
         //인디케이터 초기화
         holder.binding.activityPhotoDetailSlideViewIndicator.setViewPager(holder.binding.itemRecyclerSellViewpager)
-
 
 
 
@@ -102,11 +102,11 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
             var bundle = Bundle()
             bundle.putString("destinationUid",contentSellDTO[position].uid)
             bundle.putString("userId",contentSellDTO[position].userId)
+
             fragment.arguments = bundle
             //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
             fragmentManager.beginTransaction().replace(R.id.main_content,fragment)?.commit()
         }
-
 
 
         holder.binding.itemRecyclerSellTextviewCost.text = getCost(position) + "원"
@@ -410,11 +410,15 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
         return cost as String
     }
 
-    inner class photoAdapter(var photoList : ArrayList<String>) : RecyclerView.Adapter<ViewHolder>(){
+    inner class photoAdapter(var photoList : ArrayList<String>, itemPosition : Int) : RecyclerView.Adapter<ViewHolder>(){
+
+        var itemPosition = itemPosition
+
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_content_photo,parent,false))
 
 
+        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             Glide.with(context)
                 .load(photoList[position])
@@ -424,6 +428,11 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
                     Glide.with(context).load(photoList[position]).fitCenter()
                 )
                 .into(holder.imageUrl)
+            
+            holder.itemView.setOnClickListener { 
+                println("으아아아아아아아아")
+                favoriteEvent(itemPosition)
+            }
 
             println("photoAdapter의 photoUri = " + photoList[position].toString() )
         }

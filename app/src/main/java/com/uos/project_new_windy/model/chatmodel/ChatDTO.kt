@@ -12,6 +12,7 @@ data class ChatDTO(
      */
 
     var users: MutableMap<String,Boolean> = HashMap(),
+    var commentTimestamp : Any ? = null,
     var comments : MutableMap<String,Comment> = HashMap()
 
 ) {

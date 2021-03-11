@@ -64,7 +64,6 @@ class PostBuySearch : Fragment() {
     var mContentUidList : ArrayList<String> = arrayListOf()
 
     init {
-
         FirebaseFirestore.getInstance().collection("contents")
             .document("buy")
             .collection("data")
@@ -82,9 +81,9 @@ class PostBuySearch : Fragment() {
                     //System.out.println("데이터들 " + item.toString())
                     //거래완료 상품이 아니면 보여줌
 
-                        contentBuyTO.add(item!!)
-                        //System.out.println("데이터들2" + contentSellDTO.toString())
-                        contentUidList.add(snapshot.id)
+                    contentBuyTO.add(item!!)
+                    //System.out.println("데이터들2" + contentSellDTO.toString())
+                    contentUidList.add(snapshot.id)
 
 
 
@@ -110,7 +109,27 @@ class PostBuySearch : Fragment() {
         binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
 
         //검색 버튼
+
         binding.fragmentPostBuySearchImagebuttonSearch.setOnClickListener {
+
+
+            searchResultContentData.clear()
+            searchResultPostUidListData.clear()
+
+            for (c in contentBuyTO.indices){
+                if (contentBuyTO[c].explain.toString().contains(searchKeyString.toString()))
+                {
+                    searchResultContentData.add(contentBuyTO[c])
+                    searchResultPostUidListData.add(contentUidList[c])
+                }
+            }
+            mList.clear()
+            mContentUidList.clear()
+            mList.addAll(searchResultContentData)
+            mContentUidList.addAll(searchResultPostUidListData)
+
+            binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
+            /*
             searchResultContentData.clear()
 
             for (c in contentBuyTO.indices){
@@ -126,7 +145,12 @@ class PostBuySearch : Fragment() {
             mContentUidList.addAll(searchResultPostUidListData)
 
             binding.fragmentPostBuySearchRecycler.adapter?.notifyDataSetChanged()
+
+             */
         }
+
+
+
 
         binding.fragmentPostBuyImagebuttonCategoryOption.setOnClickListener {
             startActivityForResult(Intent(
@@ -137,6 +161,8 @@ class PostBuySearch : Fragment() {
 
         return binding.root
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -186,17 +212,6 @@ class PostBuySearch : Fragment() {
 
         }
 
-        /*
-        for(c in contentBuyTO.indices){
-            for(d in categoryData.indices)
-                if (contentBuyTO[c].categoryHash.equals(categoryData[d].toString())){
-                    System.out.println("중복됩니다." + categoryData[d] + contentBuyTO[c])
-                    contentData.add(contentBuyTO[c])
-                    contentUidListData.add(contentUidList[c])
-                }
-        }
-
-         */
 
         mList.clear()
         mContentUidList.clear()

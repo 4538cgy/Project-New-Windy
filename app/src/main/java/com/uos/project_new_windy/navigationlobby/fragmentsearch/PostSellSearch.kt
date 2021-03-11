@@ -106,15 +106,18 @@ class PostSellSearch : Fragment() {
 
         binding.fragmentPostSellSearchEdittextSearch.addTextChangedListener(EditWatcher())
         binding.fragmentPostSellSearchEdittextSearch.setOnEditorActionListener(EditListener())
-
+        binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context,mList,mContentUidList)
+        binding.fragmentPostSellSearchRecycler.layoutManager = LinearLayoutManager(activity)
+        binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
 
         //검색 버튼
         binding.fragmentPostSellSearchImagebuttonSearch.setOnClickListener {
             searchResultContentData.clear()
+            searchResultPostUidListData.clear()
             for(c in contentData.indices)
             {
 
-                if(contentData[c].explain.toString().contains(searchKeyString.toString()) || contentData[c].productExplain.toString().contains(searchKeyString.toString())) {
+                if(contentData[c].explain.toString().contains(searchKeyString.toString())) {
 
 
 
@@ -133,12 +136,14 @@ class PostSellSearch : Fragment() {
             /*
             contentData.clear()
             contentData.addAll(searchResultContentData)
-            contentData.forEach {
+            */
+            println("검색 결과 식별 실행")
+            searchResultContentData.forEach {
                 System.out.println("검색결과 식별2" + it.toString())
             }
-            binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context)
+            //binding.fragmentPostSellSearchRecycler.adapter = PostSellSearchRecyclerViewAdapter(binding.root.context)
 
-             */
+
             binding.fragmentPostSellSearchRecycler.adapter?.notifyDataSetChanged()
         }
 

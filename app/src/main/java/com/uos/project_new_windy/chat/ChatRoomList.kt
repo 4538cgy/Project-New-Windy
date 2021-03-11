@@ -14,10 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
+import com.google.firebase.database.core.utilities.Tree
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityChatRoomListBinding
@@ -28,6 +26,7 @@ import com.uos.project_new_windy.navigationlobby.AlarmActivity
 import com.uos.project_new_windy.navigationlobby.AlarmFragment
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ChatRoomList : AppCompatActivity() {
@@ -66,13 +65,16 @@ class ChatRoomList : AppCompatActivity() {
 
         var chat : ArrayList<ChatDTO> = arrayListOf()
         var destinationUsers : ArrayList<String> = arrayListOf()
+        var chatTimestampList : ArrayList<String> = arrayListOf()
+        var resultChat : ArrayList<ChatDTO> = arrayListOf()
         var uid : String ? = null
+
 
         init {
 
             uid = FirebaseAuth.getInstance().uid.toString()
             // 챗룸 데이터 가져오기
-
+            println("데이터 가져오기")
             FirebaseDatabase.getInstance().reference.child("chatrooms").orderByChild("users/$uid")
                 .equalTo(true).addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -80,12 +82,89 @@ class ChatRoomList : AppCompatActivity() {
                         for (item in dataSnapshot.children) {
                             chat.add(item.getValue(ChatDTO::class.java)!!)
                         }
+
+
+
                         notifyDataSetChanged()
+
+
+                        println("데이터 정렬1")
+                        chat.forEachIndexed{
+                                index, chatDTO ->
+                            println("chat 의 값 = $chatDTO" )
+                            val commentMap: MutableMap<String, ChatDTO.Comment> =
+                                TreeMap(Collections.reverseOrder())
+                            commentMap.putAll(chat[index].comments)
+                            val lastMessageKey = commentMap.keys.toTypedArray()[0]
+                            val timeStamp = commentMap[lastMessageKey]?.serverTimestamp
+                            chatTimestampList.add(timeStamp.toString())
+
+                            chatTimestampList.forEach {
+                                println("chatTimestampList 의 값 = $it")
+                            }
+                        }
+
+                        println("데이터 정렬2")
+
+                        chatTimestampList.sortDescending()
+
+
+                        chatTimestampList.forEach {
+                            println("chatTimestampList 의 값 = $it")
+                        }
+
+                        println("데이터 정렬3")
+                        chatTimestampList.forEachIndexed { index,it ->
+
+                            chat.forEachIndexed { chatindex, chatDTO ->
+                                val commentMap: MutableMap<String, ChatDTO.Comment> =
+                                    TreeMap(Collections.reverseOrder())
+                                commentMap.putAll(chatDTO.comments)
+                                val lastMessageKey = commentMap.keys.toTypedArray()[0]
+                                if (it.equals(commentMap[lastMessageKey]?.serverTimestamp.toString())){
+                                    println("데이터 추가함" + commentMap[lastMessageKey]?.serverTimestamp.toString() + " 으앜 "  + it.toString())
+                                    resultChat.add(index,chatDTO)
+                                }else{
+                                    println("데이터 추가안함"+ commentMap[lastMessageKey]?.serverTimestamp.toString() + " 으앜 "  + it.toString())
+                                    return@forEachIndexed
+                                }
+                            }
+                        }
+
+                        println("데이터 정렬4")
+                        resultChat.forEachIndexed {index,it ->
+
+                            val commentMap: MutableMap<String, ChatDTO.Comment> =
+                                TreeMap(Collections.reverseOrder())
+                            commentMap.putAll(it.comments)
+                            val lastMessageKey = commentMap.keys.toTypedArray()[0]
+                            println("최종값 ${commentMap[lastMessageKey]?.serverTimestamp.toString()}")
+                        }
+
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {}
                 })
+
+
+
+            /*
+            val commentMap: MutableMap<String, ChatDTO.Comment> =
+                TreeMap(Collections.reverseOrder())
+            commentMap.putAll(chat[position].comments)
+            val lastMessageKey = commentMap.keys.toTypedArray()[0]
+            holder.binding.itemChatRoomListTextviewLastMessage.setText(chat[position].comments.get(
+                lastMessageKey)?.message)
+
+            holder.binding.itemChatRoomListTextviewTimestamp.text = chat[position].comments[lastMessageKey]?.timestamp.toString()
+
+
+             */
+            //메시지를 내림 차순으로 정렬 후 마지막 메세지의 키값을 가져옴
+
+
         }
+
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
 
@@ -107,14 +186,15 @@ class ChatRoomList : AppCompatActivity() {
         }
 
         override fun onBindViewHolder(holder: ChatListViewHolder, position: Int) {
-            holder.onBind(chat[position])
+            //holder.onBind(chat[position])
+            holder.onBind(resultChat[position])
             var destinationUid: String? = null
 
 
 
             // 일일 챗방에 있는 유저를 체크
 
-            for (user in chat.get(position).users.keys) {
+            for (user in resultChat.get(position).users.keys) {
                 if (user != uid) {
                     destinationUid = user
                     destinationUsers.add(destinationUid)
@@ -139,9 +219,11 @@ class ChatRoomList : AppCompatActivity() {
                                     var userModel = documentSnapshot.toObject(UserModel::class.java)
                                     holder.binding.itemChatRoomListTextviewTitle.text = userModel?.userName
 
-
+                                    /*
                                     System.out.println("userModel 은? " + userModel.toString())
                                     System.out.println("destinationUid는?" + destinationUid!!)
+
+                                     */
 
                                 }
                             }
@@ -165,9 +247,9 @@ class ChatRoomList : AppCompatActivity() {
             //메시지를 내림 차순으로 정렬 후 마지막 메세지의 키값을 가져옴
             val commentMap: MutableMap<String, ChatDTO.Comment> =
                 TreeMap(Collections.reverseOrder())
-            commentMap.putAll(chat[position].comments)
+            commentMap.putAll(resultChat[position].comments)
             val lastMessageKey = commentMap.keys.toTypedArray()[0]
-            holder.binding.itemChatRoomListTextviewLastMessage.setText(chat[position].comments.get(
+            holder.binding.itemChatRoomListTextviewLastMessage.setText(resultChat[position].comments.get(
                 lastMessageKey)?.message)
 
 
@@ -191,12 +273,12 @@ class ChatRoomList : AppCompatActivity() {
 
 
             //TimeStamp
-            holder.binding.itemChatRoomListTextviewTimestamp.text = chat[position].comments[lastMessageKey]?.timestamp.toString()
+            holder.binding.itemChatRoomListTextviewTimestamp.text = resultChat[position].comments[lastMessageKey]?.timestamp.toString()
 
 
         }
 
-        override fun getItemCount(): Int = chat.size
+        override fun getItemCount(): Int = resultChat.size
 
     }
 

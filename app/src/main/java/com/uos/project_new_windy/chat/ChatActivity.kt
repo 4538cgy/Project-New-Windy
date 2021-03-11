@@ -85,6 +85,7 @@ class ChatActivity : AppCompatActivity() {
 
 
             chatDTOs.users.put(uid!!, true);
+            chatDTOs.commentTimestamp = System.currentTimeMillis()
             chatDTOs.users.put(destinationUid!!, true)
 
             if (chatRoomUid == null) {
@@ -108,6 +109,7 @@ class ChatActivity : AppCompatActivity() {
                         binding.activityChatEdittextExplain.setText(" ")
                         chatAlarm(destinationUid!!)
                     }
+
             }
 
         }

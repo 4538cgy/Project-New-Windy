@@ -112,6 +112,7 @@ class ScamerPhoneNumberData {
         data.add("01072939849")
         data.add("01023754032")
         data.add("01046381835")
+        data.add("01082598358")
 
         return data
     }

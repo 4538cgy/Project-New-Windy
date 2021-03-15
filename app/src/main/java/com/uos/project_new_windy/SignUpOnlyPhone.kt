@@ -103,7 +103,7 @@ class SignUpOnlyPhone : AppCompatActivity() {
             {
                 Toast.makeText(binding.root.context, "핸드폰 번호는 숫자만 입력해주세요." ,Toast.LENGTH_LONG).show()
             }else if (binding.activitySignUpOnlyPhoneEdittextDetailAddress.text.length < 2){
-                Toast.makeText(binding.root.context, "상세주소를 정확히 입력해주세요." ,Toast.LENGTH_LONG).show()
+                Toast.makeText(binding.root.context, "상세주소를 5글자 이상 입력해주세요." ,Toast.LENGTH_LONG).show()
             }else if(binding.activitySignUpOnlyPhoneEdittextNickname.text.length < 2){
                 Toast.makeText(binding.root.context, "별명은 두글자 이상으로 입력해주세요." ,Toast.LENGTH_LONG).show()
             }else if(imageUri == null) {

@@ -36,8 +36,10 @@ class DeleteAcceptActivity : AppCompatActivity() {
             System.out.println(" 액티비티는 ? " + DetailSellViewActivity.activity.toString())
 
         }
-        
-        
+
+
+
+
         //예 버튼
         binding.activityDeleteAcceptButtonYes.setOnClickListener {
 

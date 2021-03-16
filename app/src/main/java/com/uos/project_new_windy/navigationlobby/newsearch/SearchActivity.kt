@@ -42,7 +42,7 @@ class SearchActivity : AppCompatActivity() {
         binding.activitysearch = this@SearchActivity
 
         //액티비티 시작하자마자 필터 선택 액티비티 실행
-        startActivityForResult(Intent(binding.root.context,SearchActivity::class.java), 1001)
+        startActivityForResult(Intent(binding.root.context,SearchFilterActivity::class.java), 1001)
 
 
     }
@@ -93,6 +93,8 @@ class SearchActivity : AppCompatActivity() {
                             }
 
                         }
+
+                        sellDataFiltering(contentSellDataList,contentSellDataUidList)
                     }
             }
             "buy" -> {
@@ -109,7 +111,7 @@ class SearchActivity : AppCompatActivity() {
                             //System.out.println("데이터들2" + contentSellDTO.toString())
                             contentBuyDataUidList.add(snapshot.id)
 
-
+                            buyDataFiltering(contentBuyDataList,contentBuyDataUidList)
                         }
                     }
             }
@@ -127,7 +129,7 @@ class SearchActivity : AppCompatActivity() {
                             //System.out.println("데이터들2" + contentSellDTO.toString())
                             contentNormalDataUidList.add(snapshot.id)
 
-
+                            normalDataFiltering(contentNormalDataList,contentNormalDataUidList)
                         }
                     }
             }

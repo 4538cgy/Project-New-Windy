@@ -27,6 +27,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
+import com.uos.project_new_windy.navigationlobby.newsearch.SearchActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_lobby.*
@@ -98,9 +99,10 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 return  true
             }
             R.id.action_search -> {
-                var gridFragment = SearchFragment()
-                supportFragmentManager.beginTransaction().replace(R.id.main_content,gridFragment).commit()
-                return  true
+
+
+                startActivity(Intent(binding.root.context,SearchActivity::class.java))
+
             }
             R.id.action_photo -> {
                 if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){

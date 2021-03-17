@@ -12,7 +12,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/activity_search_top"
@@ -37,21 +37,49 @@
                 app:layout_constraintLeft_toRightOf="@+id/activity_search_imagebutton_back"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintRight_toLeftOf="@+id/activity_search_imagebutton_option"
                 android:id="@+id/activity_search_searchview"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                />
+
+            <ImageButton
+                android:id="@+id/activity_search_imagebutton_option"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_post_menu_3"
+                android:scaleType="centerInside"
+                android:padding="10dp"
                 />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <TextView
+            android:id="@+id/activity_search_textview_notice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_search_top"
+            app:layout_constraintBottom_toTopOf="@+id/activity_search_recycler"
+            android:text="구매 게시판 조회 결과 입니다."
+            android:layout_marginVertical="8dp"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/activity_search_recycler"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintTop_toBottomOf="@+id/activity_search_top"
+            app:layout_constraintTop_toBottomOf="@+id/activity_search_textview_notice"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 

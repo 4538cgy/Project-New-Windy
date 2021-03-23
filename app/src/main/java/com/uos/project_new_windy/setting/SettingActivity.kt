@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.setting
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -9,6 +10,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.UserInfoEditActivity
 import com.uos.project_new_windy.databinding.ActivitySettingBinding
 import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.util.SharedData
@@ -31,11 +33,11 @@ class SettingActivity : AppCompatActivity() {
                 userModel = documentSnapshot.toObject(UserModel::class.java)!!
                 println("끼에ㅐ에에에에엙" + userModel.toString())
 
-                //로그인 정보의 이메일
-                binding.activitySettingTextviewEmail.text = auth.currentUser?.email.toString()
+                binding.activitySettingTextviewGotoinfo.text = userModel.phoneNumber
+                binding.activitySettingTextviewEmail.text = "로그인 정보"
 
-                //계정 정보의 이메일
-                binding.activitySettingTextviewEmailaddress.text = auth.currentUser?.email.toString()
+
+
 
                 //계정 정보의 닉네임
                 binding.activitySettingTextviewUsernickname.text = userModel.userName.toString()
@@ -78,11 +80,13 @@ class SettingActivity : AppCompatActivity() {
                 }
 
             }
+        
+
 
 
         //수정 버튼
         binding.activitySettingButtonEditUserInfo.setOnClickListener {
-
+            startActivity(Intent(binding.root.context,UserInfoEditActivity::class.java))
         }
 
         //푸쉬 전체 알람 끄기

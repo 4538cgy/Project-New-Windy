@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DeleteUserDataActivity">
+    
+    <data>
+        <variable
+            name="deleteuserdataactivity"
+            type="com.uos.project_new_windy.DeleteUserDataActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="회원 탈퇴 전 보안을 위해 계정 인증이 필요합니다. \n 계정 인증이 완료되면 회원 탈퇴 버튼이 활성화 됩니다."
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="50dp"
+            />
+
+        <TextView
+            android:id="@+id/activity_delete_user_textview_id"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/activity_delete_user_data_button_verify"
+            android:layout_marginTop="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <Button
+            android:layout_marginTop="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:id="@+id/activity_delete_user_data_button_verify"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:background="@drawable/background_round_windy_green"
+            android:text="인증 요청"
+            android:textSize="18dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <Button
+            android:id="@+id/activity_delete_user_data_delete_button_delete"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:background="@drawable/background_round_windy_green"
+            android:text="회원 탈퇴"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

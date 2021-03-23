@@ -195,6 +195,9 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG).show()
                         progressDialog?.dismiss()
 
+
+
+
                         FirebaseAuth.getInstance().signInWithCredential(p0).addOnFailureListener {
 
                             var log = PhoneAuthLog()

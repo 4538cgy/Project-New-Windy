@@ -38,9 +38,8 @@ class UserInfoEditActivity : AppCompatActivity() {
             if(documentSnapshot != null)
             {
                 userModel = documentSnapshot.toObject(UserModel::class.java)!!
-                println("끼에ㅐ에에에에엙" + userModel.toString())
                 //닉네임란 초기화
-                binding.activityUserInfoEditEdittextNickname.hint = "현재 닉네임 : " + userModel.userName
+                binding.activityUserInfoEditEdittextNickname.hint = "닉네임 : " + userModel.userName
                 //주소 초기화
                 binding.activityUserInfoEditTextviewAddress.text = "현재 주소 : " + userModel.totalAddress
                 //상세 주소 초기화
@@ -65,7 +64,7 @@ class UserInfoEditActivity : AppCompatActivity() {
         gac = GoogleApiClient.Builder(this)
             .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
             .build()
-        println(userModel.toString() + " 꿍애애애애애애애애애애애ㅐㅋ")
+
         //뒤로가기
         binding.activityUserInfoEditImagebuttonClose.setOnClickListener {
             finish()
@@ -100,7 +99,16 @@ class UserInfoEditActivity : AppCompatActivity() {
 
         //정보 수정 요청
         binding.activityUserInfoEditUpdateMyInfo.setOnClickListener {
-            updateUser()
+            if (binding.activityUserInfoEditEdittextNickname.length() > 6) {
+                Toast.makeText(binding.root.context,"닉네임은 6글자 미만으로 설정 가능합니다.",Toast.LENGTH_LONG).show()
+            }else if(address == null){
+                Toast.makeText(binding.root.context,"주소를 검색해주세요.",Toast.LENGTH_LONG).show()
+            }else if(binding.activityUserInfoEditTextviewDetailAddress.text.isEmpty()){
+                Toast.makeText(binding.root.context,"상세주소를 입력해주세요.",Toast.LENGTH_LONG).show()
+            }
+            else{
+                updateUser()
+            }
         }
     }
 
@@ -158,7 +166,10 @@ class UserInfoEditActivity : AppCompatActivity() {
             transaction ->
 
             var userDTO = transaction.get(tsDoc).toObject(UserModel::class.java)
-            userDTO?.address = binding.activityUserInfoEditTextviewAddress.text.toString()
+
+            userDTO?.address = address
+            userDTO?.zipCode = zipCode
+            userDTO?.building = building
             userDTO?.addressDetail = binding.activityUserInfoEditTextviewDetailAddress.text.toString()
             userDTO?.userName = binding.activityUserInfoEditEdittextNickname.text.toString()
 

@@ -43,7 +43,7 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/item_recycler_sell_imageview_profile"
                     android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_height="27dp"
                     android:layout_marginLeft="8dp" />
 
                 <TextView

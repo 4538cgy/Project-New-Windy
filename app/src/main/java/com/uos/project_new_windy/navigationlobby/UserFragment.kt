@@ -118,6 +118,16 @@ class UserFragment : Fragment() {
            binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
         }
 
+
+        //내 구독자 목록 확인
+        binding.fragmentUserLinearlayoutMySubscriber.setOnClickListener {
+            
+        }
+        //날 구독한 목록확인
+        binding.fragmentUserMySubscribe.setOnClickListener {
+            startActivity(Intent(binding.root.context,MySubscriberListActivity::class.java))
+        }
+
         
         //현재 보고있는 화면의 유저가 내가 아닌지를 판단
         if(!uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
@@ -312,6 +322,8 @@ class UserFragment : Fragment() {
 
     fun requestFollow(){
 
+        //followers = 나를 구독한 사람
+        //followings = 내가 구독한 사람
         //Save data to my account
         var tsDocFollowing = firestore?.collection("userInfo")?.document("userData")?.collection(FirebaseAuth.getInstance().currentUser?.uid!!)?.document("follow")
         firestore?.runTransaction{
@@ -321,7 +333,7 @@ class UserFragment : Fragment() {
             if (followDTO == null){
                 followDTO = FollowDTO()
                 followDTO!!.followingCount = 1
-                followDTO!!.followers[uid!!] = true
+                followDTO!!.followings[uid!!] = true
 
                 transaction.set(tsDocFollowing,followDTO)
                 return@runTransaction
@@ -331,12 +343,12 @@ class UserFragment : Fragment() {
             {
                 //its remove following third person when a third person follow me
                 followDTO.followingCount = followDTO?.followingCount - 1
-                followDTO?.followers?.remove(uid)
+                followDTO?.followings?.remove(uid)
 
             }else{
                 //its remove following third person when a third person do not follow me
                 followDTO?.followingCount = followDTO.followingCount + 1
-                followDTO?.followers[uid!!] = true
+                followDTO?.followings[uid!!] = true
             }
             transaction.set(tsDocFollowing,followDTO)
             return@runTransaction

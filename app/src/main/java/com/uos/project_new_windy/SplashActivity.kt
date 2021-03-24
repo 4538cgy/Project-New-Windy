@@ -20,6 +20,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.ktx.Firebase
 import com.uos.project_new_windy.databinding.ActivitySplashBinding
 import com.uos.project_new_windy.util.FcmPush
 import java.security.MessageDigest
@@ -41,6 +42,10 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_splash)
         binding.activitysplash = this@SplashActivity
+
+
+
+
 
         appUdateManager = AppUpdateManagerFactory.create(binding.root.context)
         val appUpdateManagerInfoTask = appUdateManager.appUpdateInfo

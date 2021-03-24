@@ -43,7 +43,7 @@ class MySubscribeListActivity : AppCompatActivity() {
                         println("구독자" + followDTO?.followers?.keys)
                         println("구독한자" + followDTO?.followings?.keys)
 
-                        followDTO?.followers?.keys?.forEach {
+                        followDTO?.followings?.keys?.forEach {
 
                             db.collection("userInfo").document("userData").collection(it).document("accountInfo")
                                 .get().addOnSuccessListener {

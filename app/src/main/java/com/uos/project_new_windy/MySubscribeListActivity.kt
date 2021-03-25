@@ -55,7 +55,7 @@ class MySubscribeListActivity : AppCompatActivity() {
                                             binding.activityMySubscribeListRecycler.adapter = MySubscribeRecyclerAdapter()
                                             binding.activityMySubscribeListRecycler.layoutManager = LinearLayoutManager(binding.root.context,
                                                 LinearLayoutManager.VERTICAL,false)
-                                            (binding.activityMySubscribeListRecycler.adapter as MySubscriberListActivity.MySubscribeRecyclerAdapter).notifyDataSetChanged()
+                                            //(binding.activityMySubscribeListRecycler.adapter as MySubscriberListActivity.MySubscribeRecyclerAdapter).notifyDataSetChanged()
 
                                         }
                                     }

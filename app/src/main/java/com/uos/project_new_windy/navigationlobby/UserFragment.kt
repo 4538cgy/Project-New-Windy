@@ -34,6 +34,7 @@ import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailBuyViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormalViewActivity
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
+import com.uos.project_new_windy.navigationlobby.detailviewactivity.PhotoDetailViewActivity
 import com.uos.project_new_windy.setting.SettingActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
@@ -48,6 +49,7 @@ class UserFragment : Fragment() {
     var auth : FirebaseAuth ? = null
     var currentUserUid : String ? = null
 
+    var imageUrl : String ? = null
     var gac : GoogleApiClient ? = null
 
     lateinit var binding : FragmentUserBinding
@@ -88,10 +90,17 @@ class UserFragment : Fragment() {
         binding.fragmentUserRecyclerview.layoutManager = GridLayoutManager(activity!!,3)
 
         //프로필 이미지 변경 이벤트
-
         binding.fragmentUserCircleImageview.setOnClickListener {
 
-            if (FirebaseAuth.getInstance().currentUser?.uid == uid) {
+            if(!uid.equals(FirebaseAuth.getInstance().currentUser?.uid)){
+                var intent = Intent(binding.root.context,PhotoDetailViewActivity::class.java)
+                intent.apply {
+                    putExtra("photoUrl",imageUrl)
+                    startActivity(intent)
+                }
+
+            }else if (uid.equals(FirebaseAuth.getInstance().currentUser?.uid))
+            {
                 var photoPickerIntent = Intent(Intent.ACTION_PICK)
                 photoPickerIntent.type = "image/*"
                 activity?.startActivityForResult(photoPickerIntent, PICK_PROFILE_FROM_ALBUM)
@@ -121,11 +130,12 @@ class UserFragment : Fragment() {
 
         //내 구독자 목록 확인
         binding.fragmentUserLinearlayoutMySubscriber.setOnClickListener {
-            
+            startActivity(Intent(binding.root.context,MySubscriberListActivity::class.java))
         }
         //날 구독한 목록확인
         binding.fragmentUserMySubscribe.setOnClickListener {
-            startActivity(Intent(binding.root.context,MySubscriberListActivity::class.java))
+
+            startActivity(Intent(binding.root.context,MySubscribeListActivity::class.java))
         }
 
         
@@ -262,6 +272,7 @@ class UserFragment : Fragment() {
 
                 Log.d("프로필 이미지 url = \n",url.toString())
 
+                imageUrl = url.toString()
 
                 Glide.with(activity!!.applicationContext)
                     .load(url)

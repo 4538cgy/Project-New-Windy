@@ -64,13 +64,10 @@ class DetailViewFragment : Fragment() {
         //전체 게시글 초기화
         getData("sell", page)
         setContentSellRecycler()
+        boardCheck = 1
         page = 1
 
-        /*
-        binding.fragmentDetailRecycler.adapter = ContentNormalRecyclerViewAdapter(binding.root.context,fragmentManager!!)
-        binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(activity)
 
-         */
 
 
         binding.fragmentDetailButttonWrite.setOnClickListener {
@@ -140,8 +137,7 @@ class DetailViewFragment : Fragment() {
 
 
             binding.fragmentDetailRecycler.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                var j =
-                    (binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                var j = (binding.fragmentDetailRecycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
 
                 println("page =" + page.toString() + " boardCheck" + boardCheck.toString())
                 if(!v.canScrollVertically(1)){
@@ -179,9 +175,10 @@ class DetailViewFragment : Fragment() {
     fun pageController(lastPosition: Int, boardType: String) {
 
         counter = 1
-        getData(boardType, page)
-        counter = 1
         page++
+        getData(boardType, page)
+
+
 
         Toast.makeText(binding.root.context, "데이터를 추가로 가져옵니다.", Toast.LENGTH_LONG)
             .show()
@@ -192,13 +189,13 @@ class DetailViewFragment : Fragment() {
     fun getBuyData(page: Int) {
         firestore?.collection("contents")?.document("buy")?.collection("data")?.limit(25)
             ?.orderBy("timeStamp", Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            ?.get()?.addOnSuccessListener { querySnapshot ->
                 buyDataList.clear()
                 buyDataUidList.clear()
 
                 System.out.println("구매하기 데이터 가져오기 성공")
                 if (querySnapshot == null)
-                    return@addSnapshotListener
+                    return@addOnSuccessListener
 
                 for (snapshot in querySnapshot!!.documents) {
 
@@ -211,21 +208,21 @@ class DetailViewFragment : Fragment() {
                     binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                 }
 
-                counter = 0
-            }
 
+            }
+        counter = 0
     }
 
     fun getNormalData(page: Int) {
         firestore?.collection("contents")?.document("normal")?.collection("data")?.limit(25)
             ?.orderBy("timestamp",
                 Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            ?.get()?.addOnSuccessListener { querySnapshot ->
                 normalDataList.clear()
                 normalDataUidList.clear()
 
                 if (querySnapshot == null)
-                    return@addSnapshotListener
+                    return@addOnSuccessListener
 
                 for (snapshot in querySnapshot!!.documents) {
                     var item = snapshot.toObject(ContentNormalDTO::class.java)
@@ -237,38 +234,37 @@ class DetailViewFragment : Fragment() {
                     println("데이터 uid 리스트" + normalDataUidList.toString())
                 }
 
-                counter = 0
+
 
             }
+        counter = 0
     }
 
     fun getSellData(page: Int) {
+
         firestore?.collection("contents")?.document("sell")?.collection("data")?.limit(25)
-            ?.orderBy("timeStamp", Query.Direction.DESCENDING)
-            ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            ?.orderBy("timeStamp",Query.Direction.DESCENDING)?.get()
+            ?.addOnSuccessListener {
                 sellDataList.clear()
                 sellDataUidList.clear()
+                if (it == null) return@addOnSuccessListener
 
-                if (querySnapshot == null)
-                    return@addSnapshotListener
-
-                for (snapshot in querySnapshot!!.documents) {
+                for (snapshot in it.documents)
+                {
                     var item = snapshot.toObject(ContentSellDTO::class.java)
-                    //sell
-                    //거래완료 상품이 아니면 보여줌
-                    if (item?.checkSellComplete == false) {
+
+                    if (item?.checkSellComplete == false){
                         sellDataList.add(item!!)
                         sellDataUidList.add(snapshot.id)
 
-                        lastVisible = sellDataList[sellDataList.size - 1].timeStamp
-
+                        lastVisible = sellDataList[sellDataList.size-1].timeStamp
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                     }
                     println("데이터 uid 리스트" + sellDataUidList.toString())
                 }
-                //setContentSellRecycler()
-                counter = 0
+
             }
+        counter = 0
     }
 
     fun getMemberShipData(page: Int){
@@ -293,11 +289,12 @@ class DetailViewFragment : Fragment() {
 
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
                     }
-                    println("데이터 uid 리스트" + memberShipDataUidList.toString())
+                    //println("데이터 uid 리스트" + memberShipDataUidList.toString())
                 }
                 //setContentSellRecycler()
-                counter = 0
+
             }
+        counter = 0
     }
 
     fun getData(type: String, page: Int) {
@@ -306,14 +303,17 @@ class DetailViewFragment : Fragment() {
             when (type) {
                 //normal
                 "normal" -> {
+                    println("데이터를 추가로 불러옵니다.1")
                     getNormalData(page)
                 }
                 //sell
                 "sell" -> {
+                    println("데이터를 추가로 불러옵니다.2")
                     getSellData(page)
                 }
                 //buy
                 "buy" -> {
+                    println("데이터를 추가로 불러옵니다.3")
                     getBuyData(page)
                 }
                 "membership" -> {
@@ -321,6 +321,7 @@ class DetailViewFragment : Fragment() {
                 }
             }
         } else {
+            println("데이터를 추가로 불러옵니다.2")
             getMoreData(type, page)
         }
     }
@@ -329,14 +330,17 @@ class DetailViewFragment : Fragment() {
 
         when (type) {
             "sell" -> {
+
+                println("마지막 아이템은 ? " + lastVisible)
+
                 firestore?.collection("contents")?.document(type)?.collection("data")
                     ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.startAfter(lastVisible)
-                    ?.limit(25)
-                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    ?.limit(25)?.get()
+                    ?.addOnSuccessListener { querySnapshot ->
 
 
                         if (querySnapshot == null)
-                            return@addSnapshotListener
+                            return@addOnSuccessListener
 
                         for (snapshot in querySnapshot!!.documents) {
                             var item = snapshot.toObject(ContentSellDTO::class.java)
@@ -357,22 +361,23 @@ class DetailViewFragment : Fragment() {
                         println("lastVisible =====" + lastVisible.toString())
                         //setContentSellRecycler()
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
-                        counter = 0
+
 
                         println("판매 게시판 게시글 갯수 " + sellDataList.size.toString() + "판매 게시판 uid 갯수" + sellDataUidList.size.toString())
 
                     }
+                counter = 0
             }
             "buy" -> {
                 firestore?.collection("contents")?.document("buy")?.collection("data")
                     ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.startAfter(lastVisible)
                     ?.limit(25)
-                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    ?.get()?.addOnSuccessListener { querySnapshot ->
 
 
                         System.out.println("구매하기 데이터 가져오기 성공")
                         if (querySnapshot == null)
-                            return@addSnapshotListener
+                            return@addOnSuccessListener
 
                         for (snapshot in querySnapshot!!.documents) {
 
@@ -385,16 +390,17 @@ class DetailViewFragment : Fragment() {
                             binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
 
                         }
-                        counter = 0
+
                     }
+                counter = 0
             }
             "normal" -> {
                 firestore?.collection("contents")?.document("normal")?.collection("data")
                     ?.orderBy("timestamp",
                         Query.Direction.DESCENDING)?.startAfter(lastVisible)?.limit(25)
-                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    ?.get()?.addOnSuccessListener { querySnapshot->
                         if (querySnapshot == null)
-                            return@addSnapshotListener
+                            return@addOnSuccessListener
 
                         for (snapshot in querySnapshot!!.documents) {
                             var item = snapshot.toObject(ContentNormalDTO::class.java)
@@ -405,20 +411,21 @@ class DetailViewFragment : Fragment() {
                             binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
 
                         }
-                        counter = 0
+
                         println("일반 게시판 게시글 갯수 " + normalDataList.size.toString() + "일반 게시판 uid 갯수" + normalDataUidList.size.toString())
                     }
+                counter = 0
             }
 
             "membership" -> {
                 firestore?.collection("contents")?.document(type)?.collection("data")
                     ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.startAfter(lastVisible)
                     ?.limit(25)
-                    ?.addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                    ?.get()?.addOnSuccessListener { querySnapshot ->
 
 
                         if (querySnapshot == null)
-                            return@addSnapshotListener
+                            return@addOnSuccessListener
 
                         for (snapshot in querySnapshot!!.documents) {
                             var item = snapshot.toObject(ContentMemberShipDTO::class.java)
@@ -439,11 +446,12 @@ class DetailViewFragment : Fragment() {
                         println("lastVisible =====" + lastVisible.toString())
                         //setContentSellRecycler()
                         binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
-                        counter = 0
+
 
                         println("판매 게시판 게시글 갯수 " + memberShipDataList.size.toString() + "판매 게시판 uid 갯수" + memberShipDataUidList.size.toString())
 
                     }
+                counter = 0
             }
         }
 

@@ -150,7 +150,11 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
             System.out.println("데이터 전달 성공적으로 완수1666")
 
 
+
+
         if(requestCode == UserFragment.PICK_PROFILE_FROM_ALBUM && resultCode == Activity.RESULT_OK){
+
+
 
             progressDialog = AppCompatDialog(this)
             progressDialog!!.setTitle("프로필 이미지를 저장 중입니다. 잠시만 기다려주세요.")

@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
@@ -77,6 +78,8 @@ class UserFragment : Fragment() {
             .addApi(Auth.GOOGLE_SIGN_IN_API,gso)
             .build()
 
+
+
         //각종 변수 초기화
         uid = arguments?.getString("destinationUid")
         firestore = FirebaseFirestore.getInstance()
@@ -128,14 +131,25 @@ class UserFragment : Fragment() {
         }
 
 
-        //내 구독자 목록 확인
+        //내가 구독한 목록 확인
         binding.fragmentUserLinearlayoutMySubscriber.setOnClickListener {
-            startActivity(Intent(binding.root.context,MySubscriberListActivity::class.java))
+
+                var intent = Intent(binding.root.context,MySubscriberListActivity::class.java)
+                intent.apply{
+                    putExtra("uid",uid)
+                    startActivityForResult(intent,300)
+                }
         }
         //날 구독한 목록확인
         binding.fragmentUserMySubscribe.setOnClickListener {
 
-            startActivity(Intent(binding.root.context,MySubscribeListActivity::class.java))
+                var intent = Intent(binding.root.context,MySubscribeListActivity::class.java)
+                intent.apply{
+                    putExtra("uid",uid)
+                    startActivityForResult(intent,300)
+                }
+
+
         }
 
         
@@ -249,6 +263,18 @@ class UserFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         getProfileImage()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 300 && resultCode == Activity.RESULT_OK){
+            var fragment = UserFragment()
+            var bundle = Bundle()
+            bundle.putString("destinationUid",data?.getStringExtra("uid"))
+            fragment.arguments = bundle
+            //activity?.supportFragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+            fragmentManager?.beginTransaction()?.replace(R.id.main_content,fragment)?.commit()
+        }
     }
 
     fun getProfileImage(){

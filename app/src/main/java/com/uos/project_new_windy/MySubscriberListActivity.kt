@@ -1,9 +1,13 @@
 package com.uos.project_new_windy
 
+import android.app.Activity
+import android.content.Intent
+import android.opengl.Visibility
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -17,6 +21,7 @@ import com.uos.project_new_windy.databinding.ActivityMySubscriberListBinding
 import com.uos.project_new_windy.databinding.ItemSubscribeListBinding
 import com.uos.project_new_windy.model.FollowDTO
 import com.uos.project_new_windy.model.chatmodel.UserModel
+import com.uos.project_new_windy.navigationlobby.UserFragment
 
 class MySubscriberListActivity : AppCompatActivity() {
     
@@ -32,7 +37,7 @@ class MySubscriberListActivity : AppCompatActivity() {
 
 
 
-        db.collection("userInfo").document("userData").collection(auth.currentUser!!.uid).document("follow")
+        db.collection("userInfo").document("userData").collection(intent.getStringExtra("uid")).document("follow")
             .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
                 if (documentSnapshot != null){
                     if (documentSnapshot.exists()){
@@ -102,7 +107,21 @@ class MySubscriberListActivity : AppCompatActivity() {
                 }
             }
 
+            holder.binding.itemSubscribeListButtonUnfollow.visibility = View.GONE
+
             holder.binding.itemSubscribeListTextviewTitle.text = userDataList[position].userName
+
+            //아이템 클릭시
+            holder.itemView.setOnClickListener {
+                println("으애애애애앵")
+                var intent = Intent()
+                intent.apply {
+                    putExtra("uid" , userDataList[position].uid)
+                }
+
+                setResult(Activity.RESULT_OK,intent)
+                finish()
+            }
 
         }
 

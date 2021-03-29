@@ -19,14 +19,8 @@ import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.FragmentDetailBinding
-import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
-import com.uos.project_new_windy.model.contentdto.ContentMemberShipDTO
-import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
-import com.uos.project_new_windy.model.contentdto.ContentSellDTO
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentBuyRecyclerViewAdapter
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentMemberShipRecyclerViewAdapter
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentNormalRecyclerViewAdapter
-import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.ContentSellRecyclerViewAdapter
+import com.uos.project_new_windy.model.contentdto.*
+import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter.*
 
 class DetailViewFragment : Fragment() {
 
@@ -44,7 +38,8 @@ class DetailViewFragment : Fragment() {
     var buyDataUidList: ArrayList<String> = arrayListOf()
     var memberShipDataList : ArrayList<ContentMemberShipDTO> = arrayListOf()
     var memberShipDataUidList : ArrayList<String> = arrayListOf()
-
+    var shopDataList : ArrayList<ContentShopDTO> = arrayListOf()
+    var shopDataUidList : ArrayList<String> = arrayListOf()
     lateinit var binding: FragmentDetailBinding
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -133,6 +128,16 @@ class DetailViewFragment : Fragment() {
             setContentMemberShipRecycler()
 
         }
+
+        binding.fragmentDetailTextviewShop.setOnClickListener {
+            //쇼핑 게시판 출력
+            buttonBackgroundChanger(5)
+            boardCheck = 4
+            page = 1
+            getData("shop",page)
+            setContentShopRecycler()
+        }
+
         if (counter == 0) {
 
 
@@ -159,6 +164,10 @@ class DetailViewFragment : Fragment() {
                         //제휴
                         3 -> {
                             pageController(j,"membership")
+                        }
+                        //쇼핑
+                        4 -> {
+                            pageController(j,"shop")
                         }
                     }
                 }
@@ -267,6 +276,33 @@ class DetailViewFragment : Fragment() {
         counter = 0
     }
 
+    fun getShopData(page: Int) {
+
+        firestore?.collection("contents")?.document("shop")?.collection("data")?.limit(25)
+            ?.orderBy("timeStamp",Query.Direction.DESCENDING)?.get()
+            ?.addOnSuccessListener {
+                shopDataList.clear()
+                shopDataUidList.clear()
+                if (it == null) return@addOnSuccessListener
+
+                for (snapshot in it.documents)
+                {
+                    var item = snapshot.toObject(ContentShopDTO::class.java)
+
+                    if (item?.checkSellComplete == false){
+                        shopDataList.add(item!!)
+                        shopDataUidList.add(snapshot.id)
+
+                        lastVisible = shopDataList[shopDataList.size-1].timeStamp
+                        binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
+                    }
+                    println("데이터 uid 리스트" + shopDataUidList.toString())
+                }
+
+            }
+        counter = 0
+    }
+
     fun getMemberShipData(page: Int){
         firestore?.collection("contents")?.document("membership")?.collection("data")?.limit(25)
             ?.orderBy("timeStamp", Query.Direction.DESCENDING)
@@ -316,6 +352,10 @@ class DetailViewFragment : Fragment() {
                     println("데이터를 추가로 불러옵니다.3")
                     getBuyData(page)
                 }
+                //shop
+                "shop" ->{
+                    getShopData(page)
+                }
                 "membership" -> {
                     getMemberShipData(page)
                 }
@@ -364,6 +404,45 @@ class DetailViewFragment : Fragment() {
 
 
                         println("판매 게시판 게시글 갯수 " + sellDataList.size.toString() + "판매 게시판 uid 갯수" + sellDataUidList.size.toString())
+
+                    }
+                counter = 0
+            }
+            "shop" -> {
+
+                println("마지막 아이템은 ? " + lastVisible)
+
+                firestore?.collection("contents")?.document(type)?.collection("data")
+                    ?.orderBy("timeStamp", Query.Direction.DESCENDING)?.startAfter(lastVisible)
+                    ?.limit(25)?.get()
+                    ?.addOnSuccessListener { querySnapshot ->
+
+
+                        if (querySnapshot == null)
+                            return@addOnSuccessListener
+
+                        for (snapshot in querySnapshot!!.documents) {
+                            var item = snapshot.toObject(ContentShopDTO::class.java)
+
+                            //거래완료 상품이 아니면 보여줌
+                            if (item?.checkSellComplete == false) {
+                                shopDataList.add(item!!)
+
+                                shopDataUidList.add(snapshot.id)
+
+
+                                println("snapshotidddddddddddddddd" + snapshot.id)
+                            }
+                        }
+
+                        //lastVisible = querySnapshot.documents[querySnapshot.size()-1].id
+                        lastVisible = shopDataList[shopDataList.size - 1].timeStamp
+                        println("lastVisible =====" + lastVisible.toString())
+                        //setContentSellRecycler()
+                        binding.fragmentDetailRecycler.adapter?.notifyDataSetChanged()
+
+
+
 
                     }
                 counter = 0
@@ -465,11 +544,13 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.WHITE)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
             }
             2 -> {
                 //buy
@@ -477,11 +558,13 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_black)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.WHITE)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
 
             }
             3 -> {
@@ -490,11 +573,13 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_black)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.WHITE)
                 binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
             }
 
             4 -> {
@@ -503,11 +588,28 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
                 binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
                 binding.fragmentDetailTextviewMembership.setTextColor(Color.WHITE)
+                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
+            }
+
+            5->{
+                //shop
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_black)
+
+                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
+                binding.fragmentDetailTextviewShop.setTextColor(Color.WHITE)
             }
         }
     }
@@ -532,6 +634,17 @@ class DetailViewFragment : Fragment() {
 
         binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
         binding.fragmentDetailRecycler.adapter = contentMemberShipViewRecyclerViewAdapter
+    }
+
+    private fun setContentShopRecycler(){
+        val contentShopViewRecyclerViewAdapter = ContentShopRecyclerViewAdapter(binding.root.context,
+        fragmentManager!!,
+        page,
+        shopDataList,
+        shopDataUidList)
+
+        binding.fragmentDetailRecycler.layoutManager = LinearLayoutManager(binding.root.context)
+        binding.fragmentDetailRecycler.adapter = contentShopViewRecyclerViewAdapter
     }
 
     private fun setContentSellRecycler() {

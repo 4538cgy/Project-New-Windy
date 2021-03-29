@@ -13,10 +13,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.BottomSheetSelectCategoryBinding
-import com.uos.project_new_windy.navigationlobby.AddBuyContentActivity
-import com.uos.project_new_windy.navigationlobby.AddContentActivity
-import com.uos.project_new_windy.navigationlobby.AddMemberShipContentActivity
-import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
+import com.uos.project_new_windy.navigationlobby.*
 import java.lang.ClassCastException
 
 class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
@@ -44,10 +41,12 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
         {
             println("삭제버튼이 보입니다.")
             binding.bottomSheetSelectCategoryViewgroupMembership.visibility = View.GONE
+            binding.bottomSheetSelectCategoryViewgroupShop.visibility = View.VISIBLE
         }else {
                 // 삭제 버튼 안보이게
                 println("삭제버튼이 안보입니다.")
                 binding.bottomSheetSelectCategoryViewgroupMembership.visibility = View.GONE
+                binding.bottomSheetSelectCategoryViewgroupShop.visibility = View.GONE
 
         }
 
@@ -84,19 +83,20 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
         when(view.id){
             binding.bottomSheetSelectCategoryViewgroupNormal.id -> {
                 startActivity(Intent(binding.bottomsheet?.context, AddContentActivity::class.java))
-                System.out.println("클릭되어씀3")
             }
             binding.bottomSheetSelectCategoryViewgroupSell.id -> {
                 startActivity(Intent(binding.bottomsheet?.context,AddSellContentActivity::class.java))
-                System.out.println("클릭되어씀1")
             }
             binding.bottomSheetSelectCategoryViewgroupBuy.id -> {
                 startActivity(Intent(binding.bottomsheet?.context,AddBuyContentActivity::class.java))
-                System.out.println("클릭되어씀2")
             }
             binding.bottomSheetSelectCategoryViewgroupMembership.id -> {
                 startActivity(Intent(binding.bottomsheet?.context,AddMemberShipContentActivity::class.java))
             }
+            binding.bottomSheetSelectCategoryViewgroupShop.id -> {
+                startActivity(Intent(binding.bottomsheet?.context,AddShopContentActivity::class.java))
+            }
+
 
 
 

@@ -8,9 +8,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
+import com.uos.project_new_windy.navigationlobby.AddShopContentActivity
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
-class AddShopContentActivityRecyclerViewAdapter (var activity: AddSellContentActivity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AddShopContentActivityRecyclerViewAdapter (var activity: AddShopContentActivity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 

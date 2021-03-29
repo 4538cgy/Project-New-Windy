@@ -102,16 +102,16 @@ class SignUpOnlyPhone : AppCompatActivity() {
             if (binding.activitySignUpOnlyPhoneEdittextPhonenumber.text.contains("-"))
             {
                 Toast.makeText(binding.root.context, "핸드폰 번호는 숫자만 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if(binding.activitySignUpOnlyPhoneEdittextNickname.text.length < 2){
+            }else if(binding.activitySignUpOnlyPhoneEdittextNickname.text.isEmpty()){
                 Toast.makeText(binding.root.context, "별명은 두글자 이상으로 입력해주세요." ,Toast.LENGTH_LONG).show()
             }else if(imageUri == null) {
                 Toast.makeText(binding.root.context, "프로필 이미지를 넣어주세요.", Toast.LENGTH_LONG).show()
 
-            }else if(binding.activitySignUpOnlyPhoneEdittextAddress.text.length < 2){
+            }else if(binding.activitySignUpOnlyPhoneEdittextAddress.text.isEmpty()){
                 Toast.makeText(binding.root.context, "주소 검색 버튼을 눌러 주소를 입력해주세요." ,Toast.LENGTH_LONG).show()
 
-            }else if (binding.activitySignUpOnlyPhoneEdittextDetailAddress.text.length < 2){
-                Toast.makeText(binding.root.context, "상세주소를 5글자 이상 입력해주세요." ,Toast.LENGTH_LONG).show()
+            }else if (binding.activitySignUpOnlyPhoneEdittextDetailAddress.text.isEmpty()){
+                Toast.makeText(binding.root.context, "상세주소를 2글자 이상 입력해주세요." ,Toast.LENGTH_LONG).show()
             }
 
             else {

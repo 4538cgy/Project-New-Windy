@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
@@ -65,6 +66,15 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
     ) {
         holder.onBind(contentShopDTO[position])
 
+
+        holder.binding.itemRecyclerShopAdview.loadAd(AdRequest.Builder().build())
+
+        if(position%7 == 0){
+            holder.binding.itemRecyclerShopAdview.visibility =View.VISIBLE
+        }else
+        {
+            holder.binding.itemRecyclerShopAdview.visibility = View.GONE
+        }
         //조회수 증가
         viewCountIncrease(position)
         //댓글 버튼 클릭

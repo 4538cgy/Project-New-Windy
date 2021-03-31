@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.Auth
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.GoogleApiClient
@@ -45,6 +46,7 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
         binding = DataBindingUtil.setContentView(this,R.layout.activity_lobby)
         binding.lobbyactivity = this@LobbyActivity
 
+        MobileAds.initialize(this, "ca-app-pub-4748606502895716~1479121487");
 
 
         bottom_navigtaion.setOnNavigationItemSelectedListener(this)

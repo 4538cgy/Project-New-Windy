@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -62,7 +64,14 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     override fun onBindViewHolder(holder: ContentBuyRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentBuyDTO[position])
 
+        holder.binding.itemRecyclerBuyAdview.loadAd(AdRequest.Builder().build())
 
+        if(position%7 == 0){
+            holder.binding.itemRecyclerBuyAdview.visibility = View.VISIBLE
+        } else
+        {
+            holder.binding.itemRecyclerBuyAdview.visibility = View.GONE
+        }
 
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonLike.setOnClickListener {

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -77,6 +78,15 @@ class ContentNormalRecyclerViewAdapter(
         position: Int,
     ) {
         holder.onBind(contentNormalDTO[position])
+
+        holder.binding.itemRecyclerNormalAdview.loadAd(AdRequest.Builder().build())
+
+        if(position%7 == 0){
+            holder.binding.itemRecyclerNormalAdview.visibility =View.VISIBLE
+        }else
+        {
+            holder.binding.itemRecyclerNormalAdview.visibility = View.GONE
+        }
 
 
         //뷰페이저 초기화

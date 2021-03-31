@@ -22,6 +22,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.github.chrisbanes.photoview.PhotoView
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -75,6 +77,17 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     override fun onBindViewHolder(holder: ContentSellRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentSellDTO[position])
+
+        holder.binding.itemRecyclerSellAdview.loadAd(AdRequest.Builder().build())
+
+
+
+        if (position % 7 == 0) {
+            holder.binding.itemRecyclerSellAdview.visibility = View.VISIBLE
+        } else
+        {
+            holder.binding.itemRecyclerSellAdview.visibility = View.GONE
+        }
 
         //조회수 증가
         viewCountIncrease(position)

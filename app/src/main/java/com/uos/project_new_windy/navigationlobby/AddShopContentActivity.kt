@@ -436,7 +436,7 @@ class AddShopContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         pickCategoryData = binding.activityAddShopContentSpinnerCategory.selectedItem.toString()
-        System.out.println("으아아아" + pickCategoryData)
+
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {

@@ -22,9 +22,11 @@ import com.uos.project_new_windy.databinding.BottomSheetSelectContentOptionBindi
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
+import com.uos.project_new_windy.model.contentdto.ContentShopDTO
 import com.uos.project_new_windy.navigationlobby.AddBuyContentActivity
 import com.uos.project_new_windy.navigationlobby.AddContentActivity
 import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
+import com.uos.project_new_windy.navigationlobby.AddShopContentActivity
 import com.uos.project_new_windy.util.TimeUtil
 import java.lang.ClassCastException
 
@@ -190,6 +192,16 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment() {
                             putExtra("updateCheck", true)
                         }
                     }
+                    "shop" -> {
+                        intent = Intent(binding.bottomsheetcontentoption?.context,
+                            AddShopContentActivity::class.java)
+                        intent.apply {
+                            putExtra("postUid", postUid)
+                            putExtra("postType", postType)
+                            putExtra("viewType", viewType)
+                            putExtra("updateCheck", true)
+                        }
+                    }
 
                 }
 
@@ -241,6 +253,14 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment() {
                         "buy" -> {
                             var contentDTO = transaction.get(tsDoc!!)
                                 .toObject(ContentBuyDTO::class.java)
+
+                            contentDTO?.timeStamp = System.currentTimeMillis()
+                            contentDTO?.uploadTimeStamp = contentUploadTime
+                            transaction.set(tsDoc, contentDTO!!)
+                        }
+                        "shop" ->{
+                            var contentDTO = transaction.get(tsDoc!!)
+                                .toObject(ContentShopDTO::class.java)
 
                             contentDTO?.timeStamp = System.currentTimeMillis()
                             contentDTO?.uploadTimeStamp = contentUploadTime

@@ -67,6 +67,9 @@ class SignUpActivityEmail : AppCompatActivity() {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)
         }
 
+        //상세주소 없음으로 default
+        binding.activitySignUpEmailEdittextDetailAddress.setText("없음")
+
         binding.activitySignUpEmailEdittextAddress.isEnabled = false
 
 
@@ -122,9 +125,9 @@ class SignUpActivityEmail : AppCompatActivity() {
             }else if (binding.activitySignUpEmailEdittextPhonenumber.text.contains("-"))
             {
                 Toast.makeText(binding.root.context, "핸드폰 번호는 숫자만 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if (binding.activitySignUpEmailEdittextDetailAddress.text.length < 2){
-                Toast.makeText(binding.root.context, "상세주소를 정확히 입력해주세요." ,Toast.LENGTH_LONG).show()
-            }else if(binding.activitySignUpEmailEdittextNickname.text.length < 2){
+            }else if (binding.activitySignUpEmailEdittextDetailAddress.text.isEmpty()){
+                Toast.makeText(binding.root.context, "상세주소를 두글자 이상 적어주세요." ,Toast.LENGTH_LONG).show()
+            }else if(binding.activitySignUpEmailEdittextNickname.text.isEmpty()){
                 Toast.makeText(binding.root.context, "별명은 두글자 이상으로 입력해주세요." ,Toast.LENGTH_LONG).show()
             }else if(phoneVerify == false) {
                 Toast.makeText(binding.root.context, "핸드폰 인증을 진행해주세요." ,Toast.LENGTH_LONG).show()

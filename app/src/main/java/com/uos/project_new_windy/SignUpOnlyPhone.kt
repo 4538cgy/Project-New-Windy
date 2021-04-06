@@ -71,6 +71,10 @@ class SignUpOnlyPhone : AppCompatActivity() {
         binding.activitySignUpOnlyPhoneEdittextAddress.setOnClickListener {
             Toast.makeText(binding.root.context,"주소 검색 버튼을 눌러주세요.",Toast.LENGTH_SHORT).show()
         }
+
+        //상세주소 기본값을 없음으로 변경
+        binding.activitySignUpOnlyPhoneEdittextDetailAddress.setText("없음")
+
         //주소 검색
         binding.activitySignUpOnlyPhoneButtonSearchAddress.setOnClickListener {
             startActivityForResult(Intent(this, SearchAddressActivity::class.java), 100)

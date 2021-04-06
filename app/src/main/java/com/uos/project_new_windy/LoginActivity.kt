@@ -42,7 +42,7 @@ class LoginActivity : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
 
-          //로딩 초기화
+        //로딩 초기화
         progressDialog = ProgressDialogLoadingVerifyPhone(binding.root.context)
 
         //프로그레스 투명하게

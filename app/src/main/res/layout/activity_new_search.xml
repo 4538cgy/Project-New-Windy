@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".navigationlobby.newsearch.NewSearchActivity">
+
+    <data>
+        <variable
+            name="activitynewsearch"
+            type="com.uos.project_new_windy.navigationlobby.newsearch.NewSearchActivity" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_new_search_const_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+            <ImageButton
+                android:id="@+id/activity_new_search_imagebutton_close"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_baseline_close_24"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:background="@android:color/transparent"
+                />
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/activity_new_search_searchview"
+                app:layout_constraintLeft_toRightOf="@+id/activity_new_search_imagebutton_close"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_new_search_const_option_bar"
+            app:layout_constraintTop_toBottomOf="@+id/activity_new_search_const_topbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                >
+                <TextView
+                    android:id="@+id/activity_new_search_textview_category"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="카테고리 설정"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:background="@drawable/background_round_gray"
+                    android:paddingVertical="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_new_search_textview_address"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="지역 설정"
+                    android:background="@drawable/background_round_black"
+                    android:layout_marginHorizontal="4dp"
+                    android:paddingVertical="4dp"
+                    android:textColor="@color/colorWhite"
+                    android:textStyle="bold"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_new_search_textview_cost"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:text="가격대 설정"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold"
+                    android:background="@drawable/background_round_gray"
+                    android:paddingVertical="4dp"
+                    android:layout_marginHorizontal="4dp"
+                    />
+
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/activity_new_search_const_bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/activity_new_search_const_option_bar"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            >
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_new_search_const_recycler_bar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                >
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_new_saerch_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_new_search_const_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                >
+
+                <LinearLayout
+                    android:id="@+id/activity_new_search_linear_option"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_sell"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="판매"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorWhite"
+                        android:background="@drawable/background_round_black"
+                        android:layout_marginHorizontal="4dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_buy"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="구매"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:layout_marginHorizontal="4dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_normal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="자유홍보"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:layout_marginHorizontal="4dp"
+                        />
+
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_shop"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="쇼핑"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:layout_marginHorizontal="4dp"
+                        />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_new_search_recycler_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_new_search_linear_option"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_new_search_const_address"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                >
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/activity_new_search_const_cost"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                >
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/activity_new_search_const_cost_bar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    >
+
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_cost_title"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="가격"
+                        android:layout_margin="8dp"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="18dp"
+                        />
+
+                    <EditText
+                        android:id="@+id/activity_new_search_edittext_min_cost"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/activity_new_search_textview_cost_title"
+                        android:layout_width="170dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/background_round_white_stroke_black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:hint="최소 금액"
+                        android:paddingLeft="8dp"
+                        android:maxLength="14"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="원~ "
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/activity_new_search_edittext_min_cost"
+                        app:layout_constraintTop_toTopOf="@+id/activity_new_search_edittext_min_cost"
+                        app:layout_constraintLeft_toRightOf="@+id/activity_new_search_edittext_min_cost"
+                        android:layout_margin="6dp"
+                        android:textSize="18dp"
+                        />
+                    <EditText
+                        android:id="@+id/activity_new_search_edittext_max_cost"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/activity_new_search_textview_cost_title"
+                        android:layout_width="170dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/background_round_white_stroke_black"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginRight="28dp"
+                        android:hint="최대 금액"
+                        android:paddingLeft="8dp"
+                        android:maxLength="14"
+                        android:maxLines="1"
+                        android:inputType="number"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="원"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toBottomOf="@+id/activity_new_search_edittext_max_cost"
+                        app:layout_constraintTop_toTopOf="@+id/activity_new_search_edittext_max_cost"
+                        app:layout_constraintLeft_toRightOf="@+id/activity_new_search_edittext_max_cost"
+                        android:layout_margin="6dp"
+                        android:textSize="18dp"
+                        />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

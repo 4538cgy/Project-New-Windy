@@ -14,13 +14,13 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".navigationlobby.newsearch.NewSearchActivity"></activity>
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-4748606502895716~1479121487"
-            />
+            android:value="ca-app-pub-4748606502895716~1479121487" />
 
-        <activity android:name=".navigationlobby.AddShopContentActivity"></activity>
+        <activity android:name=".navigationlobby.AddShopContentActivity" />
         <activity android:name=".MySubscribeListActivity" />
         <activity android:name=".MySubscriberListActivity" />
         <activity android:name=".DeleteUserDataActivity" />

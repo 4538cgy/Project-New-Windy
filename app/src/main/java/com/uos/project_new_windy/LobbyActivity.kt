@@ -28,6 +28,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.chat.ChatRoomList
 import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
+import com.uos.project_new_windy.navigationlobby.newsearch.NewSearchActivity
 import com.uos.project_new_windy.navigationlobby.newsearch.SearchActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
@@ -103,7 +104,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
             R.id.action_search -> {
 
 
-                startActivity(Intent(binding.root.context,SearchActivity::class.java))
+                //startActivity(Intent(binding.root.context,SearchActivity::class.java))
+                startActivity(Intent(binding.root.context,NewSearchActivity::class.java))
 
             }
             R.id.action_photo -> {

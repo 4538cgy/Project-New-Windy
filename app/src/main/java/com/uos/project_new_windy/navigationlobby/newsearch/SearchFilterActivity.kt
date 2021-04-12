@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivitySearchFilterBinding
 import com.uos.project_new_windy.databinding.ItemSellSearchCategoryBinding
+import com.uos.project_new_windy.model.AddressModel
 import com.uos.project_new_windy.model.CategorySellPostDTO
 
 class SearchFilterActivity : AppCompatActivity() {
@@ -19,6 +20,7 @@ class SearchFilterActivity : AppCompatActivity() {
     lateinit var binding : ActivitySearchFilterBinding
     var categoryList: ArrayList<String> = arrayListOf()
     var categorySellPostDTO: ArrayList<CategorySellPostDTO> = arrayListOf()
+
     var dataType = "sell"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -112,35 +114,10 @@ class SearchFilterActivity : AppCompatActivity() {
         categoryList.add("산업기계")
     }
 
+
     inner class PostSellSearchCategoryRecyclerViewAdapter(private val data : ArrayList<CategorySellPostDTO>) :
         RecyclerView.Adapter<PostSellSearchCategoryRecyclerViewAdapter.PostSellSearchCategoryRecyclerViewAdapterViewHolder>() {
 
-        //var categorySellPostDTO: ArrayList<CategorySellPostDTO> = arrayListOf()
-
-        //var data = listOf<CategorySellPostDTO>()
-
-        init {
-
-
-
-
-
-            //data = categorySellPostDTO
-            /*
-            categoryList.add("농기계")
-            categoryList.add("농산물")
-            categoryList.add("축산물")
-            categoryList.add("소모품")
-            categoryList.add("농지")
-            categoryList.add("가구")
-            categoryList.add("기타")
-            categoryList.add("축산자재")
-            categoryList.add("농자재")
-            categoryList.add("화물트럭")
-            categoryList.add("산업기계")
-
-             */
-        }
 
         override fun onCreateViewHolder(
             parent: ViewGroup,

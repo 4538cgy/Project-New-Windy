@@ -2,11 +2,13 @@ package com.uos.project_new_windy.navigationlobby.newsearch
 
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -33,11 +35,19 @@ class NewSearchActivity : AppCompatActivity() {
     var categoryList: ArrayList<String> = arrayListOf()
     var categoryDTO: ArrayList<CategoryDTO> = arrayListOf()
 
+    var lastVisible: Long? = null
     var addressList : ArrayList<String> = arrayListOf()
     var addressDTO: ArrayList<AddressModel> = arrayListOf()
 
     var minCost : Long = 0
     var maxCost : Long = 10000000
+
+    var counter = 0
+
+    var adapterShopInitChecker = false
+    var adapterSellInitChecker = false
+    var adapterNormalInitChecker = false
+    var adapterBuyInitChecker = false
 
     var contentSellDataList : ArrayList<ContentSellDTO> = arrayListOf()
     var contentSellDataUidList : ArrayList<String> = arrayListOf()
@@ -73,6 +83,7 @@ class NewSearchActivity : AppCompatActivity() {
     var searchText : String ? = null
 
     var dataType : String ? = null
+    var dataTypePath : String ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -167,6 +178,47 @@ class NewSearchActivity : AppCompatActivity() {
         binding.activityNewSearchTextviewNormal.setOnClickListener { categoryViewButtonChanger("normal") }
         binding.activityNewSearchTextviewShop.setOnClickListener { categoryViewButtonChanger("shop") }
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            binding.activityNewSaerchRecyclerSearch.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                if (!v.canScrollVertically(1))
+                {
+                    counter = 1
+                    Toast.makeText(binding.root.context, "데이터를 추가로 가져옵니다.", Toast.LENGTH_LONG)
+                        .show()
+                    getMoreData()
+                }
+            }
+        }
+    }
+
+    fun initChecking(dataType2 : String){
+        when(dataType2) {
+            "sell"->{
+                adapterShopInitChecker = false
+                adapterSellInitChecker = true
+                adapterNormalInitChecker = false
+                adapterBuyInitChecker = false
+            }
+            "shop" ->{
+                adapterShopInitChecker = true
+                adapterSellInitChecker = false
+                adapterNormalInitChecker = false
+                adapterBuyInitChecker = false
+            }
+            "buy" ->{
+                adapterShopInitChecker = false
+                adapterSellInitChecker = false
+                adapterNormalInitChecker = false
+                adapterBuyInitChecker = true
+            }
+            "normal"->{
+                adapterShopInitChecker = false
+                adapterSellInitChecker = false
+                adapterNormalInitChecker = true
+                adapterBuyInitChecker = false
+            }
+
+        }
     }
 
     fun initRecyclerViewAdapter(
@@ -174,12 +226,16 @@ class NewSearchActivity : AppCompatActivity() {
         list: ArrayList<Any>,
         uidList: ArrayList<String>
     ) {
-        binding.activityNewSaerchRecyclerSearch.adapter =
-            SearchRecyclerAdapter(binding.root.context, dataType, list, uidList)
-        binding.activityNewSaerchRecyclerSearch.layoutManager =
-            LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
-        (binding.activityNewSaerchRecyclerSearch.adapter as SearchRecyclerAdapter).notifyDataSetChanged()
-        println("어댑터 초기화 완료")
+
+                initChecking(dataType)
+                binding.activityNewSaerchRecyclerSearch.adapter =
+                    SearchRecyclerAdapter(binding.root.context, dataType, list, uidList)
+                binding.activityNewSaerchRecyclerSearch.layoutManager =
+                    LinearLayoutManager(binding.root.context, LinearLayoutManager.VERTICAL, false)
+                (binding.activityNewSaerchRecyclerSearch.adapter as SearchRecyclerAdapter).notifyDataSetChanged()
+
+                println("어댑터 초기화 완료")
+
     }
 
 
@@ -291,6 +347,83 @@ class NewSearchActivity : AppCompatActivity() {
         }
     }
 
+    fun getMoreData(){
+        when(dataType) {
+            "sell" ->{
+                db.collection("contents")?.document(dataType!!).collection("data")
+                    ?.orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                    .addOnSuccessListener {
+                        querySnapshot ->
+                        if (querySnapshot == null)return@addOnSuccessListener
+
+                        for (snapshot in querySnapshot.documents){
+                            var item = snapshot.toObject(ContentSellDTO::class.java)
+
+                            contentSellDataList.add(item!!)
+                            contentSellDataUidList.add(snapshot.id)
+
+                            lastVisible = contentSellDataList[contentSellDataList.size - 1].timeStamp
+                        }
+                        sellDataFiltering(contentSellDataList, contentSellDataUidList)
+
+
+                    }
+                counter = 0
+            }
+            "buy" ->{
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                    .addOnSuccessListener {
+                        querySnapshot ->
+                        if(querySnapshot == null) return@addOnSuccessListener
+
+                        for(snapshot in querySnapshot.documents){
+                            var item = snapshot.toObject(ContentBuyDTO::class.java)
+
+                            contentBuyDataList.add(item!!)
+                            contentBuyDataUidList.add(snapshot.id)
+
+                            lastVisible = contentBuyDataList[contentBuyDataList.size - 1].timeStamp as Long?
+                        }
+                        buyDataFiltering(contentBuyDataList, contentBuyDataUidList)
+                    }
+            }
+            "normal" ->{
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timestamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                    .addOnSuccessListener {
+                            querySnapshot ->
+                        if(querySnapshot == null) return@addOnSuccessListener
+
+                        for(snapshot in querySnapshot.documents){
+                            var item = snapshot.toObject(ContentNormalDTO::class.java)
+
+                            contentNormalDataList.add(item!!)
+                            contentNormalDataUidList.add(snapshot.id)
+
+                            lastVisible = contentNormalDataList[contentNormalDataList.size - 1].timestamp as Long?
+                        }
+                        normalDataFiltering(contentNormalDataList, contentNormalDataUidList)
+                    }
+            }
+            "shop" ->{
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                    .addOnSuccessListener {
+                            querySnapshot ->
+                        if(querySnapshot == null) return@addOnSuccessListener
+
+                        for(snapshot in querySnapshot.documents){
+                            var item = snapshot.toObject(ContentShopDTO::class.java)
+
+                            contentShopDataList.add(item!!)
+                            contentShopDataUidList.add(snapshot.id)
+
+                            lastVisible = contentShopDataList[contentShopDataList.size - 1].timeStamp as Long?
+                        }
+                        shopDataFiltering(contentShopDataList, contentShopDataUidList)
+                    }
+            }
+        }
+    }
+
 
 
     fun getData(dataType: String) {
@@ -298,7 +431,7 @@ class NewSearchActivity : AppCompatActivity() {
 
         when (dataType) {
             "sell" -> {
-                db.collection("contents").document(dataType).collection("data")
+                db.collection("contents").document(dataType).collection("data").limit(5)
                     .orderBy("timeStamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentSellDataList.clear()
@@ -312,16 +445,18 @@ class NewSearchActivity : AppCompatActivity() {
                                 contentSellDataList.add(item!!)
                                 //System.out.println("데이터들2" + contentSellDataList.toString())
                                 contentSellDataUidList.add(snapshot.id)
+                                lastVisible = contentSellDataList[contentSellDataList.size - 1].timeStamp
+
                             }
 
                         }
 
 
-                        sellDataFiltering(contentSellDataList, contentSellDataUidList)
+//                        sellDataFiltering(contentSellDataList, contentSellDataUidList)
                     }
             }
             "buy" -> {
-                db.collection("contents").document(dataType).collection("data")
+                db.collection("contents").document(dataType).collection("data").limit(5)
                     .orderBy("timeStamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentBuyDataList.clear()
@@ -340,7 +475,7 @@ class NewSearchActivity : AppCompatActivity() {
                     }
             }
             "normal" -> {
-                db.collection("contents").document(dataType).collection("data")
+                db.collection("contents").document(dataType).collection("data").limit(5)
                     .orderBy("timestamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentNormalDataList.clear()
@@ -360,17 +495,15 @@ class NewSearchActivity : AppCompatActivity() {
             }
             "shop" -> {
                 db.collection("contents").document(dataType).collection("data")
-                    .orderBy("timeStamp", Query.Direction.DESCENDING)
+                    .orderBy("timeStamp", Query.Direction.DESCENDING).limit(5)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentShopDataList.clear()
                         contentShopDataUidList.clear()
 
                         for (snapshot in querySnapshot!!.documents) {
                             var item = snapshot.toObject(ContentShopDTO::class.java)
-                            System.out.println("데이터들 " + item.toString())
                             //거래완료 상품이 아니면 보여줌
                             contentShopDataList.add(item!!)
-                            System.out.println("데이터들2" + contentShopDataList.toString())
                             contentShopDataUidList.add(snapshot.id)
 
                             //shopDataFiltering(contentShopDataList, contentShopDataUidList)
@@ -412,13 +545,35 @@ class NewSearchActivity : AppCompatActivity() {
         addressDTO.add(AddressModel("대구", true))
         addressDTO.add(AddressModel("부산", true))
         addressDTO.add(AddressModel("광주", true))
-
+        addressDTO.add(AddressModel("제주", true))
+        addressDTO.add(AddressModel("세종", true))
+        addressDTO.add(AddressModel("인천", true))
+        addressDTO.add(AddressModel("경기", true))
+        addressDTO.add(AddressModel("전남", true))
+        addressDTO.add(AddressModel("전북", true))
+        addressDTO.add(AddressModel("충북", true))
+        addressDTO.add(AddressModel("충남", true))
+        addressDTO.add(AddressModel("경북", true))
+        addressDTO.add(AddressModel("경남", true))
+        addressDTO.add(AddressModel("강원", true))
 
         addressList.add("서울")
         addressList.add("대전")
         addressList.add("대구")
         addressList.add("부산")
         addressList.add("광주")
+        addressList.add("제주")
+        addressList.add("세종")
+        addressList.add("인천")
+        addressList.add("경기")
+        addressList.add("전남")
+        addressList.add("전북")
+        addressList.add("충북")
+        addressList.add("충남")
+        addressList.add("경북")
+        addressList.add("경남")
+        addressList.add("강원")
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -432,7 +587,7 @@ class NewSearchActivity : AppCompatActivity() {
     }
 
     fun sellDataFiltering(datalist: ArrayList<ContentSellDTO>, dataUidList: ArrayList<String>) {
-
+        var path = contentSellData.size
         contentSellResultList.clear()
         contentSellResultUidList.clear()
         contentSellData.clear()
@@ -452,7 +607,8 @@ class NewSearchActivity : AppCompatActivity() {
          */
         for(c in  datalist.indices){
             for(d in categoryList.indices){
-                if (datalist[c].category.equals(categoryList[d].toString())){
+                if (datalist[c].category.equals(categoryList[d].toString()) ){
+
                     contentSellResultList.add(datalist[c])
                     contentSellResultUidList.add(dataUidList[c])
                 }
@@ -476,13 +632,26 @@ class NewSearchActivity : AppCompatActivity() {
             }
         }
         println("어댑터 부착완료")
+                initRecyclerViewAdapter(
+                    "sell",
+                    contentSellData as ArrayList<Any>,
+                    contentSellUidData
+                )
 
-       initRecyclerViewAdapter("sell", contentSellData as ArrayList<Any>, contentSellUidData)
+
+
+
+        binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
+
+        contentSellUidData.forEach {
+            println(it.toString() + " 으아아아아")
+        }
+
 
     }
 
     fun buyDataFiltering(datalist: ArrayList<ContentBuyDTO>, dataUidList: ArrayList<String>) {
-
+        var path = contentBuyData.size
         contentBuyResultList.clear()
         contentBuyResultUidList.clear()
         contentBuyData.clear()
@@ -506,10 +675,11 @@ class NewSearchActivity : AppCompatActivity() {
         }
         println("어댑터 부착완료")
        initRecyclerViewAdapter("buy", contentBuyData as ArrayList<Any>, contentBuyUidData)
+        binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
     }
 
     fun normalDataFiltering(datalist: ArrayList<ContentNormalDTO>, dataUidList: ArrayList<String>) {
-
+        var path = contentNormalData.size
         contentNormalResultList.clear()
         contentNormalResultUidList.clear()
         contentNormalData.clear()
@@ -536,11 +706,13 @@ class NewSearchActivity : AppCompatActivity() {
             }
         }
         println("어댑터 부착완료")
+        if (!adapterNormalInitChecker)
         initRecyclerViewAdapter("normal", contentNormalData as ArrayList<Any>, contentNormalUidData)
+        binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
     }
 
     fun shopDataFiltering(datalist: ArrayList<ContentShopDTO>, dataUidList: ArrayList<String>) {
-
+        var path = contentShopData.size
         contentShopResultList.clear()
         contentShopResultUidList.clear()
         contentShopData.clear()
@@ -570,9 +742,9 @@ class NewSearchActivity : AppCompatActivity() {
                 }
             }
         }
-
+        if(!adapterNormalInitChecker)
         initRecyclerViewAdapter("shop", contentShopData as ArrayList<Any>, contentShopUidData)
-
+        binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
     }
 
     inner class GridRecyclerAdapter(private val data : ArrayList<CategoryDTO>) : RecyclerView.Adapter<GridRecyclerAdapter.GridRecyclerViewAdapterViewHolder>(){

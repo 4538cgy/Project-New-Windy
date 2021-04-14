@@ -187,6 +187,28 @@
                         android:background="@drawable/background_round_black"
                         android:layout_marginHorizontal="4dp"
                         />
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_shop"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="쇼핑"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:layout_marginHorizontal="4dp"
+                        />
+                    <TextView
+                        android:id="@+id/activity_new_search_textview_normal"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:text="홍보"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/colorBlack"
+                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:layout_marginHorizontal="4dp"
+                        />
 
                     <TextView
                         android:id="@+id/activity_new_search_textview_buy"
@@ -200,29 +222,9 @@
                         android:layout_marginHorizontal="4dp"
                         />
 
-                    <TextView
-                        android:id="@+id/activity_new_search_textview_normal"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="자유홍보"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/colorBlack"
-                        android:background="@drawable/background_white_stroke_gray_4dp"
-                        android:layout_marginHorizontal="4dp"
-                        />
 
-                    <TextView
-                        android:id="@+id/activity_new_search_textview_shop"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="쇼핑"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:textColor="@color/colorBlack"
-                        android:background="@drawable/background_white_stroke_gray_4dp"
-                        android:layout_marginHorizontal="4dp"
-                        />
+
+
                 </LinearLayout>
 
                 <TextView

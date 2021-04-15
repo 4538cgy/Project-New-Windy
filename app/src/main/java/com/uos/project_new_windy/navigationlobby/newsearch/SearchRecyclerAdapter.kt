@@ -52,13 +52,13 @@ class SearchRecyclerAdapter(
             "normal" -> {
                 normalList = list as ArrayList<ContentNormalDTO>
                 listSize = normalList.size
-                println("어댑터 내부의 데이터입니다. normal ${buyList.toString()}")
+                println("어댑터 내부의 데이터입니다. normal ${normalList.toString()}")
             }
 
             "shop" -> {
                 shopList = list as ArrayList<ContentShopDTO>
                 listSize = shopList.size
-                println("어댑터 내부의 데이터입니다. shop ${buyList.toString()}")
+                println("어댑터 내부의 데이터입니다. shop ${shopList.toString()}")
             }
         }
     }

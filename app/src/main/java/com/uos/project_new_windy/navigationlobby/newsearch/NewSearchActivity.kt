@@ -44,6 +44,8 @@ class NewSearchActivity : AppCompatActivity() {
 
     var counter = 0
 
+    var itemSize = 0
+
     var adapterShopInitChecker = false
     var adapterSellInitChecker = false
     var adapterNormalInitChecker = false
@@ -180,13 +182,23 @@ class NewSearchActivity : AppCompatActivity() {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             binding.activityNewSaerchRecyclerSearch.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-                if (!v.canScrollVertically(1))
-                {
-                    counter = 1
-                    Toast.makeText(binding.root.context, "데이터를 추가로 가져옵니다.", Toast.LENGTH_LONG)
-                        .show()
-                    getMoreData()
-                }
+
+                var j = (binding.activityNewSaerchRecyclerSearch.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                var itemTotalCount = binding.activityNewSaerchRecyclerSearch.adapter!!.itemCount - 1
+
+                    if (!v.canScrollVertically(1)) {
+                        if (itemTotalCount > 1) {
+                            counter = 1
+                            Toast.makeText(
+                                binding.root.context,
+                                "데이터를 추가로 가져옵니다.",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                            getMoreData()
+                        }
+                    }
+
             }
         }
     }
@@ -226,7 +238,7 @@ class NewSearchActivity : AppCompatActivity() {
         list: ArrayList<Any>,
         uidList: ArrayList<String>
     ) {
-
+                itemSize = list.size
                 initChecking(dataType)
                 binding.activityNewSaerchRecyclerSearch.adapter =
                     SearchRecyclerAdapter(binding.root.context, dataType, list, uidList)
@@ -386,6 +398,7 @@ class NewSearchActivity : AppCompatActivity() {
                         }
                         buyDataFiltering(contentBuyDataList, contentBuyDataUidList)
                     }
+                counter = 0
             }
             "normal" ->{
                 db.collection("contents").document(dataType!!).collection("data").orderBy("timestamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
@@ -403,6 +416,7 @@ class NewSearchActivity : AppCompatActivity() {
                         }
                         normalDataFiltering(contentNormalDataList, contentNormalDataUidList)
                     }
+                counter = 0
             }
             "shop" ->{
                 db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
@@ -420,6 +434,7 @@ class NewSearchActivity : AppCompatActivity() {
                         }
                         shopDataFiltering(contentShopDataList, contentShopDataUidList)
                     }
+                counter = 0
             }
         }
     }
@@ -657,12 +672,14 @@ class NewSearchActivity : AppCompatActivity() {
         contentBuyData.clear()
         contentBuyUidData.clear()
 
-        for (c in categoryList.indices) {
-            for (d in datalist.indices) {
-                if (datalist[c].categoryHash.equals(categoryList[c])) {
+
+
+        for (c in datalist.indices) {
+            for (d in categoryList.indices) {
+                if (datalist[c].categoryHash.equals(categoryList[d])) {
                     println("중복됩니다아앙")
-                    contentBuyResultList.add(datalist[d])
-                    contentBuyResultUidList.add(dataUidList[d])
+                    contentBuyResultList.add(datalist[c])
+                    contentBuyResultUidList.add(dataUidList[c])
                 }
             }
         }
@@ -679,6 +696,8 @@ class NewSearchActivity : AppCompatActivity() {
     }
 
     fun normalDataFiltering(datalist: ArrayList<ContentNormalDTO>, dataUidList: ArrayList<String>) {
+
+
         var path = contentNormalData.size
         contentNormalResultList.clear()
         contentNormalResultUidList.clear()
@@ -700,13 +719,19 @@ class NewSearchActivity : AppCompatActivity() {
 
 
         for (c in datalist.indices) {
+            println("필터링 전 데이터 $c")
             if (datalist[c].explain?.contains(searchText.toString())!!) {
+                println("포함됩니다.")
                 contentNormalData.add(datalist[c])
                 contentNormalUidData.add(dataUidList[c])
             }
         }
+
+        contentNormalUidData.forEach {
+            println("dddddddddddddddddddddddddd $it")
+        }
+
         println("어댑터 부착완료")
-        if (!adapterNormalInitChecker)
         initRecyclerViewAdapter("normal", contentNormalData as ArrayList<Any>, contentNormalUidData)
         binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
     }
@@ -742,7 +767,6 @@ class NewSearchActivity : AppCompatActivity() {
                 }
             }
         }
-        if(!adapterNormalInitChecker)
         initRecyclerViewAdapter("shop", contentShopData as ArrayList<Any>, contentShopUidData)
         binding.activityNewSaerchRecyclerSearch.scrollToPosition(path-1)
     }

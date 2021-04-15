@@ -46,6 +46,9 @@ class NewSearchActivity : AppCompatActivity() {
 
     var itemSize = 0
 
+    var categoryAllSelect = true
+    var addressAllSelect = true
+
     var adapterShopInitChecker = false
     var adapterSellInitChecker = false
     var adapterNormalInitChecker = false
@@ -101,15 +104,52 @@ class NewSearchActivity : AppCompatActivity() {
 
 
         //카테고리 어댑터
-        binding.activityNewSearchRecyclerCategory.adapter = GridRecyclerAdapter(categoryDTO)
-        binding.activityNewSearchRecyclerCategory.layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
+        var categoryRecyclerView = binding.activityNewSearchRecyclerCategory
+        categoryRecyclerView.adapter = GridRecyclerAdapter(categoryDTO)
+        categoryRecyclerView.layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
 
 
         //지역 어댑터
         binding.activityNewSearchRecyclerAddress.adapter = GridAddressRecyclerAdapter(addressDTO)
         binding.activityNewSearchRecyclerAddress.layoutManager = StaggeredGridLayoutManager(3,StaggeredGridLayoutManager.VERTICAL)
 
+        //전체 선택 버튼 클릭
+        binding.activityNewSearchButtonAllSelectCategory.setOnClickListener {
 
+
+            if(categoryAllSelect){
+                categoryList.clear()
+                categoryDTO.clear()
+                clearCategoryList()
+                (categoryRecyclerView.adapter as GridRecyclerAdapter).notifyDataSetChanged()
+                binding.activityNewSearchButtonAllSelectCategory.text = "전체 선택"
+            }else{
+                categoryDTO.clear()
+                categoryList.clear()
+                initCategoryList()
+                (categoryRecyclerView.adapter as GridRecyclerAdapter).notifyDataSetChanged()
+                binding.activityNewSearchButtonAllSelectCategory.text = "전체 해제"
+                categoryAllSelect = true
+            }
+        }
+        binding.activityNewSearchButtonAllSelectAddress.setOnClickListener {
+
+
+            if(addressAllSelect){
+                addressList.clear()
+                addressDTO.clear()
+                clearAddressList()
+                (binding.activityNewSearchRecyclerAddress.adapter as GridAddressRecyclerAdapter).notifyDataSetChanged()
+                binding.activityNewSearchButtonAllSelectCategory.text = "전체 선택"
+            }else{
+                addressDTO.clear()
+                addressList.clear()
+                initAddressList()
+                (binding.activityNewSearchRecyclerAddress.adapter as GridAddressRecyclerAdapter).notifyDataSetChanged()
+                binding.activityNewSearchButtonAllSelectCategory.text = "전체 해제"
+                addressAllSelect = true
+            }
+        }
 
         //검색어 힌트
         binding.activityNewSearchSearchview.queryHint = "검색어를 입력해주세요."
@@ -552,6 +592,47 @@ class NewSearchActivity : AppCompatActivity() {
         categoryList.add("농자재")
         categoryList.add("화물트럭")
         categoryList.add("산업기계")
+    }
+
+    fun clearCategoryList(){
+        categoryList.clear()
+        categoryDTO.clear()
+
+        categoryDTO.add(CategoryDTO("농기계", false))
+        categoryDTO.add(CategoryDTO("농산물", false))
+        categoryDTO.add(CategoryDTO("축산물", false))
+        categoryDTO.add(CategoryDTO("소모품", false))
+        categoryDTO.add(CategoryDTO("농지", false))
+        categoryDTO.add(CategoryDTO("가구", false))
+        categoryDTO.add(CategoryDTO("기타", false))
+        categoryDTO.add(CategoryDTO("축산자재",false))
+        categoryDTO.add(CategoryDTO("농자재",false))
+        categoryDTO.add(CategoryDTO("화물트럭",false))
+        categoryDTO.add(CategoryDTO("산업기계",false))
+        categoryAllSelect = false
+    }
+
+    fun clearAddressList(){
+        addressList.clear()
+        addressDTO.clear()
+
+        addressDTO.add(AddressModel("서울", false))
+        addressDTO.add(AddressModel("대전", false))
+        addressDTO.add(AddressModel("대구", false))
+        addressDTO.add(AddressModel("부산", false))
+        addressDTO.add(AddressModel("광주", false))
+        addressDTO.add(AddressModel("제주", false))
+        addressDTO.add(AddressModel("세종", false))
+        addressDTO.add(AddressModel("인천", false))
+        addressDTO.add(AddressModel("경기", false))
+        addressDTO.add(AddressModel("전남", false))
+        addressDTO.add(AddressModel("전북", false))
+        addressDTO.add(AddressModel("충북", false))
+        addressDTO.add(AddressModel("충남", false))
+        addressDTO.add(AddressModel("경북", false))
+        addressDTO.add(AddressModel("경남", false))
+        addressDTO.add(AddressModel("강원", false))
+        addressAllSelect = false
     }
 
     fun initAddressList(){

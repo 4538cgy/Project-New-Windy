@@ -241,14 +241,27 @@
                     android:textStyle="bold"
                     />
 
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/activity_new_search_recycler_category"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
                     app:layout_constraintTop_toBottomOf="@+id/activityu_new_search_textview_category_title"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
+                    />
+
+                <Button
+                    android:id="@+id/activity_new_search_button_all_select_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_new_search_recycler_category"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:background="@drawable/background_round_windy_green"
+                    android:text="전체 선택"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
                     />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -260,6 +273,8 @@
                 android:visibility="gone"
                 >
 
+
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/activity_new_search_recycler_address"
                     android:layout_width="match_parent"
@@ -267,7 +282,17 @@
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    />
+                <Button
+                    android:id="@+id/activity_new_search_button_all_select_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_new_search_recycler_address"
+                    android:text="전체 선택"
+                    android:background="@drawable/background_round_windy_green"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="8dp"
                     />
 
 

@@ -79,6 +79,7 @@ class ContentNormalRecyclerViewAdapter(
     ) {
         holder.onBind(contentNormalDTO[position])
 
+        /*
         holder.binding.itemRecyclerNormalAdview.loadAd(AdRequest.Builder().build())
 
         if(position%7 == 0){
@@ -87,6 +88,8 @@ class ContentNormalRecyclerViewAdapter(
         {
             holder.binding.itemRecyclerNormalAdview.visibility = View.GONE
         }
+
+         */
 
 
         //뷰페이저 초기화

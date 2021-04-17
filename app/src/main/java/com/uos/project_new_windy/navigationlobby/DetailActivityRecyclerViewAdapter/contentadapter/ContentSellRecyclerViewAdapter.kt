@@ -78,16 +78,18 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
     override fun onBindViewHolder(holder: ContentSellRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentSellDTO[position])
 
-        holder.binding.itemRecyclerSellAdview.loadAd(AdRequest.Builder().build())
+        //holder.binding.itemRecyclerSellAdview.loadAd(AdRequest.Builder().build())
 
 
-
+        /*
         if (position % 7 == 0) {
             holder.binding.itemRecyclerSellAdview.visibility = View.VISIBLE
         } else
         {
             holder.binding.itemRecyclerSellAdview.visibility = View.GONE
         }
+
+         */
 
         //조회수 증가
         viewCountIncrease(position)

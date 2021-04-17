@@ -40,7 +40,7 @@ class NewSearchActivity : AppCompatActivity() {
     var addressDTO: ArrayList<AddressModel> = arrayListOf()
 
     var minCost : Long = 0
-    var maxCost : Long = 10000000
+    var maxCost : Long = 700000
 
     var counter = 0
 
@@ -403,7 +403,7 @@ class NewSearchActivity : AppCompatActivity() {
         when(dataType) {
             "sell" ->{
                 db.collection("contents")?.document(dataType!!).collection("data")
-                    ?.orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                    ?.orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(7).get()
                     .addOnSuccessListener {
                         querySnapshot ->
                         if (querySnapshot == null)return@addOnSuccessListener
@@ -423,7 +423,7 @@ class NewSearchActivity : AppCompatActivity() {
                 counter = 0
             }
             "buy" ->{
-                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(7).get()
                     .addOnSuccessListener {
                         querySnapshot ->
                         if(querySnapshot == null) return@addOnSuccessListener
@@ -441,7 +441,7 @@ class NewSearchActivity : AppCompatActivity() {
                 counter = 0
             }
             "normal" ->{
-                db.collection("contents").document(dataType!!).collection("data").orderBy("timestamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timestamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(7).get()
                     .addOnSuccessListener {
                             querySnapshot ->
                         if(querySnapshot == null) return@addOnSuccessListener
@@ -459,7 +459,7 @@ class NewSearchActivity : AppCompatActivity() {
                 counter = 0
             }
             "shop" ->{
-                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(5).get()
+                db.collection("contents").document(dataType!!).collection("data").orderBy("timeStamp",Query.Direction.DESCENDING).startAfter(lastVisible).limit(7).get()
                     .addOnSuccessListener {
                             querySnapshot ->
                         if(querySnapshot == null) return@addOnSuccessListener
@@ -486,7 +486,7 @@ class NewSearchActivity : AppCompatActivity() {
 
         when (dataType) {
             "sell" -> {
-                db.collection("contents").document(dataType).collection("data").limit(5)
+                db.collection("contents").document(dataType).collection("data").limit(7)
                     .orderBy("timeStamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentSellDataList.clear()
@@ -511,7 +511,7 @@ class NewSearchActivity : AppCompatActivity() {
                     }
             }
             "buy" -> {
-                db.collection("contents").document(dataType).collection("data").limit(5)
+                db.collection("contents").document(dataType).collection("data").limit(7)
                     .orderBy("timeStamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentBuyDataList.clear()
@@ -530,7 +530,7 @@ class NewSearchActivity : AppCompatActivity() {
                     }
             }
             "normal" -> {
-                db.collection("contents").document(dataType).collection("data").limit(5)
+                db.collection("contents").document(dataType).collection("data").limit(7)
                     .orderBy("timestamp", Query.Direction.DESCENDING)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentNormalDataList.clear()
@@ -550,7 +550,7 @@ class NewSearchActivity : AppCompatActivity() {
             }
             "shop" -> {
                 db.collection("contents").document(dataType).collection("data")
-                    .orderBy("timeStamp", Query.Direction.DESCENDING).limit(5)
+                    .orderBy("timeStamp", Query.Direction.DESCENDING).limit(7)
                     .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                         contentShopDataList.clear()
                         contentShopDataUidList.clear()
@@ -675,7 +675,7 @@ class NewSearchActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == 1001){
+        if (requestCode == 71){
             if (resultCode == 1555){
 
             }

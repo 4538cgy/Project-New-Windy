@@ -64,6 +64,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     override fun onBindViewHolder(holder: ContentBuyRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentBuyDTO[position])
 
+        /*
         holder.binding.itemRecyclerBuyAdview.loadAd(AdRequest.Builder().build())
 
         if(position%7 == 0){
@@ -72,6 +73,8 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
         {
             holder.binding.itemRecyclerBuyAdview.visibility = View.GONE
         }
+
+         */
 
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonLike.setOnClickListener {

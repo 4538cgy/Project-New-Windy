@@ -110,11 +110,15 @@ class SearchRecyclerAdapter(
         when (contentType) {
             "sell" -> {
                 (holder as SellCategoryViewHolder).onBind(sellList[position])
+
+
                 if (sellList[position].imageDownLoadUrlList?.isEmpty() == false) {
                     Glide.with(holder.itemView.context)
                         .load(sellList[position].imageDownLoadUrlList?.get(0))
                         .into(holder.binding.itemPostSellSearchResultImageviewPhoto)
                 }
+
+
 
                 holder.binding.itemPostSellSearchResultTextviewCost.text =
                     "가격 : ${sellList[position].cost}\n\n글을 터치하여 자세히 확인하세요."
@@ -140,11 +144,14 @@ class SearchRecyclerAdapter(
             }
             "buy" -> {
                 (holder as BuyCategoryViewHolder).onBind(buyList[position])
+
                 if (buyList[position].imageUrl?.isEmpty() == false) {
                     Glide.with(holder.itemView.context)
                         .load(buyList[position].imageUrl)
                         .into(holder.binding.itemPostBuySearchResultImageviewPhoto)
                 }
+
+
 
                 holder.itemView.setOnClickListener {
                     var intent = Intent(holder.itemView.context, DetailBuyViewActivity::class.java)
@@ -174,11 +181,14 @@ class SearchRecyclerAdapter(
             }
             "shop" ->{
                 (holder as ShopCategoryViewHolder).onBind(shopList[position])
+
                 if (shopList[position].imageDownLoadUrlList?.isEmpty() == false) {
                     Glide.with(holder.itemView.context)
                         .load(shopList[position].imageDownLoadUrlList?.get(0))
                         .into(holder.binding.itemPostShopSearchResultImageviewPhoto)
                 }
+
+
 
                 holder.binding.itemPostShopSearchResultTextviewCost.text =
                     "가격 : ${shopList[position].cost}\n\n글을 터치하여 자세히 확인하세요."
@@ -212,6 +222,8 @@ class SearchRecyclerAdapter(
                         .load(normalList[position].imageDownLoadUrlList?.get(0))
                         .into(holder.binding.itemPostNormalSearchResultImageviewPhoto)
                 }
+
+
 
                 holder.itemView.setOnClickListener {
                     var intent = Intent(holder.itemView.context, DetailSellViewActivity::class.java)

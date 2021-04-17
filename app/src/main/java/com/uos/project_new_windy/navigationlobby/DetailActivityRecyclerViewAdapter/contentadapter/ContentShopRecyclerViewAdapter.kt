@@ -66,7 +66,7 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
     ) {
         holder.onBind(contentShopDTO[position])
 
-
+        /*
         holder.binding.itemRecyclerShopAdview.loadAd(AdRequest.Builder().build())
 
         if(position%7 == 0){
@@ -75,6 +75,8 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
         {
             holder.binding.itemRecyclerShopAdview.visibility = View.GONE
         }
+
+         */
         //조회수 증가
         viewCountIncrease(position)
         //댓글 버튼 클릭

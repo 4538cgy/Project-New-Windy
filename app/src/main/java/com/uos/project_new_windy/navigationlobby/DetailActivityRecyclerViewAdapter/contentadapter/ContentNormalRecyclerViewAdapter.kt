@@ -26,6 +26,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
 import com.uos.project_new_windy.model.AlarmDTO
+import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentNormalDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
@@ -35,6 +36,7 @@ import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailNormal
 import com.uos.project_new_windy.navigationlobby.detailviewactivity.DetailSellViewActivity
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.TimeUtil
+import kotlinx.android.synthetic.main.activity_comment.*
 
 class ContentNormalRecyclerViewAdapter(
     private val context: Context,
@@ -205,19 +207,37 @@ class ContentNormalRecyclerViewAdapter(
 
         //옵션 버튼 클릭
         holder.binding.itemRecyclerNormalImagebuttonOption.setOnClickListener {
-            val bottomeSheetDialog: BottomSheetDialogContentOption =
-                BottomSheetDialogContentOption()
-            var bundle = Bundle()
-            bundle.putString("destinationUid", contentNormalDTO[position].uid)
-            bundle.putString("userId", contentNormalDTO[position].userId)
-            bundle.putString("postUid", contentUidList[position])
-            bundle.putString("uid", FirebaseAuth.getInstance().currentUser?.uid)
-            bundle.putString("postType", "normal")
-            bundle.putString("viewType", "fragment")
-            bundle.putString("boardType","normal")
-            bundle.putLong("contentUploadTime", contentNormalDTO[position].timestamp!!)
-            bottomeSheetDialog.arguments = bundle
-            bottomeSheetDialog.show(fragmentManager, "dd")
+
+
+            if(auth.currentUser != null) {
+                val bottomeSheetDialog: BottomSheetDialogContentOption =
+                    BottomSheetDialogContentOption()
+                var bundle = Bundle()
+                bundle.putString("destinationUid", contentNormalDTO[position].uid)
+                bundle.putString("userId", contentNormalDTO[position].userId)
+                bundle.putString("postUid", contentUidList[position])
+                bundle.putString("uid", FirebaseAuth.getInstance().currentUser?.uid)
+                bundle.putString("postType", "normal")
+                bundle.putString("viewType", "fragment")
+                bundle.putString("boardType","normal")
+                bundle.putLong("contentUploadTime", contentNormalDTO[position].timestamp!!)
+                bottomeSheetDialog.arguments = bundle
+                bottomeSheetDialog.show(fragmentManager, "dd")
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
         }
 
 

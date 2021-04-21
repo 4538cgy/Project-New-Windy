@@ -172,18 +172,35 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
         //옵션 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonOption.setOnClickListener {
-            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-            var bundle = Bundle()
-            bundle.putString("destinationUid",contentBuyDTO[position].uid)
-            bundle.putString("userId",contentBuyDTO[position].userId)
-            bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" , contentBuyDTO[position].uid)
-            bundle.putString("postType", "buy")
-            bundle.putString("viewType","fragment")
-            bundle.putString("boardType","buy")
-            bundle.putLong("contentUploadTime", contentBuyDTO[position].timeStamp as Long)
-            bottomeSheetDialog.arguments = bundle
-            bottomeSheetDialog.show(fragmentManager,"dd")
+
+            if(auth.currentUser != null) {
+                val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                var bundle = Bundle()
+                bundle.putString("destinationUid",contentBuyDTO[position].uid)
+                bundle.putString("userId",contentBuyDTO[position].userId)
+                bundle.putString("postUid",contentUidList[position])
+                bundle.putString("uid" , contentBuyDTO[position].uid)
+                bundle.putString("postType", "buy")
+                bundle.putString("viewType","fragment")
+                bundle.putString("boardType","buy")
+                bundle.putLong("contentUploadTime", contentBuyDTO[position].timeStamp as Long)
+                bottomeSheetDialog.arguments = bundle
+                bottomeSheetDialog.show(fragmentManager,"dd")
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
         }
         //전화 걸기
         holder.binding.itemRecyclerBuyImagebuttonPhone.setOnClickListener {

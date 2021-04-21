@@ -1,5 +1,7 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -32,7 +34,7 @@ class CommentActivity : AppCompatActivity() {
     var destinationUid : String ? = null
     var firestore : FirebaseFirestore ? = null
     var uid : String ? = null
-
+    var auth = FirebaseAuth.getInstance()
 
 
     lateinit var binding : ActivityCommentBinding
@@ -70,19 +72,37 @@ class CommentActivity : AppCompatActivity() {
         //댓글 발송
         binding.activityCommentButtonUploadComment.setOnClickListener {
 
-            if(binding.activityCommentEdittextExplain.text.length > 1) {
+            if(auth.currentUser != null) {
+                if(binding.activityCommentEdittextExplain.text.length > 1) {
 
-                var comment = ContentDTO.Comment()
-                comment.userId = FirebaseAuth.getInstance().currentUser?.email
-                comment.uid = FirebaseAuth.getInstance().currentUser?.uid
-                comment.comment = activity_comment_edittext_explain.text.toString()
-                comment.timestamp = System.currentTimeMillis()
-                comment.time = TimeUtil().getTime()
+                    var comment = ContentDTO.Comment()
+                    comment.userId = FirebaseAuth.getInstance().currentUser?.email
+                    comment.uid = FirebaseAuth.getInstance().currentUser?.uid
+                    comment.comment = activity_comment_edittext_explain.text.toString()
+                    comment.timestamp = System.currentTimeMillis()
+                    comment.time = TimeUtil().getTime()
 
-                commentSave(postType, comment)
-                commentAlarm(destinationUid!!, activity_comment_edittext_explain.text.toString())
-                binding.activityCommentEdittextExplain.setText("")
+                    commentSave(postType, comment)
+                    commentAlarm(destinationUid!!, activity_comment_edittext_explain.text.toString())
+                    binding.activityCommentEdittextExplain.setText("")
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 댓글을 달 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
 
 
         }

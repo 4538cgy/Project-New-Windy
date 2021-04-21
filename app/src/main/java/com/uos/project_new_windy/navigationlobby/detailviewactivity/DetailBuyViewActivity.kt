@@ -61,6 +61,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
     var imageUrl : String ? = null
     var userNickName : String ? = null
     var timeStamp : Long ? = null
+    var auth = FirebaseAuth.getInstance()
 
     companion object{
         var activity : Activity? = null
@@ -255,19 +256,39 @@ class DetailBuyViewActivity : AppCompatActivity() {
         }
         //옵션
         binding.activityDetailBuyViewOptionButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-                var bundle = Bundle()
-                bundle.putString("destinationUid",uid)
-                bundle.putString("userId", userId)
-                bundle.putString("postUid",contentUid)
-                bundle.putString("uid" , uid)
-                bundle.putString("postType", "buy")
-                bundle.putString("viewType","activity")
-                bottomSheetDialog.arguments = bundle
-                bottomSheetDialog.show(supportFragmentManager,"lol")
+
+            if(auth!!.currentUser != null) {
+                if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
+                    val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                    var bundle = Bundle()
+                    bundle.putString("destinationUid",uid)
+                    bundle.putString("userId", userId)
+                    bundle.putString("postUid",contentUid)
+                    bundle.putString("uid" , uid)
+                    bundle.putString("postType", "buy")
+                    bundle.putString("viewType","activity")
+                    bottomSheetDialog.arguments = bundle
+                    bottomSheetDialog.show(supportFragmentManager,"lol")
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
         }
 
         binding.activityDetailBuyViewTextviewExplain.setOnLongClickListener {

@@ -1,8 +1,10 @@
 package com.uos.project_new_windy.navigationlobby.detailviewactivity
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.ClipData
 import android.content.ClipboardManager
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
@@ -131,19 +133,38 @@ class DetailNormalViewActivity : AppCompatActivity() {
 
         //옵션
         binding.activityDetailNormalViewImagebuttonPostOption.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-                var bundle = Bundle()
-                bundle.putString("destinationUid",uid)
-                bundle.putString("userId", userId)
-                bundle.putString("postUid",postUid)
-                bundle.putString("uid" , auth!!.currentUser?.uid.toString())
-                bundle.putString("postType", "normal")
-                bundle.putString("viewType","activity")
-                bottomSheetDialog.arguments = bundle
-                bottomSheetDialog.show(supportFragmentManager,"lol")
+            if(auth!!.currentUser != null) {
+                if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+
+                    val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                    var bundle = Bundle()
+                    bundle.putString("destinationUid",uid)
+                    bundle.putString("userId", userId)
+                    bundle.putString("postUid",postUid)
+                    bundle.putString("uid" , auth!!.currentUser?.uid.toString())
+                    bundle.putString("postType", "normal")
+                    bundle.putString("viewType","activity")
+                    bottomSheetDialog.arguments = bundle
+                    bottomSheetDialog.show(supportFragmentManager,"lol")
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
         }
 
         //프로필 초기화

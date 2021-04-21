@@ -180,19 +180,36 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
 
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerShopImagebuttonOption.setOnClickListener {
-            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-            var bundle = Bundle()
-            bundle.putString("destinationUid",contentShopDTO[position].uid)
-            bundle.putString("userId",contentShopDTO[position].userId)
-            bundle.putString("postExplain",contentShopDTO[position].productExplain)
-            bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
-            bundle.putString("postType", "shop")
-            bundle.putString("viewType","fragment")
-            bundle.putString("boardType","shop")
-            bundle.putLong("contentUploadTime", contentShopDTO[position].timeStamp!!)
-            bottomeSheetDialog.arguments = bundle
-            bottomeSheetDialog.show(fragmentManager,"dd")
+
+            if(auth.currentUser != null) {
+                val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                var bundle = Bundle()
+                bundle.putString("destinationUid",contentShopDTO[position].uid)
+                bundle.putString("userId",contentShopDTO[position].userId)
+                bundle.putString("postExplain",contentShopDTO[position].productExplain)
+                bundle.putString("postUid",contentUidList[position])
+                bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
+                bundle.putString("postType", "shop")
+                bundle.putString("viewType","fragment")
+                bundle.putString("boardType","shop")
+                bundle.putLong("contentUploadTime", contentShopDTO[position].timeStamp!!)
+                bottomeSheetDialog.arguments = bundle
+                bottomeSheetDialog.show(fragmentManager,"dd")
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
         }
         //댓글 갯수
         holder.binding.itemRecyclerShopTextviewCommentCount.text = data[position].commentCount.toString()

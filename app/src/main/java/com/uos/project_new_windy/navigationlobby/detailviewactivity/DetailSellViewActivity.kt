@@ -61,6 +61,7 @@ class DetailSellViewActivity : AppCompatActivity() {
     var explain : String ? = null
     var userNickName : String ? = null
     var timeStamp : Long ? = null
+    var auth = FirebaseAuth.getInstance()
 
     companion object{
         var activity : Activity ? = null
@@ -191,9 +192,28 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         //찜하기
         binding.activityDetailSellViewButtonPicking.setOnClickListener {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                favoriteEvent()
+
+            if(auth.currentUser != null) {
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    favoriteEvent()
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
         }
 
 
@@ -259,21 +279,40 @@ class DetailSellViewActivity : AppCompatActivity() {
 
         //옵션
         binding.activityDetailSellViewOptionButton.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-                var bundle = Bundle()
-                bundle.putString("destinationUid",uid)
-                bundle.putString("userId", userId)
-                bundle.putString("postUid",contentUid)
-                bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
-                bundle.putString("postType", "sell")
-                bundle.putString("viewType","fragment")
-                bundle.putString("boardType","sell")
+            if(auth.currentUser != null) {
+                if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                bottomSheetDialog.arguments = bundle
-                bottomSheetDialog.show(supportFragmentManager,"lol")
+                    val bottomSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                    var bundle = Bundle()
+                    bundle.putString("destinationUid",uid)
+                    bundle.putString("userId", userId)
+                    bundle.putString("postUid",contentUid)
+                    bundle.putString("uid" , FirebaseAuth.getInstance().currentUser?.uid)
+                    bundle.putString("postType", "sell")
+                    bundle.putString("viewType","fragment")
+                    bundle.putString("boardType","sell")
+
+                    bottomSheetDialog.arguments = bundle
+                    bottomSheetDialog.show(supportFragmentManager,"lol")
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
         }
 
         binding.activityDetailSellViewTextviewExplain.setOnLongClickListener {

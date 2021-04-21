@@ -165,6 +165,7 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
 
         holder.binding.itemRecyclerSellConstAll.setOnClickListener {
+
             println("판매 게시판의 아이템 클릭 ")
             println("클릭전 가격" + cost.toString())
             var intent = Intent(holder.itemView.context,DetailSellViewActivity::class.java)
@@ -191,19 +192,38 @@ class ContentSellRecyclerViewAdapter (private val context: Context,var fragmentM
 
         //옵션 메뉴 클릭
         holder.binding.itemRecyclerSellImagebuttonOption.setOnClickListener {
-            val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
-            var bundle = Bundle()
-            bundle.putString("destinationUid",contentSellDTO[position].uid)
-            bundle.putString("userId",contentSellDTO[position].userId)
-            bundle.putString("postExplain",contentSellDTO[position].productExplain)
-            bundle.putString("postUid",contentUidList[position])
-            bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
-            bundle.putString("postType", "sell")
-            bundle.putString("viewType","fragment")
-            bundle.putString("boardType","sell")
-            bundle.putLong("contentUploadTime", contentSellDTO[position].timeStamp!!)
-            bottomeSheetDialog.arguments = bundle
-            bottomeSheetDialog.show(fragmentManager,"dd")
+
+            if(auth.currentUser != null) {
+                val bottomeSheetDialog : BottomSheetDialogContentOption = BottomSheetDialogContentOption()
+                var bundle = Bundle()
+                bundle.putString("destinationUid",contentSellDTO[position].uid)
+                bundle.putString("userId",contentSellDTO[position].userId)
+                bundle.putString("postExplain",contentSellDTO[position].productExplain)
+                bundle.putString("postUid",contentUidList[position])
+                bundle.putString("uid" ,FirebaseAuth.getInstance().currentUser?.uid)
+                bundle.putString("postType", "sell")
+                bundle.putString("viewType","fragment")
+                bundle.putString("boardType","sell")
+                bundle.putLong("contentUploadTime", contentSellDTO[position].timeStamp!!)
+                bottomeSheetDialog.arguments = bundle
+                bottomeSheetDialog.show(fragmentManager,"dd")
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
+
+
         }
         //댓글 갯수
         holder.binding.itemRecyclerSellTextviewCommentCount.text = data[position].commentCount.toString()

@@ -37,6 +37,8 @@ import kotlinx.android.synthetic.main.activity_lobby.*
 class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener {
 
     lateinit var binding : ActivityLobbyBinding
+    var auth = FirebaseAuth.getInstance()
+
 
     companion object{
         var progressDialog : AppCompatDialog ? = null
@@ -110,14 +112,32 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
             }
             R.id.action_photo -> {
-                if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                    val bottomSheetDialog : BottomSheetDialogWriteCategory = BottomSheetDialogWriteCategory()
+                if(auth.currentUser != null) {
+                    if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
-                    bottomSheetDialog.show(supportFragmentManager,"lol")
+                        val bottomSheetDialog : BottomSheetDialogWriteCategory = BottomSheetDialogWriteCategory()
 
-                    //startActivity(Intent(this,AddContentActivity::class.java))
+                        bottomSheetDialog.show(supportFragmentManager,"lol")
+
+                        //startActivity(Intent(this,AddContentActivity::class.java))
+                    }
+                }else{
+                    var builder = AlertDialog.Builder(binding.root.context)
+
+
+                    builder.apply {
+                        setMessage("글을 작성하실 수 없습니다. \n 로그인 후 이용해주세요")
+
+                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                            return@OnClickListener
+
+                        })
+                        setTitle("안내")
+                        show()
+                    }
                 }
+
                 return true
             }
             R.id.action_favorite_alarm -> {
@@ -127,15 +147,52 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 return true
 
                  */
-                startActivity(Intent(binding.root.context,ChatRoomList::class.java))
+
+                if(auth.currentUser != null) {
+
+                    startActivity(Intent(binding.root.context,ChatRoomList::class.java))
+                }else{
+                    var builder = AlertDialog.Builder(binding.root.context)
+
+
+                    builder.apply {
+                        setMessage("채팅을 이용하실 수 없습니다. \n로그인 후 이용해주세요")
+
+                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                            return@OnClickListener
+
+                        })
+                        setTitle("안내")
+                        show()
+                    }
+                }
             }
             R.id.action_account -> {
-                var userFragment = UserFragment()
-                var bundle = Bundle()
-                var uid = FirebaseAuth.getInstance().currentUser?.uid
-                bundle.putString("destinationUid",uid)
-                userFragment.arguments = bundle
-                supportFragmentManager.beginTransaction().replace(R.id.main_content,userFragment).commit()
+
+                if(auth.currentUser != null) {
+                    var userFragment = UserFragment()
+                    var bundle = Bundle()
+                    var uid = FirebaseAuth.getInstance().currentUser?.uid
+                    bundle.putString("destinationUid",uid)
+                    userFragment.arguments = bundle
+                    supportFragmentManager.beginTransaction().replace(R.id.main_content,userFragment).commit()
+                }else{
+                    var builder = AlertDialog.Builder(binding.root.context)
+
+
+                    builder.apply {
+                        setMessage("비로그인 이용자는 회원 정보를 확인하실 수 없습니다. \n로그인 후 이용해주세요")
+
+                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                            return@OnClickListener
+
+                        })
+                        setTitle("안내")
+                        show()
+                    }
+                }
+
+
                 return true
             }
 

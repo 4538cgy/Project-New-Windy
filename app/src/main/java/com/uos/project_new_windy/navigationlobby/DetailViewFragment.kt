@@ -1,5 +1,7 @@
 package com.uos.project_new_windy.navigationlobby
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -41,6 +43,7 @@ class DetailViewFragment : Fragment() {
     var shopDataList : ArrayList<ContentShopDTO> = arrayListOf()
     var shopDataUidList : ArrayList<String> = arrayListOf()
     lateinit var binding: FragmentDetailBinding
+    var auth = FirebaseAuth.getInstance()
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
@@ -66,17 +69,36 @@ class DetailViewFragment : Fragment() {
 
 
         binding.fragmentDetailButttonWrite.setOnClickListener {
-            if (ContextCompat.checkSelfPermission(binding.root.context,
-                    android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-            ) {
 
-                val bottomSheetDialog: BottomSheetDialogWriteCategory =
-                    BottomSheetDialogWriteCategory()
+            if(auth.currentUser != null) {
+                if (ContextCompat.checkSelfPermission(binding.root.context,
+                        android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                ) {
 
-                bottomSheetDialog.show(fragmentManager!!, "lol")
+                    val bottomSheetDialog: BottomSheetDialogWriteCategory =
+                        BottomSheetDialogWriteCategory()
 
-                //startActivity(Intent(this,AddContentActivity::class.java))
+                    bottomSheetDialog.show(fragmentManager!!, "lol")
+
+                }
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("글을 작성하실 수 없습니다. \n 로그인 후 이용해주세요")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
+
+
         }
 
 

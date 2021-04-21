@@ -41,6 +41,8 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
     var data = listOf<ContentShopDTO>()
     var cost : String ? = null
     var lastVisible : Any ? = null
+    var auth = FirebaseAuth.getInstance()
+
     init {
         uid = FirebaseAuth.getInstance().currentUser?.uid
         contentShopDTO = dataList
@@ -116,7 +118,25 @@ class ContentShopRecyclerViewAdapter (private val context: Context, var fragment
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerShopImagebuttonLike.setOnClickListener {
 
-            favoriteEvent(position)
+
+            if(auth.currentUser != null) {
+                favoriteEvent(position)
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비회원은 좋아요를 누를 수 없습니다.")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
+
         }
         //유저 닉네임 클릭
         holder.binding.itemRecyclerShopTextviewUsername.setOnClickListener {

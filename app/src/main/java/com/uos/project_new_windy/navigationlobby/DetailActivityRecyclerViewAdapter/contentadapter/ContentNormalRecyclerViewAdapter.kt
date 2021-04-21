@@ -1,10 +1,8 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
+import android.app.AlertDialog
+import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -51,6 +49,7 @@ class ContentNormalRecyclerViewAdapter(
     var contentCommentSize: ArrayList<Int> = arrayListOf()
     var uid: String? = null
     var data = listOf<ContentNormalDTO>()
+    var auth = FirebaseAuth.getInstance()
 
     init {
 
@@ -122,9 +121,27 @@ class ContentNormalRecyclerViewAdapter(
 
         //좋아요 버튼 클릭
         holder.binding.itemDetailImagebuttonLike.setOnClickListener {
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                favoriteEvent(position)
+
+            if(auth.currentUser != null) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    favoriteEvent(position)
+                }
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비회원은 좋아요를 누를 수 없습니다.")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
+
         }
 
         //댓글 버튼 클릭

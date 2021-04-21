@@ -1,5 +1,7 @@
 package com.uos.project_new_windy
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -61,7 +63,23 @@ class LoginActivity : AppCompatActivity() {
 
         //비회원
         binding.activityLoginButtonNoneLogin.setOnClickListener {
-            noneLogin()
+
+            var builder = AlertDialog.Builder(binding.root.context)
+
+
+            builder.apply {
+                setMessage("비회원으로 진행하시면 여러 컨텐츠에 제약이 있습니다.\n진행하시겠습니까?")
+                setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                    noneLogin()
+                })
+                setNegativeButton("아니오" , DialogInterface.OnClickListener { dialog, which ->
+                    return@OnClickListener
+
+                })
+                setTitle("안내")
+                show()
+            }
+
         }
 
         //로그인

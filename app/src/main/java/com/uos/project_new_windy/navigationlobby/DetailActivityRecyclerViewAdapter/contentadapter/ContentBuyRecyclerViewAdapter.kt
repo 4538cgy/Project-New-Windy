@@ -44,6 +44,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     var data = listOf<ContentBuyDTO>()
     var won : Long = 0
     var last : Long = 0
+    var auth = FirebaseAuth.getInstance()
     init {
 
         uid = FirebaseAuth.getInstance().currentUser?.uid
@@ -78,7 +79,25 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonLike.setOnClickListener {
-            favoriteEvent(position)
+
+
+            if(auth.currentUser != null) {
+                favoriteEvent(position)
+            }else{
+                var builder = AlertDialog.Builder(context)
+
+
+                builder.apply {
+                    setMessage("비회원은 좋아요를 누를 수 없습니다.")
+
+                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
+            }
         }
         //프로필 이미지
         firestore?.collection("profileImages")?.document(contentBuyDTO[position].uid!!)

@@ -79,13 +79,14 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
     fun registerPushToken(){
 
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener {
-                task ->
-            val token = task.result?.token
-            val uid = FirebaseAuth.getInstance().currentUser?.uid
-            val map = mutableMapOf<String,Any>()
-            map["pushToken"] = token!!
-            FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
+        if(FirebaseAuth.getInstance().currentUser != null) {
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener { task ->
+                val token = task.result?.token
+                val uid = FirebaseAuth.getInstance().currentUser?.uid
+                val map = mutableMapOf<String, Any>()
+                map["pushToken"] = token!!
+                FirebaseFirestore.getInstance().collection("pushtokens").document(uid!!).set(map)
+            }
         }
 
     }

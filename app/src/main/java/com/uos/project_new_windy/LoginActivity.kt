@@ -59,6 +59,11 @@ class LoginActivity : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        //비회원
+        binding.activityLoginButtonNoneLogin.setOnClickListener {
+            noneLogin()
+        }
+
         //로그인
         /*
         email_login_button.setOnClickListener {
@@ -122,6 +127,11 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this,PolicyActivity::class.java))
         }
 
+    }
+
+    fun noneLogin(){
+        startActivity(Intent(binding.root.context,LobbyActivity::class.java))
+        finish()
     }
     
     

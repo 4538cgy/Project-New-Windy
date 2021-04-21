@@ -287,73 +287,79 @@ class UserFragment : Fragment() {
 
 
         //AppCompatDialog를 이미지가 변경되는 동안 출력되게 하기
+        if (auth!!.currentUser != null) {
+            firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener {
 
-        firestore?.collection("profileImages")?.document(uid!!)?.addSnapshotListener{
-
-                documentSnapshot, firebaseFirestoreException ->
+                    documentSnapshot, firebaseFirestoreException ->
 
 
-            if (documentSnapshot?.data != null){
-                var url = documentSnapshot?.data!!["image"]
+                if (documentSnapshot?.data != null) {
+                    var url = documentSnapshot?.data!!["image"]
 
-                Log.d("프로필 이미지 url = \n",url.toString())
+                    Log.d("프로필 이미지 url = \n", url.toString())
 
-                imageUrl = url.toString()
+                    imageUrl = url.toString()
 
-                Glide.with(activity!!.applicationContext)
-                    .load(url)
-                    .apply(
-                        RequestOptions().centerCrop()
-                    )
-                    .error(R.drawable.btn_signin_google)
-                    .into(binding.fragmentUserCircleImageview)
-                LobbyActivity.progressDialog?.dismiss()
+                    Glide.with(activity!!.applicationContext)
+                        .load(url)
+                        .apply(
+                            RequestOptions().centerCrop()
+                        )
+                        .error(R.drawable.btn_signin_google)
+                        .into(binding.fragmentUserCircleImageview)
+                    LobbyActivity.progressDialog?.dismiss()
+                }
             }
         }
-
 
     }
 
 
     fun getFollowerAndFollowing(){
-        firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)?.document("follow")?.addSnapshotListener{
-                documentSnapshot, firebaseFirestoreException ->
 
-            if (documentSnapshot == null)
-                return@addSnapshotListener
+        if (auth!!.currentUser != null) {
+            firestore?.collection("userInfo")?.document("userData")?.collection(uid!!)
+                ?.document("follow")
+                ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 
-            var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
-            if (followDTO?.followingCount!=null){
-                //fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
-                binding.accountTvFollowingCount.text = followDTO?.followingCount?.toString()
-            }
+                    if (documentSnapshot == null)
+                        return@addSnapshotListener
 
-            if (followDTO?.followerCount != null){
-                //fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
-                binding.accountTvFollowerCount.text = followDTO.followerCount.toString()
-                if (followDTO?.followers?.containsKey(currentUserUid!!)){
-                    //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
+                    var followDTO = documentSnapshot.toObject(FollowDTO::class.java)
+                    if (followDTO?.followingCount != null) {
+                        //fragmentView?.account_tv_following_count?.text = followDTO?.followingCount?.toString()
+                        binding.accountTvFollowingCount.text = followDTO?.followingCount?.toString()
+                    }
 
-                    binding.accountBtnFollowSignout.text = binding.root.context.getString(R.string.follow_cancel)
-                   // binding.accountBtnFollowSignout.background.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
-                    binding.accountBtnFollowSignout.setBackgroundColor(R.drawable.background_round_gray)
-                    /*
+                    if (followDTO?.followerCount != null) {
+                        //fragmentView?.account_tv_follower_count?.text = followDTO?.followerCount?.toString()
+                        binding.accountTvFollowerCount.text = followDTO.followerCount.toString()
+                        if (followDTO?.followers?.containsKey(currentUserUid!!)) {
+                            //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow_cancel)
+
+                            binding.accountBtnFollowSignout.text =
+                                binding.root.context.getString(R.string.follow_cancel)
+                            // binding.accountBtnFollowSignout.background.setColorFilter(ContextCompat.getColor(activity!!,R.color.colorLightGray),PorterDuff.Mode.MULTIPLY)
+                            binding.accountBtnFollowSignout.setBackgroundColor(R.drawable.background_round_gray)
+                            /*
                     fragmentView?.account_btn_follow_signout?.background?.setColorFilter(
                         ContextCompat.getColor(activity!!,R.color.colorLightGray),
                         PorterDuff.Mode.MULTIPLY)
 
                      */
-                }else{
+                        } else {
 
-                    if (uid != currentUserUid){
+                            if (uid != currentUserUid) {
 
-                        //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
-                        //fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
-                        binding.accountBtnFollowSignout.text = binding.root.context.getString(R.string.follow)
-                        binding.accountBtnFollowSignout.background.colorFilter = null
+                                //fragmentView?.account_btn_follow_signout?.text = getString(R.string.follow)
+                                //fragmentView?.account_btn_follow_signout?.background?.colorFilter = null
+                                binding.accountBtnFollowSignout.text =
+                                    binding.root.context.getString(R.string.follow)
+                                binding.accountBtnFollowSignout.background.colorFilter = null
+                            }
+                        }
                     }
                 }
-            }
         }
     }
 

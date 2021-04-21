@@ -350,6 +350,7 @@ class LoginActivity : AppCompatActivity() {
                         if (SharedData.prefs.getString("userInfo", "no").equals("yes")) {
                             SharedData.prefs.setString("emailVerify","yes")
                             startActivity(Intent(this, LobbyActivity::class.java))
+                            finishAffinity()
 
                         } else {
                             SharedData.prefs.setString("emailVerify","yes")

@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.contentadapter
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.*
 import android.content.Context.CLIPBOARD_SERVICE
@@ -12,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -22,6 +24,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.google.firebase.ktx.Firebase
+import com.uos.project_new_windy.LobbyActivity
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerNormalBinding
@@ -133,7 +137,7 @@ class ContentNormalRecyclerViewAdapter(
 
 
                 builder.apply {
-                    setMessage("비회원은 좋아요를 누를 수 없습니다.")
+                    setMessage("비회원은 좋아요를 누를 수 없습니다. \n 로그인 후 이용해주세요")
 
                     setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
@@ -228,7 +232,7 @@ class ContentNormalRecyclerViewAdapter(
 
 
                 builder.apply {
-                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+                    setMessage("비회원은 좋아요를 누를 수 없습니다. \n 로그인 후 이용해주세요")
 
                     setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener

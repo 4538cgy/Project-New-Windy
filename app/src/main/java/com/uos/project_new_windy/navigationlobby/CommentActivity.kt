@@ -2,6 +2,7 @@ package com.uos.project_new_windy.navigationlobby
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.model.ContentDTO
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityCommentBinding
@@ -91,9 +93,12 @@ class CommentActivity : AppCompatActivity() {
 
 
                 builder.apply {
-                    setMessage("비로그인 이용자는 댓글을 달 수 없습니다. \n로그인 후 이용해주세요")
-
-                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                    setMessage("비회원은 이용할 수 없습니다. \n 로그인 페이지로 이동하시겠습니까?")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        context.startActivity(Intent(context, LoginActivity::class.java))
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
 
                     })

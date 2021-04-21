@@ -127,9 +127,12 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
 
                     builder.apply {
-                        setMessage("글을 작성하실 수 없습니다. \n 로그인 후 이용해주세요")
-
-                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        setMessage("글을 작성하실 수 없습니다. \n 로그인 페이지로 이동하시겠습니까?")
+                        setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                            startActivity(Intent(binding.root.context,LoginActivity::class.java))
+                            finishAffinity()
+                        })
+                        setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                             return@OnClickListener
 
                         })
@@ -156,9 +159,12 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
 
                     builder.apply {
-                        setMessage("채팅을 이용하실 수 없습니다. \n로그인 후 이용해주세요")
-
-                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        setMessage("채팅을 이용하실 수 없습니다. \n로그인 페이지로 이동하시겠습니까?")
+                        setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                            startActivity(Intent(binding.root.context,LoginActivity::class.java))
+                            finishAffinity()
+                        })
+                        setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                             return@OnClickListener
 
                         })
@@ -181,9 +187,12 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
 
                     builder.apply {
-                        setMessage("비로그인 이용자는 회원 정보를 확인하실 수 없습니다. \n로그인 후 이용해주세요")
-
-                        setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                        setMessage("비로그인 이용자는 회원 정보를 확인하실 수 없습니다. \n로그인 페이지로 이동하시겠습니까?")
+                        setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                            startActivity(Intent(binding.root.context,LoginActivity::class.java))
+                            finishAffinity()
+                        })
+                        setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                             return@OnClickListener
 
                         })

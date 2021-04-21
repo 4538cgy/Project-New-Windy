@@ -2,6 +2,7 @@ package com.uos.project_new_windy.navigationlobby
 
 import android.app.AlertDialog
 import android.content.DialogInterface
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.FragmentDetailBinding
@@ -86,9 +88,11 @@ class DetailViewFragment : Fragment() {
 
 
                 builder.apply {
-                    setMessage("글을 작성하실 수 없습니다. \n 로그인 후 이용해주세요")
-
-                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                    setMessage("글을 작성하실 수 없습니다. \n 로그인 페이지로 이동하시겠습니까?")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        startActivity(Intent(binding.root.context, LoginActivity::class.java))
+                    })
+                    setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
 
                     })

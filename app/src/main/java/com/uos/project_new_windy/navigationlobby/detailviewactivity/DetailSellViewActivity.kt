@@ -24,6 +24,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.chat.ChatActivity
@@ -202,9 +203,12 @@ class DetailSellViewActivity : AppCompatActivity() {
 
 
                 builder.apply {
-                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
-
-                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 페이지로 이동하시겠습니까?")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        startActivity(Intent(binding.root.context,LoginActivity::class.java))
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
 
                     })
@@ -301,9 +305,12 @@ class DetailSellViewActivity : AppCompatActivity() {
 
 
                 builder.apply {
-                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
-
-                    setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
+                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 페이지로 이동하시겠습니까?")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        startActivity(Intent(binding.root.context, LoginActivity::class.java))
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
 
                     })

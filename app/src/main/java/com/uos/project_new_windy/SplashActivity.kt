@@ -70,7 +70,7 @@ class SplashActivity : AppCompatActivity() {
         //binding.activitySplashImageviewLogo.startAnimation(AnimationUtils.loadAnimation(binding.root.context, R.anim.alpha))
         binding.activitySplashImageviewLogo.startAnimation(anim)
 
-       intent =  Intent(this, LoginActivity::class.java)
+       intent =  Intent(this, LobbyActivity::class.java)
 
 
     }

@@ -20,6 +20,7 @@ import com.google.android.gms.ads.AdRequest
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogContentOption
 import com.uos.project_new_windy.databinding.ItemRecyclerBuyBinding
@@ -88,7 +89,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
 
                 builder.apply {
-                    setMessage("비회원은 좋아요를 누를 수 없습니다.")
+                    setMessage("비회원은 좋아요를 누를 수 없습니다. \n 로그인 후 이용해주세요")
 
                     setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener
@@ -191,7 +192,7 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
 
 
                 builder.apply {
-                    setMessage("비로그인 이용자는 이용할 수 없습니다. \n로그인 후 이용해주세요")
+                    setMessage("비회원은 좋아요를 누를 수 없습니다. \n 로그인 후 이용해주세요")
 
                     setNegativeButton("닫기" , DialogInterface.OnClickListener { dialog, which ->
                         return@OnClickListener

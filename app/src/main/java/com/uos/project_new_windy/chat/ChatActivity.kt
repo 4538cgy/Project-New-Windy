@@ -1,11 +1,16 @@
 package com.uos.project_new_windy.chat
 
+import android.app.AlertDialog
+import android.content.DialogInterface
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -14,7 +19,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uos.project_new_windy.LoginActivity
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.databinding.ActivityChatBinding
 import com.uos.project_new_windy.databinding.ItemChatBubbleBinding
 import com.uos.project_new_windy.model.AlarmDTO
@@ -34,6 +41,7 @@ class ChatActivity : AppCompatActivity() {
     var chatRoomUid: String? = null
     var userNickName : String ? = null
     var chatMessageData : String ? = null
+    private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,32 +92,51 @@ class ChatActivity : AppCompatActivity() {
             var chatDTOs = ChatDTO()
 
 
-            chatDTOs.users.put(uid!!, true);
-            chatDTOs.commentTimestamp = System.currentTimeMillis()
-            chatDTOs.users.put(destinationUid!!, true)
+            if(auth.currentUser != null) {
+                chatDTOs.users.put(uid!!, true);
+                chatDTOs.commentTimestamp = System.currentTimeMillis()
+                chatDTOs.users.put(destinationUid!!, true)
 
-            if (chatRoomUid == null) {
-                FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(
-                    chatDTOs).addOnSuccessListener {
+                if (chatRoomUid == null) {
+                    FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(
+                        chatDTOs).addOnSuccessListener {
 
-                }.addOnSuccessListener {
-                    checkChatRoom()
-                }
-
-            } else {
-                var comment = ChatDTO.Comment()
-                comment.uid = uid;
-                comment.message = binding.activityChatEdittextExplain.text.toString()
-                chatMessageData = binding.activityChatEdittextExplain.text.toString()
-                comment.timestamp = TimeUtil().getTime()
-                comment.serverTimestamp = ServerValue.TIMESTAMP
-                FirebaseDatabase.getInstance().getReference().child("chatrooms")
-                    .child(chatRoomUid!!).child(
-                        "comments").push().setValue(comment).addOnCompleteListener {
-                        binding.activityChatEdittextExplain.setText(" ")
-                        chatAlarm(destinationUid!!)
+                    }.addOnSuccessListener {
+                        checkChatRoom()
                     }
 
+                } else {
+                    var comment = ChatDTO.Comment()
+                    comment.uid = uid;
+                    comment.message = binding.activityChatEdittextExplain.text.toString()
+                    chatMessageData = binding.activityChatEdittextExplain.text.toString()
+                    comment.timestamp = TimeUtil().getTime()
+                    comment.serverTimestamp = ServerValue.TIMESTAMP
+                    FirebaseDatabase.getInstance().getReference().child("chatrooms")
+                        .child(chatRoomUid!!).child(
+                            "comments").push().setValue(comment).addOnCompleteListener {
+                            binding.activityChatEdittextExplain.setText(" ")
+                            chatAlarm(destinationUid!!)
+                        }
+
+                }
+            }else{
+                var builder = AlertDialog.Builder(binding.root.context)
+
+
+                builder.apply {
+                    setMessage("채팅을 보낼 수 없습니다. \n 로그인 페이지로 이동하시겠습니까?")
+                    setPositiveButton("예" , DialogInterface.OnClickListener { dialog, which ->
+                        startActivity(Intent(binding.root.context,LoginActivity::class.java))
+                        finishAffinity()
+                    })
+                    setNegativeButton("아니요" , DialogInterface.OnClickListener { dialog, which ->
+                        return@OnClickListener
+
+                    })
+                    setTitle("안내")
+                    show()
+                }
             }
 
         }

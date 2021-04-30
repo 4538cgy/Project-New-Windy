@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/appicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".navigationlobby.newsearch.NewSearchActivity"></activity>
+        <activity android:name=".newwindymall.NewWindyMain"></activity>
+        <activity android:name=".navigationlobby.newsearch.NewSearchActivity" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -13,10 +13,10 @@
         android:title="@string/search"
         />
     <item
-        android:id="@+id/action_photo"
-        android:icon="@drawable/ic_edit"
+        android:id="@+id/action_newwindy_mall"
+        android:icon="@drawable/ic_new_windy_logo"
         android:enabled="true"
-        android:title="@string/upload_image"
+        android:title="@string/mall"
         />
     <item
         android:id="@+id/action_favorite_alarm"

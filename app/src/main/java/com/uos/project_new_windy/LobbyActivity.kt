@@ -111,6 +111,12 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 startActivity(Intent(binding.root.context,NewSearchActivity::class.java))
 
             }
+
+            R.id.action_newwindy_mall ->{
+                
+            }
+
+            /*
             R.id.action_photo -> {
 
                 if(auth.currentUser != null) {
@@ -143,6 +149,8 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
 
                 return true
             }
+
+             */
             R.id.action_favorite_alarm -> {
                 /*
                 var alarmFragment = AlarmFragment()

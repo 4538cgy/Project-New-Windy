@@ -54,7 +54,9 @@
         <activity android:name=".navigationlobby.CommentActivity" />
         <activity android:name=".policy.PolicyActivity" />
         <activity android:name=".SearchAddressActivity" />
-        <activity android:name=".navigationlobby.AddContentActivity" />
+        <activity android:name=".navigationlobby.AddContentActivity" >
+
+        </activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".setting.SettingActivity" />

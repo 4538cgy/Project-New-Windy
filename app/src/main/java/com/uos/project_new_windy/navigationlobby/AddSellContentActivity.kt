@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -404,6 +405,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
     //앨범에서 선택된 이미지 파일을 가져오는 메서드
     fun addPhoto() {
+        /*
         val intent = Intent(Intent.ACTION_PICK).apply {
 
             type = "image/*"
@@ -411,13 +413,25 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
         }
-        startActivityForResult(intent, PICK_IMAGE_FROM_ALBUM)
+         */
+         */
+        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
+            type = "image/*"
+        }
+        if (intent.resolveActivity(packageManager) != null){
+            startActivityForResult(intent, PICK_IMAGE_FROM_ALBUM)
+        }
+
+
+
 
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_FROM_ALBUM) {
+        if (requestCode == PICK_IMAGE_FROM_ALBUM && resultCode == Activity.RESULT_OK) {
+            println("꾸앸")
+            /*
             if (resultCode == Activity.RESULT_OK) {
                 //this is path to the selected image
                 photoUri = data?.data
@@ -431,6 +445,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
                 //exit the addphoto activity if you leave the album without selecting it
                 finish()
             }
+             */
+            //val thumbnail : Bitmap = data!!.getParcelableExtra("data")
+            val fullPhotoUri : Uri = data!!.data!!
+            imageUriList.add(fullPhotoUri)
+
+
+        }else{
+            finish()
         }
         //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
         binding.activityAddSellContentRecyclerPhoto.adapter?.notifyDataSetChanged()

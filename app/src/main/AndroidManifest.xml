@@ -9,9 +9,9 @@
     <application
         android:name=".util.SharedData"
         android:allowBackup="true"
-        android:icon="@drawable/appicon"
+        android:icon="@drawable/new_windy_logo_ver2"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/appicon"
+        android:roundIcon="@drawable/new_windy_logo_ver2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".newwindymall.NewWindyMain"></activity>

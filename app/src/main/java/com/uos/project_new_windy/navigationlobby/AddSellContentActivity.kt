@@ -4,18 +4,16 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.Intent
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
@@ -24,16 +22,11 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddSellContentBinding
-import com.uos.project_new_windy.model.ContentDTO
-import com.uos.project_new_windy.model.contentdto.ContentBuyDTO
 import com.uos.project_new_windy.model.contentdto.ContentSellDTO
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddSellContentActivityRecyclerViewAdapter
-import com.uos.project_new_windy.util.PreferenceUtil
 import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.SharedData
 import com.uos.project_new_windy.util.TimeUtil
-import kotlinx.android.synthetic.main.activity_add_content.*
-import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
@@ -45,7 +38,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     var auth: FirebaseAuth? = null
     var firestore: FirebaseFirestore? = null
     var imageUriList: ArrayList<Uri> = arrayListOf()
-    var address : String ? = null
+    var address: String? = null
 
     //이미지 갯수 체크를 위한 변수
     var count: Int = 0;
@@ -53,10 +46,10 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
     var pickCategoryData: String? = null
     var progressDialog: ProgressDialogLoading? = null
     var userNickName: String? = null
-    
+
     //새 게시글 작성인지 or 수정 인지 확인하기 위한 변수
-    var updateCheck : Boolean ? = null
-    var postUid : String ? = null
+    var updateCheck: Boolean? = null
+    var postUid: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +70,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         storage = FirebaseStorage.getInstance()
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
-        
-        
+
+
         // true = 수정로직 / false = 새게시글 작성 로직
-        updateCheck = intent.getBooleanExtra("updateCheck",false)
+        updateCheck = intent.getBooleanExtra("updateCheck", false)
         postUid = intent.getStringExtra("postUid")
 
         //수정하기면 해당 게시글의 정보 불러오기
-        if(updateCheck == true){
+        if (updateCheck == true) {
             updateDataLoad()
         }
 
@@ -134,14 +127,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             } else {
                 //게시글 작성
                 if (updateCheck == false) {
-                    if(binding.activityAddSellContentEdittextCost.text.isNotEmpty()) {
+                    if (binding.activityAddSellContentEdittextCost.text.isNotEmpty()) {
                         contentUpload()
-                    }else{
-                        Toast.makeText(this,"가격을 입력해주세요.", Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(this, "가격을 입력해주세요.", Toast.LENGTH_LONG).show()
                     }
                 }
                 //게시글 수정
-                else{
+                else {
                     updateContent()
                 }
             }
@@ -152,11 +145,11 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         checkSaveData()
     }
 
-    fun updateDataLoad(){
+    fun updateDataLoad() {
         firestore?.collection("contents")?.document("sell")?.collection("data")?.document(postUid!!)
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                if(documentSnapshot != null){
-                    if (documentSnapshot.exists()){
+                if (documentSnapshot != null) {
+                    if (documentSnapshot.exists()) {
 
                         imageUriList.clear()
 
@@ -183,11 +176,11 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             }
     }
 
-    fun updateContent(){
+    fun updateContent() {
         progressDialog?.show()
-        var tsDoc = firestore?.collection("contents")?.document("sell")?.collection("data")?.document(postUid!!)
-        firestore?.runTransaction{ transaction ->
-
+        var tsDoc = firestore?.collection("contents")?.document("sell")?.collection("data")
+            ?.document(postUid!!)
+        firestore?.runTransaction { transaction ->
 
 
             System.out.println("트랜잭션 시작")
@@ -196,7 +189,8 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             contentDTO?.imageDownLoadUrlList?.clear()
 
             contentDTO?.cost = binding.activityAddSellContentEdittextCost.text.toString()
-            contentDTO?.productExplain = binding.activityAddSellContentEdittextProductExplain.text.toString()
+            contentDTO?.productExplain =
+                binding.activityAddSellContentEdittextProductExplain.text.toString()
             contentDTO?.explain = binding.activityAddSellContentEdittextExplain.text.toString()
 
 
@@ -209,11 +203,10 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             transaction.set(tsDoc, contentDTO!!)
 
 
-
         }?.addOnFailureListener {
             println("viewCountIncreaseFail ${it.toString()}")
         }?.addOnCompleteListener {
-            Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
+            Toast.makeText(binding.root.context, "게시글 수정 완료", Toast.LENGTH_LONG).show()
             progressDialog?.dismiss()
             finish()
         }
@@ -227,17 +220,30 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
                 setMessage("임시 저장된 게시글이 존재합니다. \n 불러오시겠습니까?")
                 setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
 
-                    binding.activityAddSellContentEdittextExplain.setText(SharedData.prefs.getString(
-                        "addSellDataExplain",
-                        ""))
-                    binding.activityAddSellContentEdittextProductExplain.setText(SharedData.prefs.getString(
-                        "addSellDataTitle",
-                        ""))
-                    binding.activityAddSellContentEdittextCost.setText(SharedData.prefs.getString("addSellDataCost",
-                        ""))
+                    binding.activityAddSellContentEdittextExplain.setText(
+                        SharedData.prefs.getString(
+                            "addSellDataExplain",
+                            ""
+                        )
+                    )
+                    binding.activityAddSellContentEdittextProductExplain.setText(
+                        SharedData.prefs.getString(
+                            "addSellDataTitle",
+                            ""
+                        )
+                    )
+                    binding.activityAddSellContentEdittextCost.setText(
+                        SharedData.prefs.getString(
+                            "addSellDataCost",
+                            ""
+                        )
+                    )
 
-                    Toast.makeText(binding.root.context, "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.", Toast.LENGTH_LONG).show()
-
+                    Toast.makeText(
+                        binding.root.context,
+                        "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.",
+                        Toast.LENGTH_LONG
+                    ).show()
 
 
                 })
@@ -263,24 +269,36 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
                 setMessage("게시글을 임시 저장 하시겠습니까?")
                 setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
                     SharedData.prefs.setString("addSellData", "exist")
-                    SharedData.prefs.setString("addSellDataCost",
-                        binding.activityAddSellContentEdittextCost.text.toString())
-                    SharedData.prefs.setString("addSellDataTitle",
-                        binding.activityAddSellContentEdittextProductExplain.text.toString())
+                    SharedData.prefs.setString(
+                        "addSellDataCost",
+                        binding.activityAddSellContentEdittextCost.text.toString()
+                    )
+                    SharedData.prefs.setString(
+                        "addSellDataTitle",
+                        binding.activityAddSellContentEdittextProductExplain.text.toString()
+                    )
                     SharedData.prefs.setString("addSellDataCategory", pickCategoryData.toString())
-                    SharedData.prefs.setString("addSellDataExplain",
-                        binding.activityAddSellContentEdittextExplain.text.toString())
+                    SharedData.prefs.setString(
+                        "addSellDataExplain",
+                        binding.activityAddSellContentEdittextExplain.text.toString()
+                    )
                     finish()
                 })
                 setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
                     SharedData.prefs.setString("addSellData", "none")
-                    SharedData.prefs.setString("addSellDataCost",
-                        "")
-                    SharedData.prefs.setString("addSellDataTitle",
-                        "")
+                    SharedData.prefs.setString(
+                        "addSellDataCost",
+                        ""
+                    )
+                    SharedData.prefs.setString(
+                        "addSellDataTitle",
+                        ""
+                    )
                     SharedData.prefs.setString("addSellDataCategory", "")
-                    SharedData.prefs.setString("addSellDataExplain",
-                        "")
+                    SharedData.prefs.setString(
+                        "addSellDataExplain",
+                        ""
+                    )
                     finish()
                     return@OnClickListener
 
@@ -335,9 +353,9 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         //유저 닉네임
         contentSellDTO.userNickName = userNickName
 
-       //유저 주소
+        //유저 주소
         if (address != null)
-        contentSellDTO.sellerAddress = getAddressCityAndLoad()
+            contentSellDTO.sellerAddress = getAddressCityAndLoad()
 
         //비교 전용 cost
         contentSellDTO.costInt = binding.activityAddSellContentEdittextCost.text.toString()
@@ -358,7 +376,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
     }
 
-    fun getAddressCityAndLoad() : String{
+    fun getAddressCityAndLoad(): String {
 
         var city = "city"
         var path = "null"
@@ -367,14 +385,14 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
         if (address != null) {
             var index = address?.indexOf(" ")
             city = address?.substring(0, index!!)!!
-            path = address?.substring(index!! +1)!!
+            path = address?.substring(index!! + 1)!!
             var index2 = path?.indexOf(" ")
-            load = path?.substring(0,index2!!)
+            load = path?.substring(0, index2!!)
         }
 
 
 
-        return city+" "+load
+        return city + " " + load
     }
 
 
@@ -405,6 +423,7 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
 
     //앨범에서 선택된 이미지 파일을 가져오는 메서드
     fun addPhoto() {
+        Toast.makeText(this, "사진을 꾹 누르시면 여러장을 올릴 수 있어요.", Toast.LENGTH_LONG).show()
         /*
         val intent = Intent(Intent.ACTION_PICK).apply {
 
@@ -417,12 +436,11 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
          */
         val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
             type = "image/*"
+            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         }
-        if (intent.resolveActivity(packageManager) != null){
+        if (intent.resolveActivity(packageManager) != null) {
             startActivityForResult(intent, PICK_IMAGE_FROM_ALBUM)
         }
-
-
 
 
     }
@@ -447,11 +465,23 @@ class AddSellContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLi
             }
              */
             //val thumbnail : Bitmap = data!!.getParcelableExtra("data")
-            val fullPhotoUri : Uri = data!!.data!!
-            imageUriList.add(fullPhotoUri)
+            if (data!!.clipData != null) {
+                val count = data.clipData!!.itemCount
+                var currentItem = 0
+                while (currentItem < count) {
+                    val imageUri =
+                        data.clipData!!.getItemAt(currentItem).uri
+                    imageUriList.add(imageUri)
+                    //do something with the image (save it to some directory or whatever you need to do with it here)
+                    currentItem = currentItem + 1
+                }
+            } else {
+                val fullPhotoUri: Uri = data!!.data!!
+                imageUriList.add(fullPhotoUri)
+            }
 
 
-        }else{
+        } else {
             finish()
         }
         //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()

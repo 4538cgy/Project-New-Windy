@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" id="btn_add" width="72" height="72" viewBox="0 0 72 72">
+    <defs>
+        <clipPath id="clip-path">
+            <path id="사각형_19" fill="none" stroke="#d9d9d9" stroke-width="3px" d="M0 0H72V72H0z"/>
+        </clipPath>
+        <style>
+            .cls-3{fill:none;stroke:#d9d9d9;stroke-width:3px;stroke-linecap:round;stroke-miterlimit:10}
+        </style>
+    </defs>
+    <g id="그룹_22" clip-path="url(#clip-path)">
+        <circle id="타원_2" cx="34" cy="34" r="34" class="cls-3" transform="translate(2 2)"/>
+        <path id="선_16" d="M0 0L0 28" class="cls-3" transform="translate(36 22)"/>
+        <path id="선_17" d="M0 0L28 0" class="cls-3" transform="translate(22 36)"/>
+    </g>
+</svg>

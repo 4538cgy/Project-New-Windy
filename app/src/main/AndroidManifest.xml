@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/new_windy_logo_ver2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".newwindymall.NewWindyMain"></activity>
+        <activity android:name=".newwindymall.AddProductActivity"></activity>
+        <activity android:name=".newwindymall.NewWindyMain" />
         <activity android:name=".navigationlobby.newsearch.NewSearchActivity" />
 
         <meta-data
@@ -54,9 +55,7 @@
         <activity android:name=".navigationlobby.CommentActivity" />
         <activity android:name=".policy.PolicyActivity" />
         <activity android:name=".SearchAddressActivity" />
-        <activity android:name=".navigationlobby.AddContentActivity" >
-
-        </activity>
+        <activity android:name=".navigationlobby.AddContentActivity"></activity>
         <activity android:name=".SignUpActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".setting.SettingActivity" />

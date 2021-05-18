@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
@@ -31,6 +32,23 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             bottomSheetDialog.show(supportFragmentManager,"lol")
         }
 
+        binding.activityNewWindyMainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (!binding.activityNewWindyMainRecycler.canScrollVertically(1))
+                {
+                    println("끝에 도달")
+                }
+            }
+        })
+
+        //리사이클러뷰 초기화
+        initRecyclerView()
+    }
+
+    fun initRecyclerView(){
+        binding.activityNewWindyMainRecycler.adapter = MallMainRecyclerViewAdapter()
+        binding.activityNewWindyMainRecycler.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
     }
 
     override fun onBottomSheetButtonClick(text: String) {
@@ -54,7 +72,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             (holder as MallMainRecyclerViewHolder).onBind(recyclerList[position])
 
-            
+
         }
 
     }

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="itemnewwindymallmain"
+            type="com.uos.project_new_windy." />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        >
+        <ImageView
+            android:id="@+id/item_new_windy_mall_main_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/item_new_windy_mall_main_review_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="186개의 구매 리뷰 보러가기"
+            app:layout_constraintTop_toTopOf="@+id/item_new_windy_mall_main_bookmark"
+            app:layout_constraintBottom_toBottomOf="@+id/item_new_windy_mall_main_bookmark"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:textSize="16dp"
+            android:textColor="@color/colorBlack"
+            />
+
+        <ImageButton
+            android:id="@+id/item_new_windy_mall_main_bookmark"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_baseline_shopping_cart_24"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_new_windy_mall_main_imageview"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            />
+
+        <TextView
+            android:id="@+id/item_new_windy_mall_main_textview_title"
+            app:layout_constraintTop_toBottomOf="@+id/item_new_windy_mall_main_bookmark"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:layout_marginTop="8dp"
+            android:gravity="left"
+            android:text="블랙야크 롱다운 자켓 역시즌 \n우수한 보온성과 방풍기능"
+            android:textColor="@color/colorBlack"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/item_new_windy_mall_main_cost"
+            app:layout_constraintTop_toBottomOf="@+id/item_new_windy_mall_main_textview_title"
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="가격 100,000원"
+            android:textColor="@color/colorBlack"
+            android:textStyle="normal"
+            android:textSize="14dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+        <TextView
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/item_new_windy_mall_main_textview_title"
+            app:layout_constraintLeft_toRightOf="@+id/item_new_windy_mall_main_cost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="할인가 5,9800원"
+            android:id="@+id/item_new_windy_mall_main_sales_cost"
+            />
+
+
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

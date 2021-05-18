@@ -23,8 +23,8 @@ android {
         applicationId "com.uos.project_new_windy"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 28
-        versionName "2.08"
+        versionCode 30
+        versionName "3.00"
         multiDexEnabled true
 
 

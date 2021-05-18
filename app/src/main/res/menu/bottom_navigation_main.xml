@@ -14,9 +14,9 @@
         />
     <item
         android:id="@+id/action_photo"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_writeicon"
         android:enabled="true"
-        android:title="@string/upload_image"
+        android:title="@string/gallery"
         />
     <item
         android:id="@+id/action_favorite_alarm"

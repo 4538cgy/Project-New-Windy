@@ -30,6 +30,7 @@ import com.uos.project_new_windy.databinding.ActivityLobbyBinding
 import com.uos.project_new_windy.navigationlobby.*
 import com.uos.project_new_windy.navigationlobby.newsearch.NewSearchActivity
 import com.uos.project_new_windy.navigationlobby.newsearch.SearchActivity
+import com.uos.project_new_windy.newwindymall.NewWindyMain
 import com.uos.project_new_windy.util.FcmPush
 import com.uos.project_new_windy.util.SharedData
 import kotlinx.android.synthetic.main.activity_lobby.*
@@ -111,8 +112,18 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                 startActivity(Intent(binding.root.context,NewSearchActivity::class.java))
 
             }
-            R.id.action_photo -> {
+            /*
+            R.id.action_newwindy_mall ->{
+                
+            }
 
+             */
+
+
+            R.id.action_photo -> {
+                var intent = Intent(binding.root.context,NewWindyMain::class.java)
+                startActivity(intent)
+                /*
                 if(auth.currentUser != null) {
                     if (ContextCompat.checkSelfPermission(this,android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 
@@ -141,8 +152,12 @@ class LobbyActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItem
                     }
                 }
 
+                 */
+
                 return true
             }
+
+
             R.id.action_favorite_alarm -> {
                 /*
                 var alarmFragment = AlarmFragment()

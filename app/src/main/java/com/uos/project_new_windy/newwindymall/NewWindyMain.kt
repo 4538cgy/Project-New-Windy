@@ -2,6 +2,7 @@ package com.uos.project_new_windy.newwindymall
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,10 +10,14 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
 import com.uos.project_new_windy.databinding.ActivityNewWindyMainBinding
+import com.uos.project_new_windy.databinding.ItemNewWindyMallMainBinding
+import com.uos.project_new_windy.model.mallmodel.MallMainModel
 
 class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomSheetButtonClickListener {
 
     lateinit var binding : ActivityNewWindyMainBinding
+
+    private var recyclerList = arrayListOf<MallMainModel.Product>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,16 +39,28 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
 
     inner class MallMainRecyclerViewAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            TODO("Not yet implemented")
+            val binding = ItemNewWindyMallMainBinding.inflate(LayoutInflater.from(binding.root.context),parent,false)
+            return MallMainRecyclerViewHolder(binding)
         }
 
         override fun getItemCount(): Int {
-            TODO("Not yet implemented")
+            if (recyclerList != null){
+                return recyclerList.size
+            }else{
+                return 0
+            }
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            TODO("Not yet implemented")
+            (holder as MallMainRecyclerViewHolder).onBind(recyclerList[position])
+
+            
         }
 
+    }
+    class MallMainRecyclerViewHolder(val binding : ItemNewWindyMallMainBinding) : RecyclerView.ViewHolder(binding.root){
+        fun onBind(data : MallMainModel.Product){
+            binding.itemnewwindymallmain = data
+        }
     }
 }

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="itemnewwindymallmain"
-            type="com.uos.project_new_windy." />
+            type="com.uos.project_new_windy.model.mallmodel.MallMainModel.Product" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

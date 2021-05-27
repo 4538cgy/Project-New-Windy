@@ -19,6 +19,7 @@ import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
 import com.uos.project_new_windy.databinding.ActivityNewWindyMainBinding
 import com.uos.project_new_windy.databinding.ItemNewWindyMallMainBinding
+import com.uos.project_new_windy.model.chatmodel.UserModel
 import com.uos.project_new_windy.model.mallmodel.MallMainModel
 import java.text.DecimalFormat
 
@@ -27,6 +28,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     lateinit var binding : ActivityNewWindyMainBinding
     private var isOpenFAB = false
     private var recyclerList = arrayListOf<MallMainModel.Product>()
+    private var recyclerUidList = arrayListOf<String>()
     private val auth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,9 +88,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                 {
                     querySnapshot.forEach {
                         recyclerList.add(it.toObject(MallMainModel.Product::class.java))
-                    }
-                    recyclerList.forEach {
-                        println("으아아아아아아 ${it.toString()}")
+                        recyclerUidList.add(it.id)
                     }
                     binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
                 }
@@ -99,6 +99,9 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     fun initRecyclerView(){
         binding.activityNewWindyMainRecycler.adapter = MallMainRecyclerViewAdapter()
         binding.activityNewWindyMainRecycler.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
+    }
+    fun openCart(view : View){
+        startActivity(Intent(binding.root.context,MallCartActivity::class.java))
     }
 
     fun clickFab(view : View){
@@ -144,7 +147,9 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             (holder as MallMainRecyclerViewHolder).onBind(recyclerList[position])
 
             holder.binding.itemNewWindyMallMainBookmark.setOnClickListener {
+
                 Toast.makeText(holder.binding.root.context,"장바구니에 담겼습니다.",Toast.LENGTH_LONG).show()
+                addOnCart(recyclerUidList[position])
             }
             holder.binding.itemNewWindyMallMainTextviewTitle.text = recyclerList[position].title
 
@@ -159,6 +164,21 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                 .thumbnail(0.01f)
                 .into(holder.binding.itemNewWindyMallMainImageview)
 
+        }
+
+        fun addOnCart(productId : String){
+            val tsDocSubscribing = FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
+
+            FirebaseFirestore.getInstance().runTransaction {
+                transaction ->
+                var user = transaction.get(tsDocSubscribing).toObject(UserModel::class.java)
+
+                if (user == null){
+                    user = UserModel()
+                    
+                }
+
+            }
         }
 
     }

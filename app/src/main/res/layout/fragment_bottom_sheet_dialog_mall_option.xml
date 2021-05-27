@@ -33,6 +33,17 @@
                 app:layout_constraintTop_toTopOf="parent"
                 >
                 <TextView
+                    android:id="@+id/fragment_bottom_sheet_dialog_mall_option_textview_0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="전체상품"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:textColor="@color/colorBlack"
+                    android:layout_margin="12dp"
+                    android:onClick="@{fragmentbottomsheetdialogmall.groupClick}"
+                    />
+                <TextView
                     android:id="@+id/fragment_bottom_sheet_dialog_mall_option_textview_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

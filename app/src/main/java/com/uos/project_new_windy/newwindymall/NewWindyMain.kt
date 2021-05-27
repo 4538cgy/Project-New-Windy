@@ -7,16 +7,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
 import com.uos.project_new_windy.databinding.ActivityNewWindyMainBinding
 import com.uos.project_new_windy.databinding.ItemNewWindyMallMainBinding
 import com.uos.project_new_windy.model.mallmodel.MallMainModel
+import java.text.DecimalFormat
 
 class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomSheetButtonClickListener {
 
@@ -41,6 +45,8 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             binding.activityNewWindyMainButtonAddProduct.visibility = View.GONE
 
         }
+
+
         binding.activityNewWindyMainImagebuttonClose.setOnClickListener { finish() }
         binding.activityNewWindyMainImagebuttonOption.setOnClickListener {
             val bottomSheetDialog : BottomSheetDialogMallOption = BottomSheetDialogMallOption()
@@ -65,8 +71,29 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             }
         })
 
-        //리사이클러뷰 초기화
+        //리사이클러뷰 연결
         initRecyclerView()
+
+        //초기 데이터 읽어오기
+        initProductData()
+
+    }
+
+    fun initProductData(){
+        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null){
+                if (!querySnapshot.isEmpty)
+                {
+                    querySnapshot.forEach {
+                        recyclerList.add(it.toObject(MallMainModel.Product::class.java))
+                    }
+                    recyclerList.forEach {
+                        println("으아아아아아아 ${it.toString()}")
+                    }
+                    binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
+                }
+            }
+        }
     }
 
     fun initRecyclerView(){
@@ -116,6 +143,21 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             (holder as MallMainRecyclerViewHolder).onBind(recyclerList[position])
 
+            holder.binding.itemNewWindyMallMainBookmark.setOnClickListener {
+                Toast.makeText(holder.binding.root.context,"장바구니에 담겼습니다.",Toast.LENGTH_LONG).show()
+            }
+            holder.binding.itemNewWindyMallMainTextviewTitle.text = recyclerList[position].title
+
+
+            var format = DecimalFormat("###,###");
+
+            holder.binding.itemNewWindyMallMainCost.text = "가격 " + format.format(recyclerList[position].cost) + "원"
+
+            Glide.with(holder.binding.root.context)
+                .load(recyclerList[position].imageUrlList!![0])
+                .centerCrop()
+                .thumbnail(0.01f)
+                .into(holder.binding.itemNewWindyMallMainImageview)
 
         }
 

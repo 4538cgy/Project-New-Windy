@@ -57,6 +57,9 @@ class BottomSheetDialogMallOption : BottomSheetDialogFragment() {
 
 
         when(view.id){
+            binding.fragmentBottomSheetDialogMallOptionTextview0.id -> {
+                bottomSheetButtonClickListener.onBottomSheetButtonClick("전체상품")
+            }
             binding.fragmentBottomSheetDialogMallOptionTextview1.id -> {
                 bottomSheetButtonClickListener.onBottomSheetButtonClick("인기매물")
             }

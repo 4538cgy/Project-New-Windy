@@ -5,8 +5,10 @@ data class MallMainModel(
 ){
     data class Product(
         var title : String ? = null,
+        var explain : String ? = null,
         var cost : Long ? = null,
         var salesCost : Long ? = null,
+        var timestamp : Long ? = null,
         var imageUrlList : ArrayList<String> ? = null,
         var thumbnailUrl : String ? = null,
         var review : MutableMap<String,Review> = HashMap(),

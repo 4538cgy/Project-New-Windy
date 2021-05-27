@@ -42,6 +42,17 @@
                 android:layout_height="wrap_content"
                 android:text="제품 추가"
                 />
+
+            <Button
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/activity_add_product_button_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintRight_toRightOf="parent"
+                android:text="등록"
+                android:background="@android:color/transparent"
+                />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
@@ -80,6 +91,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/activity_add_product_textview_photolist"
                     android:layout_marginTop="8dp"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/activity_add_product_imageview_product_main_photo"
@@ -87,6 +99,74 @@
                     android:layout_height="wrap_content"
                     android:text="상품 사진 (10장 이내)"
                     />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/activity_add_photo_recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_product_textview_photolist"
+                    android:background="@drawable/background_line_rectangle_gray"
+                    />
+
+                <TextView
+                    android:id="@+id/activity_add_product_textview_explain"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_photo_recyclerview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상품 설명"
+                    />
+
+                <EditText
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_product_textview_explain"
+                    android:id="@+id/activity_add_product_edittext_explain"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:id="@+id/activity_add_product_textview_cost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="상품 가격"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_product_edittext_explain"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
+
+                <EditText
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_product_textview_cost"
+                    android:id="@+id/activity_add_product_edittext_cost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@+id/activity_add_product_edittext_cost"
+                    android:id="@+id/activity_add_product_textview_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="카테고리"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    />
+
+                <Button
+                    app:layout_constraintLeft_toRightOf="@+id/activity_add_product_textview_category"
+                    app:layout_constraintTop_toTopOf="@+id/activity_add_product_textview_category"
+                    app:layout_constraintBottom_toBottomOf="@+id/activity_add_product_textview_category"
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/activity_add_product_button_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="선택하기"
+                    android:background="@drawable/background_white_stroke_gray_4dp"
+                    />
+
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

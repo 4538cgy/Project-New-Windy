@@ -150,9 +150,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             (holder as MallMainRecyclerViewHolder).onBind(recyclerList[position])
 
             holder.binding.itemNewWindyMallMainBookmark.setOnClickListener {
-
-                Toast.makeText(holder.binding.root.context,"장바구니에 담겼습니다.",Toast.LENGTH_LONG).show()
-                addOnCart(recyclerUidList[position])
+                addOnCart(recyclerUidList[position],holder)
             }
             holder.binding.itemNewWindyMallMainTextviewTitle.text = recyclerList[position].title
 
@@ -167,9 +165,46 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                 .thumbnail(0.01f)
                 .into(holder.binding.itemNewWindyMallMainImageview)
 
+            if (recyclerList[position].review != null && recyclerList[position].review.size > 0) {
+                holder.binding.itemNewWindyMallMainReviewCount.text =
+                    recyclerList[position].review.keys.size.toString() + "개의 구매 리뷰 보러가기"
+            }else{
+                holder.binding.itemNewWindyMallMainReviewCount.text = "리뷰가 아직 없어요. 상품을 구매하고 리뷰를 작성해보세요."
+            }
+
+            holder.binding.itemNewWindyMallMainReviewCount.setOnClickListener {
+                if (recyclerList[position].review!=null && recyclerList[position].review.size >0){
+                    //리뷰 페이지로 이동
+                }
+            }
+
+
+
         }
 
-        fun addOnCart(productId : String){
+        fun checkFavorite(productId: String,holder: MallMainRecyclerViewHolder){
+            println("체크")
+            db.collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
+                .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                    if (documentSnapshot!=null){
+                        if (documentSnapshot.exists())
+                        {
+                            var data = documentSnapshot.toObject(MallMainModel.CartDTO::class.java)
+
+                            if (data!!.productId.keys.contains(productId)){
+                                println("있음")
+                                holder.binding.itemNewWindyMallMainBookmark.setBackgroundResource(R.drawable.ic_baseline_favorite_24)
+                            }else{
+                                println("없음")
+                                holder.binding.itemNewWindyMallMainBookmark.setBackgroundResource(R.drawable.ic_baseline_favorite_border_242)
+                            }
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
+        }
+
+        fun addOnCart(productId : String, holder: MallMainRecyclerViewHolder){
             println(" 장바구니 담기 실행 ")
             val tsDocSubscribing = db.collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
 
@@ -185,6 +220,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cart.productCount = 1
                     println("으아아 ${cart.toString()}")
                     transaction.set(tsDocSubscribing,cart)
+                    checkFavorite(productId = productId,holder = holder)
                     return@runTransaction
                 }
 
@@ -193,6 +229,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cart.productCount = cart.productCount!! - 1
                     cart.productId.remove(productId)
                     transaction.set(tsDocSubscribing,cart)
+                    checkFavorite(productId = productId,holder = holder)
                     return@runTransaction
                 }else{
                     println("없음2")
@@ -200,6 +237,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cartDTO.productId.put(productId,true)
                     cartDTO.productCount = cartDTO.productCount!! + 1
                     transaction.set(tsDocSubscribing,cartDTO)
+                    checkFavorite(productId = productId,holder = holder)
                     return@runTransaction
                 }
 

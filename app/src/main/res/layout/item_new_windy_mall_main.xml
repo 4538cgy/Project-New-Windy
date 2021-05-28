@@ -30,7 +30,7 @@
             app:layout_constraintTop_toTopOf="@+id/item_new_windy_mall_main_bookmark"
             app:layout_constraintBottom_toBottomOf="@+id/item_new_windy_mall_main_bookmark"
             app:layout_constraintLeft_toLeftOf="parent"
-            android:textSize="16dp"
+            android:textSize="13dp"
             android:textColor="@color/colorBlack"
             />
 
@@ -38,7 +38,7 @@
             android:id="@+id/item_new_windy_mall_main_bookmark"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/ic_baseline_shopping_cart_24"
+            android:src="@drawable/ic_baseline_favorite_border_242"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/item_new_windy_mall_main_imageview"
             android:layout_marginTop="8dp"

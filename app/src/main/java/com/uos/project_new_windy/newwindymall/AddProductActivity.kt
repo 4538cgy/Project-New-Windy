@@ -2,6 +2,8 @@ package com.uos.project_new_windy.newwindymall
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -16,6 +18,7 @@ import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivityAddProductBinding
 import com.uos.project_new_windy.model.mallmodel.MallMainModel
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddSellContentActivityRecyclerViewAdapter
+import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.TimeUtil
 
 class AddProductActivity : AppCompatActivity() {
@@ -26,12 +29,25 @@ class AddProductActivity : AppCompatActivity() {
     private var imageUriList = arrayListOf<Uri>()
     private var imageDownLoadUriList = arrayListOf<String>()
     private var count = 0
+
+    var progressDialog: ProgressDialogLoading? = null
+
     var PICK_IMAGE_FROM_ALBUM = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_add_product)
         binding.activityaddproduct = this
+
+
+        //로딩 초기화
+        progressDialog = ProgressDialogLoading(binding.root.context)
+
+        //프로그레스 투명하게
+        progressDialog!!.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+
+        //프로그레스 꺼짐 방지
+        progressDialog!!.setCancelable(false)
 
 
         binding.activityAddPhotoRecyclerview.adapter =
@@ -55,6 +71,7 @@ class AddProductActivity : AppCompatActivity() {
             }else if (binding.activityAddProductEdittextExplain.text.isEmpty()){
                 Toast.makeText(this,"상품 설명을 입력해주세요.", Toast.LENGTH_LONG).show()
             }else{
+                progressDialog!!.show()
                 contentUpload()
             }
         }
@@ -100,12 +117,14 @@ class AddProductActivity : AppCompatActivity() {
 
         uploadDB(data)
 
+
     }
     
     fun uploadDB(data : MallMainModel.Product){
         FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product")
             .add(data).addOnCompleteListener { 
                 println("성공")
+                progressDialog!!.dismiss()
                 finish()
             }.addOnFailureListener { 
                 println("실패")

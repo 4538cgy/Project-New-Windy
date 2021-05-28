@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
 import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
@@ -30,6 +31,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     private var recyclerList = arrayListOf<MallMainModel.Product>()
     private var recyclerUidList = arrayListOf<String>()
     private val auth = FirebaseAuth.getInstance()
+    private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +84,8 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     }
 
     fun initProductData(){
-        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").orderBy("timestamp",
+                Query.Direction.DESCENDING).limit(1).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
             if (querySnapshot != null){
                 if (!querySnapshot.isEmpty)
                 {
@@ -167,17 +170,43 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         }
 
         fun addOnCart(productId : String){
-            val tsDocSubscribing = FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
+            println(" 장바구니 담기 실행 ")
+            val tsDocSubscribing = db.collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
 
-            FirebaseFirestore.getInstance().runTransaction {
+            db.runTransaction {
                 transaction ->
-                var user = transaction.get(tsDocSubscribing).toObject(UserModel::class.java)
-
-                if (user == null){
-                    user = UserModel()
-                    
+                var cart = transaction.get(tsDocSubscribing).toObject(MallMainModel.CartDTO::class.java)
+                println("카트트트트트 ${cart.toString()}")
+                println("유저 아이디 ${FirebaseAuth.getInstance().currentUser!!.uid}")
+                if (cart == null){
+                    println("없음")
+                    cart = MallMainModel.CartDTO()
+                    cart.productId.put(productId,true)
+                    cart.productCount = 1
+                    println("으아아 ${cart.toString()}")
+                    transaction.set(tsDocSubscribing,cart)
+                    return@runTransaction
                 }
 
+                if (cart!!.productId.containsKey(productId)){
+                    println("있는데 중복됨")
+                    cart.productCount = cart.productCount!! - 1
+                    cart.productId.remove(productId)
+                    transaction.set(tsDocSubscribing,cart)
+                    return@runTransaction
+                }else{
+                    println("없음2")
+                    var cartDTO = MallMainModel.CartDTO()
+                    cartDTO.productId.put(productId,true)
+                    cartDTO.productCount = cartDTO.productCount!! + 1
+                    transaction.set(tsDocSubscribing,cartDTO)
+                    return@runTransaction
+                }
+
+            }.addOnSuccessListener {
+                println("완료")
+            }.addOnFailureListener {
+                println("실패 ${it.toString()}")
             }
         }
 

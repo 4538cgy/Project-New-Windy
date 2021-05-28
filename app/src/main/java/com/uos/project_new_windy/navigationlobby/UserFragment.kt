@@ -300,7 +300,8 @@ class UserFragment : Fragment() {
 
                     imageUrl = url.toString()
 
-                    Glide.with(activity!!.applicationContext)
+
+                    Glide.with(binding.root.context)
                         .load(url)
                         .apply(
                             RequestOptions().centerCrop()

@@ -2,7 +2,14 @@ package com.uos.project_new_windy.model.mallmodel
 
 data class MallMainModel(
     var title : String ? =null
-){
+)
+
+{
+    data class CartDTO(
+        var productCount : Long ? = 0,
+        var productId : MutableMap<String,Boolean> = HashMap()
+    )
+
     data class Product(
         var title : String ? = null,
         var explain : String ? = null,

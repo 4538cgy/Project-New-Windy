@@ -32,6 +32,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     private var recyclerUidList = arrayListOf<String>()
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
+    private var lastvisible : Long ? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("jOMoLi0YgZUJUDypzaXSVQ84cEU2")
             || FirebaseAuth.getInstance().currentUser?.email.toString().equals("hG9W4uIR4dOmLweh2XOHMs9HbBE3")
             || FirebaseAuth.getInstance().currentUser?.email.toString().equals("ay72HtBWTWetM9JYE2VKYlmbYqh2")
-            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("dZvFUbfbL9NZ5SYygiFsmSrAmM63"))
+            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("szp72PSHHKakvZLyEMMyBQBqMV83"))
         {
             binding.activityNewWindyMainButtonAddProduct.visibility = View.VISIBLE
         }else {
@@ -65,23 +66,52 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             }
         }
 
-        binding.activityNewWindyMainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (!binding.activityNewWindyMainRecycler.canScrollVertically(1))
-                {
-                    println("끝에 도달")
-                }
-            }
-        })
-
         //리사이클러뷰 연결
         initRecyclerView()
 
         //초기 데이터 읽어오기
         initProductData()
 
+        binding.activityNewWindyMainRecycler.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                var j = (binding.activityNewWindyMainRecycler.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                println("마지막 데이터 $j")
+                if (!binding.activityNewWindyMainRecycler.canScrollVertically(1))
+                {
+                    println("추가로 가져오기")
+                    getMoreData()
+                }
+            }
+        })
+
+
+
     }
+
+    fun getMoreData(){
+        recyclerUidList.forEach {
+            println("으아아아 $it")
+        }
+        println("라스트 비지블 $lastvisible")
+        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").orderBy("timestamp",
+            Query.Direction.DESCENDING).startAfter(lastvisible).limit(2).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null){
+                if (!querySnapshot.isEmpty)
+                {
+                    println("가져오기 성공")
+                    querySnapshot.forEach {
+                        recyclerList.add(it.toObject(MallMainModel.Product::class.java))
+                        recyclerUidList.add(it.id)
+                        lastvisible = recyclerList[recyclerList.size - 1].timestamp
+                    }
+                    binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
+                }
+            }
+        }
+    }
+
+
 
     fun initProductData(){
         FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").orderBy("timestamp",
@@ -92,6 +122,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     querySnapshot.forEach {
                         recyclerList.add(it.toObject(MallMainModel.Product::class.java))
                         recyclerUidList.add(it.id)
+                        lastvisible = recyclerList[recyclerList.size - 1].timestamp
                     }
                     binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
                 }
@@ -107,7 +138,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         startActivity(Intent(binding.root.context,MallCartActivity::class.java))
     }
     fun openOrderInfo(view : View){
-
+        startActivity(Intent(binding.root.context,OrderInfoActivity::class.java))
     }
 
     fun clickFab(view : View){
@@ -168,6 +199,13 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             }
             holder.binding.itemNewWindyMallMainTextviewTitle.text = recyclerList[position].title
 
+            holder.itemView.setOnClickListener {
+                var intent = Intent(binding.root.context,MallDetailProductActivity::class.java)
+                intent.apply {
+                    putExtra("product",recyclerUidList[position])
+                    holder.binding.root.context.startActivity(intent)
+                }
+            }
 
             var format = DecimalFormat("###,###");
 
@@ -192,11 +230,11 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                 }
             }
 
-
+            checkFavorite(recyclerUidList[position],holder,true)
 
         }
 
-        fun checkFavorite(productId: String,holder: MallMainRecyclerViewHolder){
+        fun checkFavorite(productId: String,holder: MallMainRecyclerViewHolder, check: Boolean){
             println("체크")
             db.collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("cart")
                 .addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
@@ -212,7 +250,9 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                                 println("없음")
                                 holder.binding.itemNewWindyMallMainBookmark.setBackgroundResource(R.drawable.ic_baseline_favorite_border_242)
                             }
-                            notifyDataSetChanged()
+                            if (!check) {
+                                notifyDataSetChanged()
+                            }
                         }
                     }
                 }
@@ -234,7 +274,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cart.productCount = 1
                     println("으아아 ${cart.toString()}")
                     transaction.set(tsDocSubscribing,cart)
-                    checkFavorite(productId = productId,holder = holder)
+                    checkFavorite(productId = productId,holder = holder, check = false)
                     return@runTransaction
                 }
 
@@ -243,7 +283,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cart.productCount = cart.productCount!! - 1
                     cart.productId.remove(productId)
                     transaction.set(tsDocSubscribing,cart)
-                    checkFavorite(productId = productId,holder = holder)
+                    checkFavorite(productId = productId,holder = holder, check = false)
                     return@runTransaction
                 }else{
                     println("없음2")
@@ -251,7 +291,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     cartDTO.productId.put(productId,true)
                     cartDTO.productCount = cartDTO.productCount!! + 1
                     transaction.set(tsDocSubscribing,cartDTO)
-                    checkFavorite(productId = productId,holder = holder)
+                    checkFavorite(productId = productId,holder = holder, check = false)
                     return@runTransaction
                 }
 

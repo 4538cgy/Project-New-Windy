@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.newwindymall
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ class MallCartActivity : AppCompatActivity() {
 
     private var recyclerDataList = arrayListOf<MallMainModel.Product>()
     private var recyclerIdList = arrayListOf<String>()
+    private var orderList = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,14 @@ class MallCartActivity : AppCompatActivity() {
         binding.activitymallcart = this
 
         binding.activityMallCartImagebuttonClose.setOnClickListener { finish() }
-        binding.activityMallCartButtonOrder.setOnClickListener {  }
+        binding.activityMallCartButtonOrder.setOnClickListener {
+            var intent = Intent(binding.root.context,BillActivity::class.java)
+            intent.apply {
+                putExtra("productList",orderList)
+                startActivity(intent)
+            }
+
+        }
         binding.activityMallCartRecyclerview.adapter = CartRecyclerViewAdapter()
         binding.activityMallCartRecyclerview.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
 
@@ -92,6 +101,14 @@ class MallCartActivity : AppCompatActivity() {
                 .centerInside()
                 .thumbnail(0.01f)
                 .into(holder.binding.itemMallCartImageviewProductImage)
+
+            holder.binding.itemMallCartCheckbox.setOnCheckedChangeListener { buttonView, isChecked ->
+                if (isChecked){
+                    orderList.add(recyclerIdList[position])
+                }else{
+                    orderList.remove(recyclerIdList[position])
+                }
+            }
 
         }
 

@@ -19,7 +19,8 @@ data class MallMainModel(
         var imageUrlList : ArrayList<String> ? = null,
         var thumbnailUrl : String ? = null,
         var review : MutableMap<String,Review> = HashMap(),
-        var qna : MutableMap<String,Qna> = HashMap()
+        var qna : MutableMap<String,Qna> = HashMap(),
+        var buyer : MutableMap<String,Boolean> = HashMap()
     ){
         data class Review(
             var imageUrlList: ArrayList<String>? = null,

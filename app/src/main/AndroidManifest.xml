@@ -14,7 +14,8 @@
         android:roundIcon="@drawable/new_windy_logo_ver2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".newwindymall.MallDetailProductActivity"></activity>
+        <activity android:name=".newwindymall.BillActivity"></activity>
+        <activity android:name=".newwindymall.MallDetailProductActivity" />
         <activity android:name=".newwindymall.MallCartActivity" />
         <activity android:name=".newwindymall.AddProductActivity" />
         <activity android:name=".newwindymall.NewWindyMain" />

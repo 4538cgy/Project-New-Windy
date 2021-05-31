@@ -106,23 +106,37 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     fun openCart(view : View){
         startActivity(Intent(binding.root.context,MallCartActivity::class.java))
     }
+    fun openOrderInfo(view : View){
+
+    }
 
     fun clickFab(view : View){
         isOpenFAB = if (!isOpenFAB) {
+            ObjectAnimator.ofFloat(binding.activityNewWindyMainTextviewOrderInfo, "translationY", -400f)
+                .apply { start() }
+
+            ObjectAnimator.ofFloat(binding.activityNewWindyMainFabOrderInfo, "translationY", -400f)
+                .apply { start() }
             ObjectAnimator.ofFloat(binding.activityNewWindyMainFabCart, "translationY", -200f)
                 .apply { start() }
             ObjectAnimator.ofFloat(binding.activityNewWindyMainTextviewCart, "translationY", -200f)
                 .apply { start() }
-
+            binding.activityNewWindyMainTextviewOrderInfo.visibility = View.VISIBLE
             binding.activityNewWindyMainTextviewCart.visibility = View.VISIBLE
             true
         } else {
+            ObjectAnimator.ofFloat(binding.activityNewWindyMainTextviewOrderInfo, "translationY", -0f)
+                .apply { start() }
+
+            ObjectAnimator.ofFloat(binding.activityNewWindyMainFabOrderInfo, "translationY", -0f)
+                .apply { start() }
             ObjectAnimator.ofFloat(binding.activityNewWindyMainTextviewCart, "translationY", -0f)
                 .apply { start() }
 
             ObjectAnimator.ofFloat(binding.activityNewWindyMainFabCart, "translationY", -0f)
                 .apply { start() }
 
+            binding.activityNewWindyMainTextviewOrderInfo.visibility = View.INVISIBLE
             binding.activityNewWindyMainTextviewCart.visibility = View.INVISIBLE
             false
         }

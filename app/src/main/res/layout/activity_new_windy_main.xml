@@ -113,6 +113,34 @@
             />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/activity_new_windy_main_fab_order_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@+id/activity_new_windy_main_fab_main"
+            app:layout_constraintRight_toRightOf="@+id/activity_new_windy_main_fab_main"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_new_windy_main_fab_main"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_new_windy_main_fab_main"
+            android:backgroundTint="@color/colorWhite"
+            app:borderWidth="0dp"
+            android:src="@drawable/ic_baseline_shopping_cart_24"
+            app:fabSize="mini"
+            android:onClick="@{activitynewwindymain::openOrderInfo}"
+            />
+
+        <TextView
+            android:id="@+id/activity_new_windy_main_textview_order_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintRight_toLeftOf="@+id/activity_new_windy_main_fab_order_info"
+            app:layout_constraintTop_toTopOf="@+id/activity_new_windy_main_fab_order_info"
+            app:layout_constraintBottom_toBottomOf="@+id/activity_new_windy_main_fab_order_info"
+            android:layout_marginRight="8dp"
+            android:text="주문 정보"
+            android:visibility="invisible"
+            />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/activity_new_windy_main_fab_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -122,7 +150,6 @@
             app:layout_constraintBottom_toBottomOf="@+id/activity_new_windy_main_fab_main"
             android:backgroundTint="@color/colorWhite"
             app:borderWidth="0dp"
-
             android:src="@drawable/ic_baseline_shopping_cart_24"
             app:fabSize="mini"
             android:onClick="@{activitynewwindymain::openCart}"

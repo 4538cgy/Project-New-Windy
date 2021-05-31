@@ -34,13 +34,20 @@ class MallCartActivity : AppCompatActivity() {
 
         binding.activityMallCartImagebuttonClose.setOnClickListener { finish() }
         binding.activityMallCartButtonOrder.setOnClickListener {
-            var intent = Intent(binding.root.context,BillActivity::class.java)
-            intent.apply {
-                putExtra("productList",orderList)
-                startActivity(intent)
-            }
+            if (orderList.size > 0) {
 
+                var intent = Intent(binding.root.context, BillActivity::class.java)
+                intent.apply {
+                    putExtra("productList", orderList)
+                    startActivity(intent)
+                }
+
+
+            } else {
+                Toast.makeText(binding.root.context, "상품을 하나 이상 선택해주세요.", Toast.LENGTH_LONG).show()
+            }
         }
+
         binding.activityMallCartRecyclerview.adapter = CartRecyclerViewAdapter()
         binding.activityMallCartRecyclerview.layoutManager = LinearLayoutManager(binding.root.context,LinearLayoutManager.VERTICAL,false)
 

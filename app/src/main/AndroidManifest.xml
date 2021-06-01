@@ -14,7 +14,9 @@
         android:roundIcon="@drawable/new_windy_logo_ver2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".newwindymall.ReviewActivity"></activity>
+        <activity android:name=".newwindymall.SelectReviewProductActivity"></activity>
+        <activity android:name=".newwindymall.AddReviewActivity" />
+        <activity android:name=".newwindymall.ReviewActivity" />
         <activity android:name=".newwindymall.OrderInfoActivity" />
         <activity android:name=".newwindymall.OrderCompleteActivity" />
         <activity android:name=".newwindymall.BillActivity" />

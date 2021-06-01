@@ -278,6 +278,8 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
 
             holder.binding.itemNewWindyMallMainCost.text = "가격 " + format.format(recyclerList[position].cost) + "원"
 
+
+
             Glide.with(holder.binding.root.context)
                 .load(recyclerList[position].imageUrlList!![0])
                 .centerCrop()
@@ -294,6 +296,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             holder.binding.itemNewWindyMallMainReviewCount.setOnClickListener {
                 if (recyclerList[position].review!=null && recyclerList[position].review.size >0){
                     //리뷰 페이지로 이동
+                    println("리뷰 클릭")
                     var intent = Intent(binding.root.context,ReviewActivity::class.java)
                     intent.apply {
                         putExtra("product",recyclerUidList[position])

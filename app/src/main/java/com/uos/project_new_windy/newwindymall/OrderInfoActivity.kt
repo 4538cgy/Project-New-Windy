@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.newwindymall
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -82,6 +83,18 @@ class OrderInfoActivity : AppCompatActivity() {
             holder.binding.itemOrderHistoryOrderTextviewTimestamp.text = TimeUtil().formatTimeString(
                 recyclerList[position].timestamp!!
             )
+            
+            holder.binding.itemOrderHistoryButtonReview.setOnClickListener {
+                var intent = Intent(binding.root.context,SelectReviewProductActivity::class.java)
+                intent.apply {
+                    var productIdList = arrayListOf<String>()
+                    recyclerList[position].productList.forEach {
+                        productIdList.add(it.key)
+                    }
+                    putExtra("product",productIdList)
+                    startActivity(intent)
+                }
+            }
             
 
 

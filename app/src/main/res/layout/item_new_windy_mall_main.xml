@@ -25,7 +25,7 @@
         <TextView
             android:id="@+id/item_new_windy_mall_main_review_count"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="186개의 구매 리뷰 보러가기"
             app:layout_constraintTop_toTopOf="@+id/item_new_windy_mall_main_bookmark"
             app:layout_constraintBottom_toBottomOf="@+id/item_new_windy_mall_main_bookmark"

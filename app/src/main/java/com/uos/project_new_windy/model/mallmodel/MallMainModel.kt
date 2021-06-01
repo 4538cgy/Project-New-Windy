@@ -15,6 +15,7 @@ data class MallMainModel(
         var phoneNumber: String? = null,
         var deliverOption: String? = null,
         var cost: Long? = null,
+        var deliverComplete : Boolean ?= false,
         var productList : MutableMap<String,Product> = hashMapOf()
     )
 

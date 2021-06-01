@@ -45,6 +45,7 @@
                 />
 
             <TextView
+                android:id="@+id/activity_new_windy_main_textview_category"
                 app:layout_constraintLeft_toRightOf="@+id/activity_new_windy_main_textview_title"
                 app:layout_constraintTop_toTopOf="@+id/activity_new_windy_main_textview_title"
                 app:layout_constraintBottom_toBottomOf="@+id/activity_new_windy_main_textview_title"

@@ -33,6 +33,8 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     private val auth = FirebaseAuth.getInstance()
     private val db = FirebaseFirestore.getInstance()
     private var lastvisible : Long ? = null
+    private var category : String ? = null
+    private var checkGetAllData : Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +51,12 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         }else {
             binding.activityNewWindyMainButtonAddProduct.visibility = View.GONE
 
+        }
+
+        binding.activityNewWindyMainTextviewCategory.setOnClickListener {
+            val bottomSheetDialog : BottomSheetDialogMallOption = BottomSheetDialogMallOption()
+
+            bottomSheetDialog.show(supportFragmentManager,"lol")
         }
 
 
@@ -80,7 +88,11 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                 if (!binding.activityNewWindyMainRecycler.canScrollVertically(1))
                 {
                     println("추가로 가져오기")
-                    getMoreData()
+                    if (checkGetAllData) {
+                        getMoreData()
+                    }else{
+                        getMoreCategoryData()
+                    }
                 }
             }
         })
@@ -111,6 +123,48 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
         }
     }
 
+    fun getCategoryData(){
+        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").orderBy("timestamp",Query.Direction.DESCENDING)
+            .whereEqualTo("category",category).limit(1).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                println("카테고리 데이터 조회 시작")
+                if (querySnapshot != null){
+                    if (!querySnapshot.isEmpty){
+                        println("아아아아")
+
+                        querySnapshot.forEach {
+                            recyclerList.add(it.toObject(MallMainModel.Product::class.java))
+                            recyclerUidList.add(it.id)
+                            lastvisible = recyclerList[recyclerList.size - 1].timestamp
+                        }
+                        binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
+                    }
+                }else{
+                    println("가져ㅑ올 데이터가음슴")
+                    recyclerList.clear()
+                    recyclerUidList.clear()
+                    binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
+                }
+            }
+    }
+
+    fun getMoreCategoryData(){
+        FirebaseFirestore.getInstance().collection("Mall").document("product").collection("product").orderBy("timestamp",Query.Direction.DESCENDING)
+            .whereEqualTo("category",category).startAfter(lastvisible).limit(1).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                if (querySnapshot != null){
+                    if (!querySnapshot.isEmpty){
+                        recyclerList.clear()
+                        recyclerUidList.clear()
+                        querySnapshot.forEach {
+                            recyclerList.add(it.toObject(MallMainModel.Product::class.java))
+                            recyclerUidList.add(it.id)
+                            lastvisible = recyclerList[recyclerList.size - 1].timestamp
+                        }
+                        binding.activityNewWindyMainRecycler.adapter!!.notifyDataSetChanged()
+                    }
+                }
+            }
+    }
+
 
 
     fun initProductData(){
@@ -119,7 +173,10 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             if (querySnapshot != null){
                 if (!querySnapshot.isEmpty)
                 {
+                    recyclerList.clear()
+                    recyclerUidList.clear()
                     querySnapshot.forEach {
+
                         recyclerList.add(it.toObject(MallMainModel.Product::class.java))
                         recyclerUidList.add(it.id)
                         lastvisible = recyclerList[recyclerList.size - 1].timestamp
@@ -174,7 +231,17 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
     }
 
     override fun onBottomSheetButtonClick(text: String) {
-        println("으에에 $text")
+        category = text
+        binding.activityNewWindyMainTextviewCategory.text = category
+        if (category == "전체상품"){
+            println("전체 상품 조회")
+            checkGetAllData = true
+            initProductData()
+        }else{
+            println(category + "상품 조회")
+            checkGetAllData = false
+            getCategoryData()
+        }
     }
 
     inner class MallMainRecyclerViewAdapter() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -227,6 +294,11 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
             holder.binding.itemNewWindyMallMainReviewCount.setOnClickListener {
                 if (recyclerList[position].review!=null && recyclerList[position].review.size >0){
                     //리뷰 페이지로 이동
+                    var intent = Intent(binding.root.context,ReviewActivity::class.java)
+                    intent.apply {
+                        putExtra("product",recyclerUidList[position])
+                        startActivity(intent)
+                    }
                 }
             }
 
@@ -287,10 +359,9 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
                     return@runTransaction
                 }else{
                     println("없음2")
-                    var cartDTO = MallMainModel.CartDTO()
-                    cartDTO.productId.put(productId,true)
-                    cartDTO.productCount = cartDTO.productCount!! + 1
-                    transaction.set(tsDocSubscribing,cartDTO)
+                    cart.productId.put(productId,true)
+                    cart.productCount = cart.productCount!! + 1
+                    transaction.set(tsDocSubscribing,cart)
                     checkFavorite(productId = productId,holder = holder, check = false)
                     return@runTransaction
                 }

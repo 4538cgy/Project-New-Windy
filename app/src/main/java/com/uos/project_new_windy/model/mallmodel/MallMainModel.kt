@@ -32,6 +32,8 @@ data class MallMainModel(
         var buyer: MutableMap<String, Boolean> = HashMap()
     ) {
         data class Review(
+            var uid : String ? = null,
+            var point : Long ? = null,
             var imageUrlList: ArrayList<String>? = null,
             var comment: String? = null,
             var timestamp: Long? = null,

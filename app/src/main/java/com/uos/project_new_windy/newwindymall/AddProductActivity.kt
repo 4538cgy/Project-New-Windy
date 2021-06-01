@@ -15,13 +15,14 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
 import com.uos.project_new_windy.R
+import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
 import com.uos.project_new_windy.databinding.ActivityAddProductBinding
 import com.uos.project_new_windy.model.mallmodel.MallMainModel
 import com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter.AddSellContentActivityRecyclerViewAdapter
 import com.uos.project_new_windy.util.ProgressDialogLoading
 import com.uos.project_new_windy.util.TimeUtil
 
-class AddProductActivity : AppCompatActivity() {
+class AddProductActivity : AppCompatActivity(), BottomSheetDialogMallOption.BottomSheetButtonClickListener {
 
     lateinit var binding : ActivityAddProductBinding
 
@@ -29,6 +30,7 @@ class AddProductActivity : AppCompatActivity() {
     private var imageUriList = arrayListOf<Uri>()
     private var imageDownLoadUriList = arrayListOf<String>()
     private var count = 0
+    private var category : String ? = null
 
     var progressDialog: ProgressDialogLoading? = null
 
@@ -48,6 +50,12 @@ class AddProductActivity : AppCompatActivity() {
 
         //프로그레스 꺼짐 방지
         progressDialog!!.setCancelable(false)
+
+        binding.activityAddProductButtonCategory.setOnClickListener {
+            val bottomSheetDialog : BottomSheetDialogMallOption = BottomSheetDialogMallOption()
+
+            bottomSheetDialog.show(supportFragmentManager,"lol")
+        }
 
 
         binding.activityAddPhotoRecyclerview.adapter =
@@ -70,11 +78,19 @@ class AddProductActivity : AppCompatActivity() {
                 Toast.makeText(this, "상품 제목을 입력해주세요.", Toast.LENGTH_LONG).show()
             }else if (binding.activityAddProductEdittextExplain.text.isEmpty()){
                 Toast.makeText(this,"상품 설명을 입력해주세요.", Toast.LENGTH_LONG).show()
-            }else{
+            }else if (category == null){
+                Toast.makeText(this,"카테고리를 선택해주세요.",Toast.LENGTH_LONG).show()
+            }
+            else{
                 progressDialog!!.show()
                 contentUpload()
             }
         }
+    }
+
+    override fun onBottomSheetButtonClick(text: String) {
+        category = text
+        binding.activityAddProductCategory.text = category
     }
 
     fun contentUpload(){
@@ -110,6 +126,7 @@ class AddProductActivity : AppCompatActivity() {
         data.cost = binding.activityAddProductEdittextCost.text.toString().toLong()
         data.title = binding.activityAddProductEdittextTitle.text.toString()
         data.explain = binding.activityAddProductEdittextExplain.text.toString()
+        data.category = category
         if (imageDownLoadUriList != null){
             data.imageUrlList = imageDownLoadUriList
         }

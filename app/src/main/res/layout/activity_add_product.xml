@@ -178,6 +178,18 @@
                     android:background="@drawable/background_white_stroke_gray_4dp"
                     />
 
+                <TextView
+                    android:id="@+id/activity_add_product_category"
+                    app:layout_constraintTop_toTopOf="@+id/activity_add_product_button_category"
+                    app:layout_constraintBottom_toBottomOf="@+id/activity_add_product_button_category"
+                    app:layout_constraintLeft_toRightOf="@+id/activity_add_product_button_category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="미선택"
+                    android:layout_marginLeft="12dp"
+                    android:textColor="@color/colorBlack"
+                    />
+
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

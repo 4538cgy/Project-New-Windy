@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.ActivitySelectReviewProductBinding
@@ -78,12 +79,15 @@ class SelectReviewProductActivity : AppCompatActivity() {
             holder.binding.itemSelectProductReviewButtonReviewWrite.setOnClickListener {
                 
                 //이미 리뷰를 작성했는지 검증해야ㅕ함
-                
-                var intent = Intent(binding.root.context,ReviewActivity::class.java)
-                intent.apply {
-                    putExtra("product",productIdList[position])
-                    startActivity(intent)
-                    finish()
+                if (!recyclerList[position].review.containsKey(FirebaseAuth.getInstance().currentUser!!.uid)) {
+                    var intent = Intent(binding.root.context, AddReviewActivity::class.java)
+                    intent.apply {
+                        putExtra("product", productIdList[position])
+                        startActivity(intent)
+                        finish()
+                    }
+                }else{
+                    //이미 리뷰를 작성해서 작성 못함 ㅅㄱ
                 }
             }
 

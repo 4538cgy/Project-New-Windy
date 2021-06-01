@@ -34,12 +34,10 @@ data class MallMainModel(
     ) {
         data class Review(
             var uid : String ? = null,
-            var point : Long ? = null,
             var imageUrlList: ArrayList<String>? = null,
             var comment: String? = null,
             var timestamp: Long? = null,
-            var rating: Long? = null,
-            var commentUid: String? = null
+            var rating: Long? = null
         )
 
         data class Qna(

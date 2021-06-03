@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin_twice_and_half">56dp</dimen>
+    <dimen name="margin_twice">32dp</dimen>
+    <dimen name="margin_twice_half">4dp</dimen>
+    <dimen name="margin_default">16dp</dimen>
+    <dimen name="margin_half">8dp</dimen>
+    <dimen name="imagebutton_20dp">20dp</dimen>
+    <dimen name="imagebutton_45dp">45dp</dimen>
+    <dimen name="pageMargin">200dp</dimen>
+    <dimen name="pageWidth">12dp</dimen>
+</resources>

@@ -39,6 +39,7 @@ class MallCartActivity : AppCompatActivity() {
                 var intent = Intent(binding.root.context, BillActivity::class.java)
                 intent.apply {
                     putExtra("productList", orderList)
+                    putExtra("type","multi")
                     startActivity(intent)
                 }
 

@@ -17,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.bottomsheet.BottomSheetDialogWriteCategory
+import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallAdmin
 import com.uos.project_new_windy.bottomsheet.malloption.BottomSheetDialogMallOption
 import com.uos.project_new_windy.databinding.ActivityNewWindyMainBinding
 import com.uos.project_new_windy.databinding.ItemNewWindyMallMainBinding
@@ -62,7 +63,7 @@ class NewWindyMain : AppCompatActivity(), BottomSheetDialogMallOption.BottomShee
 
         binding.activityNewWindyMainImagebuttonClose.setOnClickListener { finish() }
         binding.activityNewWindyMainImagebuttonOption.setOnClickListener {
-            val bottomSheetDialog : BottomSheetDialogMallOption = BottomSheetDialogMallOption()
+            val bottomSheetDialog : BottomSheetDialogMallAdmin = BottomSheetDialogMallAdmin()
 
             bottomSheetDialog.show(supportFragmentManager,"lol")
         }

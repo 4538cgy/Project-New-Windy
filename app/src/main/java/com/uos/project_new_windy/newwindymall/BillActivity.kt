@@ -31,8 +31,14 @@ class BillActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_bill)
 
-        orderProductList = intent.getStringArrayListExtra("productList")
 
+        if (intent.getStringExtra("type") == "single"){
+
+            orderProductList.add(intent.getStringExtra("product"))
+        }else{
+            orderProductList = intent.getStringArrayListExtra("productList")
+
+        }
 
         binding.activityBillButtonOrderComplete.setOnClickListener {
             setOrderData()

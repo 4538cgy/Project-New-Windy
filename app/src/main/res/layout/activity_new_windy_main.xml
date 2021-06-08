@@ -110,6 +110,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/activity_new_windy_main_fab_cart"
             android:layout_marginRight="8dp"
             android:text="장바구니"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
             android:visibility="invisible"
             />
 
@@ -129,6 +131,8 @@
             />
 
         <TextView
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
             android:id="@+id/activity_new_windy_main_textview_order_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

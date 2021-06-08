@@ -31,6 +31,18 @@
                 android:layout_margin="12dp"
                 android:text="주문 정보"
                 android:textSize="18dp"
+                android:onClick="@{fragmentbottomsheetdialogmalladmin.groupClick}"
+                />
+
+            <TextView
+                android:id="@+id/fragment_bottom_sheet_dialog_mall_admin_textview_admin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorBlack"
+                android:layout_margin="12dp"
+                android:text="관리자"
+                android:textSize="18dp"
+                android:onClick="@{fragmentbottomsheetdialogmalladmin.groupClick}"
                 />
 
         </LinearLayout>

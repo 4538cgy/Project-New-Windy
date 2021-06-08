@@ -1,6 +1,7 @@
 package com.uos.project_new_windy.bottomsheet.malloption
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.uos.project_new_windy.R
 import com.uos.project_new_windy.databinding.FragmentBoottomSheetDialogMallAdminBinding
+import com.uos.project_new_windy.newwindymall.MallAdminActivity
 import java.lang.ClassCastException
 
 
@@ -55,6 +57,9 @@ class BottomSheetDialogMallAdmin : BottomSheetDialogFragment() {
         when(view.id){
             binding.fragmentBottomSheetDialogMallAdminTextviewOrderinfo.id -> {
                 println("주문 정보")
+            }
+            binding.fragmentBottomSheetDialogMallAdminTextviewAdmin.id ->{
+                startActivity(Intent(binding.root.context,MallAdminActivity::class.java))
             }
         }
         dismiss()

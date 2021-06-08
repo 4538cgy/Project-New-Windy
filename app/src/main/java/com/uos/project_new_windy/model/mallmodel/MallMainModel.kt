@@ -8,6 +8,7 @@ data class MallMainModel(
         var productId: MutableMap<String, Boolean> = HashMap()
     )
     data class OrderHistory(
+        var orderName : String ? = null,
         var timestamp: Long? = null,
         var orderUid: String? = null,
         var address: String? = null,

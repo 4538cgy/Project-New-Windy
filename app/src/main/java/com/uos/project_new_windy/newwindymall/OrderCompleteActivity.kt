@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.newwindymall
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -17,7 +18,12 @@ class OrderCompleteActivity : AppCompatActivity() {
 
 
         binding.activityOrderCompleteButtonBack.setOnClickListener { finish() }
-        binding.activityOrderCompleteButtonContinue.setOnClickListener {  }
-        binding.activityOrderCompleteOrderInfo.setOnClickListener {  }
+        binding.activityOrderCompleteButtonContinue.setOnClickListener {
+            startActivity(Intent(binding.root.context,NewWindyMain::class.java))
+            finish()
+        }
+        binding.activityOrderCompleteOrderInfo.setOnClickListener {
+            startActivity(Intent(binding.root.context,OrderInfoActivity::class.java))
+            finish() }
     }
 }

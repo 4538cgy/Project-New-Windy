@@ -23,6 +23,7 @@ class OrderInfoActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityOrderInfoBinding
     private var recyclerList = arrayListOf<MallMainModel.OrderHistory>()
+    private var recyclerIdList = arrayListOf<String>()
     private val db = FirebaseFirestore.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +47,9 @@ class OrderInfoActivity : AppCompatActivity() {
                         var data = querySnapshot.toObjects(MallMainModel.OrderHistory::class.java)
                         data.forEach {
                             recyclerList.add(it)
+                        }
+                        querySnapshot.documents.forEach {
+                            recyclerIdList.add(it.id)
                         }
                         binding.activityOrderInfoRecyclerview.adapter!!.notifyDataSetChanged()
                     }
@@ -79,6 +83,16 @@ class OrderInfoActivity : AppCompatActivity() {
                 return@forEach
             }
 
+
+            recyclerList[position].productList.forEach {
+                Glide.with(holder.binding.root.context)
+                    .load(it.value.imageUrlList!![0])
+                    .centerCrop()
+                    .thumbnail(0.01f)
+                    .into(holder.binding.itemOrderHistoryImageviewProduct)
+                return@forEach
+            }
+
             holder.binding.itemOrderHistoryTextviewCost.text = "주문 금액 " + recyclerList[position].cost.toString()
             holder.binding.itemOrderHistoryOrderTextviewTimestamp.text = TimeUtil().formatTimeString(
                 recyclerList[position].timestamp!!
@@ -95,6 +109,26 @@ class OrderInfoActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
             }
+
+            holder.binding.itemOrderHistoryOrderButtonCancel.setOnClickListener {
+                FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid).document("order")
+                    .collection("orderProduct").document(recyclerIdList[position]).delete()
+                    .addOnSuccessListener {
+                        println("삭제 성공")
+                    }
+
+
+                FirebaseFirestore.getInstance().collection("Mall").document("product").collection("orderList").document(recyclerIdList[position]).delete()
+                    .addOnSuccessListener {
+                        println("삭제 성공2")
+                    }
+            }
+
+            holder.binding.itemOrderHistoryButtonAcceptProduct.setOnClickListener {
+
+            }
+
+
             
 
 

@@ -42,6 +42,7 @@ class BillActivity : AppCompatActivity() {
 
         binding.activityBillButtonOrderComplete.setOnClickListener {
             setOrderData()
+            deleteCartProductList()
             startActivity(Intent(binding.root.context, OrderCompleteActivity::class.java))
             finish()
         }
@@ -62,15 +63,37 @@ class BillActivity : AppCompatActivity() {
         getData()
     }
 
+    fun deleteCartProductList(){
+        val tsDosAddCart = FirebaseFirestore.getInstance().collection("userInfo").document("userData").collection(FirebaseAuth.getInstance().currentUser!!.uid)
+            .document("cart")
+
+        FirebaseFirestore.getInstance().runTransaction {
+            transaction ->
+
+            var cart = transaction.get(tsDosAddCart).toObject(MallMainModel.CartDTO::class.java)
+
+            orderProductList.forEach {
+                if (cart!!.productId.containsKey(it)){
+                    cart.productId.remove(it)
+                    cart.productCount = cart.productCount!! - 1
+                    transaction.set(tsDosAddCart,cart)
+                }
+            }
+            return@runTransaction
+        }
+    }
+
     fun setOrderData() {
 
         var data = MallMainModel.OrderHistory()
+
         data.address = totalAddress
         data.cost = cost()
         data.deliverOption = binding.activityBillEdittextDeliveryOption.text.toString()
         data.orderUid = FirebaseAuth.getInstance().currentUser!!.uid
         data.detailAddress = binding.activityBillEdittextDetailAddress.text.toString()
-        data.phoneNumber
+        data.phoneNumber = binding.activityBillEdittextPhonenumber.text.toString()
+        data.orderName = binding.activityBillEdittextName.text.toString()
         data.timestamp = System.currentTimeMillis()
         productList.forEachIndexed { index, product ->
             data.productList.put(orderProductList[index], product)
@@ -83,9 +106,17 @@ class BillActivity : AppCompatActivity() {
             .add(data)
             .addOnSuccessListener {
                 println("성공")
+                FirebaseFirestore.getInstance().collection("Mall").document("product").collection("orderList").document(it.id).set(data)
+                    .addOnSuccessListener {
+                        println(" 추가 작업 성공 ")
+                    }.addOnFailureListener {
+                        println(" 추가 작업 실패 ")
+                    }
             }.addOnFailureListener {
                 println("실패")
             }
+
+
 
     }
 

@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.newwindymall
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -19,7 +20,7 @@ class MallAdminActivity : AppCompatActivity() {
             finish()
         }
         binding.activityMallAdminButtonOrderList.setOnClickListener {
-
+            startActivity(Intent(binding.root.context,MallAdminOrderInfoActivity::class.java))
         }
     }
 }

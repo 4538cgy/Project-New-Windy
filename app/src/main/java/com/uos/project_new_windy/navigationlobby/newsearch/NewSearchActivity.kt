@@ -344,10 +344,10 @@ class NewSearchActivity : AppCompatActivity() {
     fun categoryViewButtonChanger(button : String){
         when(button) {
             "sell" ->{
-                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_round_black)
-                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
+                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_round_white_stroke_green_4dp)
+                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_round_gray_16dp)
 
                 binding.activityNewSearchTextviewSell.setTextColor(Color.WHITE)
                 binding.activityNewSearchTextviewBuy.setTextColor(Color.BLACK)
@@ -357,10 +357,10 @@ class NewSearchActivity : AppCompatActivity() {
                 getData("sell")
             }
             "buy" ->{
-                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_round_black)
-                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
+                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_round_white_stroke_green_4dp)
+                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_round_gray_16dp)
 
                 binding.activityNewSearchTextviewSell.setTextColor(Color.BLACK)
                 binding.activityNewSearchTextviewBuy.setTextColor(Color.WHITE)
@@ -370,10 +370,10 @@ class NewSearchActivity : AppCompatActivity() {
                 getData("buy")
             }
             "normal" ->{
-                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_round_black)
-                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
+                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_round_white_stroke_green_4dp)
+                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_round_gray_16dp)
 
                 binding.activityNewSearchTextviewSell.setTextColor(Color.BLACK)
                 binding.activityNewSearchTextviewBuy.setTextColor(Color.BLACK)
@@ -384,10 +384,10 @@ class NewSearchActivity : AppCompatActivity() {
             }
 
             "shop" ->{
-                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_white_stroke_gray_4dp)
-                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_round_black)
+                binding.activityNewSearchTextviewSell.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewBuy.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewNormal.setBackgroundResource(R.drawable.background_round_gray_16dp)
+                binding.activityNewSearchTextviewShop.setBackgroundResource(R.drawable.background_round_white_stroke_green_4dp)
 
                 binding.activityNewSearchTextviewSell.setTextColor(Color.BLACK)
                 binding.activityNewSearchTextviewBuy.setTextColor(Color.BLACK)

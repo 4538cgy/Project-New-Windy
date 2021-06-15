@@ -40,6 +40,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:queryHint="검색어를 입력해주세요"
                 app:layout_constraintRight_toRightOf="parent"
                 />
 
@@ -167,65 +168,84 @@
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"
                     />
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/activity_new_search_linear_option"
                     android:layout_width="match_parent"
-                    android:layout_height="25dp"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/activityu_new_search_textview_board_title"
                     >
                     <TextView
+                        android:drawableTop="@drawable/drawable_sale_logo_custom"
                         android:id="@+id/activity_new_search_textview_sell"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="67dp"
+                        android:layout_height="67dp"
                         android:text="판매"
-                        android:layout_weight="1"
+                        app:layout_constraintRight_toLeftOf="@+id/activity_new_search_textview_shop"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginLeft="20dp"
+                        android:textColor="@color/colorBlack"
                         android:gravity="center"
-                        android:textColor="@color/colorWhite"
-                        android:background="@drawable/background_round_black"
+
+                        android:background="@drawable/background_round_white_stroke_green_4dp"
                         android:layout_marginHorizontal="4dp"
                         />
                     <TextView
+                        app:layout_constraintLeft_toRightOf="@+id/activity_new_search_textview_sell"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/activity_new_search_textview_normal"
+                        android:layout_marginLeft="20dp"
+                        android:drawableTop="@drawable/drawable_buy_logo_custom"
                         android:id="@+id/activity_new_search_textview_shop"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="67dp"
+                        android:layout_height="67dp"
                         android:text="쇼핑"
-                        android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/colorBlack"
-                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:background="@drawable/background_round_gray_16dp"
                         android:layout_marginHorizontal="4dp"
                         />
                     <TextView
+                        app:layout_constraintLeft_toRightOf="@+id/activity_new_search_textview_shop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintRight_toLeftOf="@+id/activity_new_search_textview_buy"
+                        android:drawableTop="@drawable/drawable_shopping_logo_custom"
                         android:id="@+id/activity_new_search_textview_normal"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:text="홍보"
-                        android:layout_weight="1"
+                        android:layout_width="67dp"
+                        android:layout_height="67dp"
+                        android:text="쇼핑"
                         android:gravity="center"
                         android:textColor="@color/colorBlack"
-                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:background="@drawable/background_round_gray_16dp"
                         android:layout_marginHorizontal="4dp"
                         />
 
                     <TextView
+                        app:layout_constraintLeft_toRightOf="@+id/activity_new_search_textview_normal"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:drawableTop="@drawable/drawable_mk_logo_custom"
                         android:id="@+id/activity_new_search_textview_buy"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_width="67dp"
+                        android:layout_height="67dp"
                         android:text="구매"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:textColor="@color/colorBlack"
-                        android:background="@drawable/background_white_stroke_gray_4dp"
+                        android:background="@drawable/background_round_gray_16dp"
                         android:layout_marginHorizontal="4dp"
                         />
 
 
 
 
-                </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:id="@+id/activityu_new_search_textview_category_title"
@@ -258,7 +278,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/activity_new_search_recycler_category"
                     app:layout_constraintRight_toRightOf="parent"
-                    android:background="@drawable/background_round_windy_green"
+                    android:background="@drawable/background_round_yellow_24dp"
                     android:text="전체 선택"
                     android:layout_marginTop="8dp"
                     android:layout_marginRight="8dp"

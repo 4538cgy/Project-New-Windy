@@ -20,25 +20,13 @@
             android:id="@+id/activity_login_imageview_logo"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:src="@drawable/ic_new_windy_logo"
-            android:scaleType="fitXY"
+            android:src="@drawable/login_logo"
+            android:scaleType="centerInside"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
         
-        <TextView
-            android:id="@+id/activity_login_textview_logo_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintLeft_toLeftOf="@+id/activity_login_imageview_logo"
-            app:layout_constraintRight_toRightOf="@+id/activity_login_imageview_logo"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_login_imageview_logo"
-            android:textSize="26dp"
-            android:textColor="@color/colorLightGreen"
-            android:textStyle="bold"
-            android:layout_marginBottom="50dp"
-            android:text="신바람 빌리지"
-            />
+
 
         <LinearLayout
             android:id="@+id/signin_layout"
@@ -55,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:background="@drawable/background_round_gray_stroke_black_4dp">
+                android:background="@drawable/background_round_white_stoke_black_24dp">
 
                 <EditText
                     android:id="@+id/email_edittext"
@@ -91,12 +79,12 @@
             <Button
                 android:id="@+id/email_login_button"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="46dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="5dp"
-                android:background="@drawable/background_round_windy_green"
+                android:background="@drawable/background_round_dark_green_24dp"
                 android:text="@string/signin_email"
                 android:textColor="@color/colorWhite"
                 android:textStyle="bold"
@@ -104,66 +92,59 @@
 
         </LinearLayout>
 
-        <View
-            android:id="@+id/activity_login_line1"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="20dp"
-            android:background="@color/colorLightGray"
-            app:layout_constraintLeft_toRightOf="@+id/activity_login_textview_linetext"
-            app:layout_constraintTop_toBottomOf="@+id/signin_layout" />
-        <View
-            android:id="@+id/activity_login_line1_2"
-            android:layout_width="0dp"
-            android:layout_height="1dp"
-            android:layout_margin="20dp"
-            android:background="@color/colorLightGray"
-            app:layout_constraintRight_toLeftOf="@+id/activity_login_textview_linetext"
-            app:layout_constraintTop_toBottomOf="@+id/signin_layout" />
-
-
         <TextView
-            android:id="@+id/activity_login_textview_linetext"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_margin="12dp"
+
+            app:layout_constraintTop_toBottomOf="@+id/signin_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/signin_layout"
+            app:layout_constraintRight_toRightOf="@+id/signin_layout"
+            android:layout_marginTop="8dp"
+            android:id="@+id/activity_find_password"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
             android:gravity="center"
-            android:text="또는"
-            app:layout_constraintBottom_toBottomOf="@+id/activity_login_line1"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/activity_login_line1" />
+            android:text="비밀번호 찾기"
+
+            />
+
+
+
+
+
 
         <Button
             android:id="@+id/activity_login_button_none_login"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_textview_linetext"
+            app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button"
             android:layout_marginLeft="20dp"
             android:layout_marginTop="15dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/background_round_gray"
-            android:text="로그인 하지 않고 사용하기"
+            android:background="@drawable/background_round_yellow_24dp"
+            android:text="지금 바로 구경하기"
             />
 
         <Button
             android:id="@+id/google_sign_in_button"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="46dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="100dp"
             android:layout_marginRight="20dp"
-            android:background="@drawable/btn_signin_google"
+            android:drawableLeft="@drawable/drawable_google_login_logo_custom"
+            android:paddingRight="32dp"
+            android:paddingLeft="12dp"
+            android:background="@drawable/background_round_3dp_white_stroke_gray_24dp"
             android:text="@string/signin_google"
-            android:textColor="@color/colorWhite"
-            app:layout_constraintTop_toBottomOf="@+id/activity_login_button_none_login" />
+            android:textColor="@color/colorBlack"
+            app:layout_constraintTop_toBottomOf="@+id/activity_find_password" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            app:layout_constraintTop_toBottomOf="@+id/google_sign_in_button"
+            app:layout_constraintTop_toBottomOf="@+id/activity_login_button_none_login"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="50dp"
             android:layout_margin="12dp"
             >
+
             <TextView
                 android:id="@+id/activity_login_sign_up"
                 android:layout_width="wrap_content"
@@ -171,54 +152,24 @@
                 android:gravity="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintRight_toLeftOf="@+id/activity_login_line2"
                 android:layout_marginRight="12dp"
-                android:text="회원 가입" />
-            
-            <View
-                android:id="@+id/activity_login_line2"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="@color/colorLightGray"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-
-                android:layout_marginHorizontal="12dp"
-                app:layout_constraintRight_toLeftOf="@+id/activity_find_password"
-                />
-
-            <TextView
-
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
+                android:text="회원이 아니인가요? 회원 가입"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:id="@+id/activity_find_password"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:text="비밀번호 찾기"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textColor="@color/colorBlack"/>
+            
 
-                />
 
-            <View
-                android:id="@+id/activity_login_line3"
-                android:layout_width="1dp"
-                android:layout_height="0dp"
-                android:background="@color/colorLightGray"
-                android:layout_marginHorizontal="12dp"
-                app:layout_constraintLeft_toRightOf="@+id/activity_find_password"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
+
+
 
             <TextView
                 android:id="@+id/activity_login_policy"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toRightOf="@+id/activity_login_line3"
+                app:layout_constraintTop_toBottomOf="@+id/activity_login_sign_up"
+                app:layout_constraintLeft_toLeftOf="@+id/activity_login_sign_up"
+                app:layout_constraintRight_toRightOf="@+id/activity_login_sign_up"
                 android:gravity="center"
                 android:layout_marginLeft="12dp"
                 android:text="이용 약관" />

@@ -19,13 +19,21 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginTop="40dp"
-            android:src="@drawable/ic_baseline_camera_24"
+            android:src="@drawable/ic_baseline_photo_camera_24"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
 
             />
 
+        <TextView
+            app:layout_constraintTop_toBottomOf="@+id/activity_sign_up_only_phone_circleimageview"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_sign_up_only_phone_circleimageview"
+            app:layout_constraintRight_toRightOf="@+id/activity_sign_up_only_phone_circleimageview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="사진을 추가해주세요."
+            />
 
 
 
@@ -44,7 +52,6 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="6dp"
-                android:background="@drawable/background_white_stroke_gray_4dp"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -56,8 +63,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:background="@android:color/transparent"
-                    android:hint="핸드폰 번호" />
+                    android:hint="핸드폰 번호를 입력해주세요" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -71,7 +77,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="12dp"
-            android:background="@drawable/background_white_stroke_gray_4dp"
             app:layout_constraintTop_toBottomOf="@+id/activity_sign_up_only_phone_const_phone_bar"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -82,26 +87,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:background="@android:color/transparent"
-                android:hint="별명" />
+                android:hint="별명을 입력해주세요" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="주소 등록"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/activity_sign_up_only_phone_const_address"
+            app:layout_constraintLeft_toLeftOf="@+id/activity_sign_up_only_phone_const_address"
+            android:layout_marginLeft="12dp"
+            />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/activity_sign_up_only_phone_const_address"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="12dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="48dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/activity_sign_up_only_phone_textinputlayout_nickname">
+
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginRight="6dp"
-                android:background="@drawable/background_white_stroke_gray_4dp"
-
+                android:id="@+id/activity_sign_up_only_phone_textinputlayout_address"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@+id/activity_sign_up_only_phone_button_search_address"
@@ -112,7 +130,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:background="@android:color/transparent"
                     android:hint="주소" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -121,10 +138,10 @@
                 android:id="@+id/activity_sign_up_only_phone_button_search_address"
                 android:layout_width="100dp"
                 android:layout_height="50dp"
-                android:background="@drawable/background_round_windy_green"
+                android:background="@drawable/background_round_yellow_24dp"
                 android:elevation="6dp"
-                android:text="주소 검색"
-                android:textColor="@color/colorWhite"
+                android:text="주소 찾기"
+                android:textColor="@color/colorBlack"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -139,7 +156,6 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_margin="12dp"
-            android:background="@drawable/background_white_stroke_gray_4dp"
             app:layout_constraintTop_toBottomOf="@+id/activity_sign_up_only_phone_const_address"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -150,7 +166,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:background="@android:color/transparent"
                 android:hint="상세주소" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -162,7 +177,9 @@
             android:layout_margin="12dp"
             android:text="본인은 만 14세 이상이며, 신바람의 이용약관, 개인정보 수집 및 이용 내용을 확인하였음을 동의합니다.
             \n 클릭시 이용약관으로 이동합니다. \n \n 회원가입 문제 발생시 010-7135-5930 으로 연락 바랍니다."
-            app:layout_constraintTop_toBottomOf="@+id/activity_sign_up_only_phone_textinputlayout_detail_address"
+            app:layout_constraintBottom_toTopOf="@+id/activity_sign_up_only_phone_button_accept"
+            android:background="@drawable/background_round_gray_16dp"
+            android:padding="12dp"
 
             />
 
@@ -170,12 +187,10 @@
             android:id="@+id/activity_sign_up_only_phone_button_accept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:layout_marginVertical="6dp"
-            android:background="@drawable/background_round_windy_green"
+            android:background="@color/colorYellow"
             android:gravity="center"
-            android:text="회원 가입"
-            android:textColor="@color/colorWhite"
+            android:text="확인"
+            android:textColor="@color/colorBlack"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

@@ -25,5 +25,6 @@ class OrderCompleteActivity : AppCompatActivity() {
         binding.activityOrderCompleteOrderInfo.setOnClickListener {
             startActivity(Intent(binding.root.context,OrderInfoActivity::class.java))
             finish() }
+
     }
 }

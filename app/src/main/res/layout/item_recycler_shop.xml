@@ -115,6 +115,26 @@
             android:layout_height="wrap_content"
             />
 
+            <ImageView
+                android:id="@+id/item_recycler_shop_imageview_left_arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintLeft_toLeftOf="@+id/item_recycler_shop_viewpager"
+                app:layout_constraintTop_toTopOf="@+id/item_recycler_shop_viewpager"
+                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_shop_viewpager"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                />
+
+            <ImageView
+                android:id="@+id/item_recycler_shop_imageview_right_arrow"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:layout_constraintRight_toRightOf="@+id/item_recycler_shop_viewpager"
+                app:layout_constraintTop_toTopOf="@+id/item_recycler_shop_viewpager"
+                app:layout_constraintBottom_toBottomOf="@+id/item_recycler_shop_viewpager"
+                android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                />
+
         <me.relex.circleindicator.CircleIndicator3
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

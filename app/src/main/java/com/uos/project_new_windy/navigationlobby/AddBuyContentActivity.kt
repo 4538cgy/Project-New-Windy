@@ -134,7 +134,7 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
                 }
             } else {
-              
+
                 if (pickCategory == null)
                     Toast.makeText(this, "카테고리를 추가해주세요.", Toast.LENGTH_LONG).show()
 

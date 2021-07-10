@@ -37,7 +37,8 @@ class BottomSheetDialogWriteCategory :BottomSheetDialogFragment(){
             || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("jOMoLi0YgZUJUDypzaXSVQ84cEU2")
             || FirebaseAuth.getInstance().currentUser?.email.toString().equals("hG9W4uIR4dOmLweh2XOHMs9HbBE3")
             || FirebaseAuth.getInstance().currentUser?.email.toString().equals("ay72HtBWTWetM9JYE2VKYlmbYqh2")
-            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("dZvFUbfbL9NZ5SYygiFsmSrAmM63"))
+            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("dZvFUbfbL9NZ5SYygiFsmSrAmM63")
+            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("TRM2bMLCjlcfRhXv4kWbOej71Zf1"))
         {
             println("삭제버튼이 보입니다.")
             binding.bottomSheetSelectCategoryViewgroupMembership.visibility = View.GONE

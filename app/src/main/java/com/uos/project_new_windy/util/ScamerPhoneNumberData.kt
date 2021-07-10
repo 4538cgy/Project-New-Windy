@@ -6,6 +6,8 @@ class ScamerPhoneNumberData {
 
         var data : ArrayList<String> = arrayListOf()
 
+        data.add("01064680220")
+        data.add("01046381835")
         data.add("01064665153")
         data.add("01024775109")
         data.add("01084604905")

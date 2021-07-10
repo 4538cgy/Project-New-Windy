@@ -14,9 +14,9 @@
         />
     <item
         android:id="@+id/action_photo"
-        android:icon="@drawable/ic_writeicon"
+        android:icon="@drawable/ic_baseline_local_mall_24"
         android:enabled="true"
-        android:title="@string/gallery"
+        android:title="@string/mall"
         />
     <item
         android:id="@+id/action_favorite_alarm"

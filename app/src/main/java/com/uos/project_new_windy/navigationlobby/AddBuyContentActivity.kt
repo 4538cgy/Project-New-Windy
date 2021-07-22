@@ -42,7 +42,6 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
     var firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
     var auth: FirebaseAuth = FirebaseAuth.getInstance()
     var progressDialog: ProgressDialogLoading? = null
-    var pickCategory: String? = null
     var userNickName: String? = null
 
     //새 게시글 작성인지 or 수정 인지 확인하기 위한 변수
@@ -53,39 +52,14 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_buy_content)
         binding.buycontent = this@AddBuyContentActivity
-
-
         val items = resources.getStringArray(R.array.content_category)
-        val spinnerAdapter =
-            ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, items)
-        binding.activityAddBuyContentSpinnerCategory.adapter = spinnerAdapter
-        binding.activityAddBuyContentSpinnerCategory.onItemSelectedListener = this
-
-
         // true = 수정로직 / false = 새게시글 작성 로직
         updateCheck = intent.getBooleanExtra("updateCheck",false)
         postUid = intent.getStringExtra("postUid")
-
         //수정하기면 해당 게시글의 정보 불러오기
         if(updateCheck == true){
             updateDataLoad()
         }
-
-        //가격 초기화
-        binding.activityAddBuyContentEdittextCostmin.setText("0")
-        binding.activityAddBuyContentEdittextCostmax.setText("100000000")
-
-        binding.activityAddBuyContentEdittextCostmin.setOnFocusChangeListener { v, hasFocus ->
-            if (v.isFocused)
-                binding.activityAddBuyContentEdittextCostmin.setText("")
-        }
-
-
-        binding.activityAddBuyContentEdittextCostmax.setOnFocusChangeListener { v, hasFocus ->
-            if (v.isFocused)
-                binding.activityAddBuyContentEdittextCostmax.setText("")
-        }
-
         //유저 닉네임 가져오기
         firestore.collection("userInfo").document("userData").collection(auth.currentUser?.uid!!)
             .document("accountInfo")
@@ -96,8 +70,6 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                 }
 
             }
-
-
         //로딩 초기화
         progressDialog = ProgressDialogLoading(binding.root.context)
 
@@ -110,56 +82,22 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         binding.activityAddBuyContentImagebuttonBack.setOnClickListener {
             finish()
         }
-
-
         //게시글 업로드
         binding.activityAddBuyContentButtonUpload.setOnClickListener {
-
-            System.out.println("클릭클릭클릭" + pickCategory.toString())
-
-            if (photoUri != null && pickCategory != null && binding.activityAddBuyContentEdittextCostmin.text.isNotEmpty() && binding.activityAddBuyContentEdittextCostmax.text.isNotEmpty()) {
-
-                if (binding.activityAddBuyContentEdittextCostmin.text.toString().toInt() > binding.activityAddBuyContentEdittextCostmax.text.toString().toInt())
-                {
-
-                    Toast.makeText(this, "최소 금액이 최대 금액보다 클 수 없습니다.", Toast.LENGTH_LONG).show()
-                }else{
-
+            if (photoUri != null) {
                     if (updateCheck == false){
-
                         uploadPhoto()
                     }else{
                         updateContent()
                     }
-
-                }
-            } else {
-
-                if (pickCategory == null)
-                    Toast.makeText(this, "카테고리를 추가해주세요.", Toast.LENGTH_LONG).show()
-
-                if (binding.activityAddBuyContentEdittextCostmin.text.isEmpty())
-                    Toast.makeText(this, "최소 가격을 확인해주세요.", Toast.LENGTH_LONG).show()
-
-
-                if (binding.activityAddBuyContentEdittextCostmax.text.isEmpty())
-                    Toast.makeText(this, "최대 가격을 확인해주세요.", Toast.LENGTH_LONG).show()
-
             }
-
-
         }
-
-
-
         //사진 추가
         binding.activityAddBuyContentImageviewProductImage.setOnClickListener {
             addPhoto()
         }
-
         checkSaveData()
     }
-
     fun checkSaveData() {
         if (SharedData.prefs.getString("addBuyData", "null").toString().equals("exist")) {
             var builder = AlertDialog.Builder(binding.root.context)
@@ -171,12 +109,6 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                     binding.activityAddBuyContentEdittextExplain.setText(SharedData.prefs.getString(
                         "addBuyDataExplain",
                         ""))
-                    binding.activityAddBuyContentEdittextCostmin.setText(SharedData.prefs.getString(
-                        "addBuyDataCostMin",
-                        ""))
-                    binding.activityAddBuyContentEdittextCostmax.setText(SharedData.prefs.getString(
-                        "addBuyDataCostMax",
-                        ""))
                     Toast.makeText(binding.root.context,
                         "사진을 제외한 모든 정보가 정상적으로 불러와졌습니다.",
                         Toast.LENGTH_LONG).show()
@@ -184,10 +116,7 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
 
                 })
                 setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
-
-
                     return@OnClickListener
-
                 })
                 setTitle("안내")
                 show()
@@ -200,25 +129,11 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
             ?.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
                 if(documentSnapshot != null){
                     if (documentSnapshot.exists()){
-
-
-
                         var contentData = documentSnapshot.toObject(ContentBuyDTO::class.java)
-
-                        binding.activityAddBuyContentEdittextCostmin.setText(contentData?.costMin.toString())
-                        binding.activityAddBuyContentEdittextCostmax.setText(contentData?.costMax.toString())
                         binding.activityAddBuyContentEdittextExplain.setText(contentData?.explain.toString())
-
-                        //binding.activityAddBuyContentImageviewPhoto.setImageURI(Uri.parse(contentData?.imageUrl))
                         Glide.with(binding.root.context)
                             .load(contentData?.imageUrl)
                             .into(binding.activityAddBuyContentImageviewPhoto)
-
-
-
-
-
-
                     }
                 }
             }
@@ -228,59 +143,30 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         progressDialog?.show()
         var tsDoc = firestore?.collection("contents")?.document("buy")?.collection("data")?.document(postUid!!)
         firestore?.runTransaction{ transaction ->
-
-
-
-            System.out.println("트랜잭션 시작")
             var contentDTO = transaction.get(tsDoc!!).toObject(ContentBuyDTO::class.java)
-
-            contentDTO?.costMin = binding.activityAddBuyContentEdittextCostmin.text.toString().toInt()
-            contentDTO?.costMax = binding.activityAddBuyContentEdittextCostmax.text.toString().toInt()
             contentDTO?.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
             contentDTO?.imageUrl = photoUri.toString()
-
-
-
-
-
-
             transaction.set(tsDoc, contentDTO!!)
-
-
-
         }?.addOnFailureListener {
-            println("viewCountIncreaseFail ${it.toString()}")
         }?.addOnCompleteListener {
             Toast.makeText(binding.root.context, "게시글 수정 완료",Toast.LENGTH_LONG).show()
             progressDialog?.dismiss()
             finish()
         }
     }
-
     override fun onBackPressed() {
-        //super.onBackPressed()
         var builder = AlertDialog.Builder(binding.root.context)
-
-        if (binding.activityAddBuyContentEdittextCostmin.text.length > 1 || binding.activityAddBuyContentEdittextCostmax.text.length > 1 || binding.activityAddBuyContentEdittextExplain.text.length > 1) {
-
+        if (binding.activityAddBuyContentEdittextExplain.text.length > 1) {
             builder.apply {
                 setMessage("게시글을 임시 저장 하시겠습니까?")
                 setPositiveButton("예", DialogInterface.OnClickListener { dialog, which ->
                     SharedData.prefs.setString("addBuyData", "exist")
-                    SharedData.prefs.setString("addBuyDataCostMin",
-                        binding.activityAddBuyContentEdittextCostmin.text.toString())
-                    SharedData.prefs.setString("addBuyDataCostMax",
-                        binding.activityAddBuyContentEdittextCostmax.text.toString())
                     SharedData.prefs.setString("addBuyDataExplain",
                         binding.activityAddBuyContentEdittextExplain.text.toString())
                     finish()
                 })
                 setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
                     SharedData.prefs.setString("addBuyData", "none")
-                    SharedData.prefs.setString("addBuyDataCostMin",
-                        "")
-                    SharedData.prefs.setString("addBuyDataCostMax",
-                        "")
                     SharedData.prefs.setString("addBuyDataExplain",
                         "")
                     finish()
@@ -294,7 +180,6 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
             super.onBackPressed()
         }
     }
-
     fun contentUpload(uri: Uri) {
 
         var contentBuyDTO = ContentBuyDTO()
@@ -306,14 +191,8 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
         contentBuyDTO.timeStamp = System.currentTimeMillis()
         contentBuyDTO.explain = binding.activityAddBuyContentEdittextExplain.text.toString()
         contentBuyDTO.favoriteCount = 0
-        contentBuyDTO.categoryHash = pickCategory
-        contentBuyDTO.costMin = binding.activityAddBuyContentEdittextCostmin.text.toString().toInt()
-        contentBuyDTO.costMax = binding.activityAddBuyContentEdittextCostmax.text.toString().toInt()
         contentBuyDTO.commentCount = 0
         contentBuyDTO.userNickName = userNickName
-
-
-
         firestore?.collection("contents")?.document("buy")?.collection("data")?.document()
             ?.set(contentBuyDTO)
             .addOnSuccessListener {
@@ -373,19 +252,12 @@ class AddBuyContentActivity : AppCompatActivity(), AdapterView.OnItemSelectedLis
                 finish()
             }
         }
-        //activity_add_content_recycler_photo.adapter?.notifyDataSetChanged()
         binding.activityAddBuyContentImageviewPhoto.setImageURI(photoUri)
     }
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        pickCategory = binding.activityAddBuyContentSpinnerCategory.selectedItem.toString()
-        System.out.println("으아아아아" + pickCategory.toString())
-        System.out.println("으아아아아2" + binding.activityAddBuyContentSpinnerCategory.toString())
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-
-        System.out.println("선택되지않음")
-
     }
 }

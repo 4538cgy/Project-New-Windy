@@ -66,18 +66,6 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
     override fun onBindViewHolder(holder: ContentBuyRecyclerViewAdapterViewHolder, position: Int) {
         holder.onBind(contentBuyDTO[position])
 
-        /*
-        holder.binding.itemRecyclerBuyAdview.loadAd(AdRequest.Builder().build())
-
-        if(position%7 == 0){
-            holder.binding.itemRecyclerBuyAdview.visibility = View.VISIBLE
-        } else
-        {
-            holder.binding.itemRecyclerBuyAdview.visibility = View.GONE
-        }
-
-         */
-
         //좋아요 버튼 클릭
         holder.binding.itemRecyclerBuyImagebuttonLike.setOnClickListener {
 
@@ -148,8 +136,6 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
             cost = contentBuyDTO[position].costInt.toString()
         }
 
-        holder.binding.itemRecyclerBuyTextviewCostmin.text = "최소 가격 " + contentBuyDTO[position].costMin.toString()
-        holder.binding.itemRecyclerBuyTextviewCostmax.text = "최대 가격 " + contentBuyDTO[position].costMax.toString()
 
         //유저 닉네임 클릭
         holder.binding.itemRecyclerBuyTextviewUsername.setOnClickListener {
@@ -241,40 +227,19 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 putExtra("uid" , contentBuyDTO[position].uid)
                 putExtra("userId",contentBuyDTO[position].userId)
                 putExtra("postUid",contentUidList[position])
-                putExtra("costMin",contentBuyDTO[position].costMin)
-                putExtra("costMax",contentBuyDTO[position].costMax)
-                putExtra("categoryHash",contentBuyDTO[position].categoryHash)
                 putExtra("imageUrl",contentBuyDTO[position].imageUrl)
                 putExtra("contentTime",contentBuyDTO[position].time)
                 putExtra("explain",contentBuyDTO[position].explain)
                 putExtra("userNickName",contentBuyDTO[position].userNickName)
                 putExtra("timeStamp",contentBuyDTO[position].timeStamp as Long)
 
-                //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
-                System.out.println("입력된 uid으아아아아앙아" + uid.toString())
 
             }
-
-            //FirebaseFirestore.getInstance().collection("content").document("buy").collection("data")
 
             context.startActivity(intent)
             viewCountIncrease(position)
         }
-        //꾹 눌러서 클립보드에 내용 복사
-        /*
-        holder.binding.itemRecyclerBuyTextviewExplain.setOnLongClickListener {
-            var clipboardManager: ClipboardManager =
-                holder.binding.root.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-            var clipData = ClipData.newPlainText("strName",
-                holder.binding.itemRecyclerBuyTextviewExplain.text.toString())
-            clipboardManager.setPrimaryClip(clipData)
 
-            Toast.makeText(holder.binding.root.context,"내용이 클립보드에 저장되었습니다.", Toast.LENGTH_SHORT).show()
-
-            true
-        }
-
-         */
 
         //시간 표시
         holder.binding.itemRecyclerBuyTextviewTime.text = TimeUtil().formatTimeString(
@@ -426,25 +391,5 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 }
 
             }
-
-
-        /*
-        System.out.println("좋아요 알람 이벤트")
-        var alarmDTO = AlarmDTO()
-        alarmDTO.destinationUid = destinationUid
-        alarmDTO.userId = FirebaseAuth.getInstance().currentUser?.email
-        alarmDTO.uid = FirebaseAuth.getInstance().currentUser?.uid
-        alarmDTO.kind = 0
-        alarmDTO.timestamp = System.currentTimeMillis()
-        alarmDTO.localTimestamp = TimeUtil().getTime()
-        alarmDTO.userNickName = userNickName
-        FirebaseFirestore.getInstance().collection("alarms").document().set(alarmDTO)
-
-        var message = FirebaseAuth.getInstance()?.currentUser?.email + (R.string.alarm_favorite)
-        FcmPush.instance.sendMessage(destinationUid,"신바람",message)
-
-         */
     }
-
-
 }

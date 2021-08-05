@@ -208,23 +208,6 @@ class ChatActivity : AppCompatActivity() {
 
 
         init {
-            /*
-            FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid!!)
-                .addListenerForSingleValueEvent(
-                    object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            userModel = snapshot.getValue(UserModel::class.java)!!
-                            getMessageList()
-                        }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            TODO("Not yet implemented")
-                        }
-
-
-                    })
-
-             */
             getMessageList()
         }
 

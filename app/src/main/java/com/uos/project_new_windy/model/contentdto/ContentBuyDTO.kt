@@ -6,6 +6,7 @@ data class ContentBuyDTO(
     var imageUrl : String ? = null,
     //사용자 uid
     var uid : String ? = null,
+    var imageDownLoadUriList : ArrayList<String> ? = null,
     //댓글 갯수
     var commentCount : Int ? = 0,
     //내용

@@ -1,5 +1,6 @@
 package com.uos.project_new_windy.navigationlobby.DetailActivityRecyclerViewAdapter.addcontentadapter
 
+import android.app.Activity
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,7 @@ import com.uos.project_new_windy.navigationlobby.AddContentActivity
 import com.uos.project_new_windy.navigationlobby.AddSellContentActivity
 import kotlinx.android.synthetic.main.item_image_list.view.*
 
-class AddSellContentActivityRecyclerViewAdapter (var activity: AddSellContentActivity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AddSellContentActivityRecyclerViewAdapter (var activity: Activity, var imageUriList : ArrayList<Uri>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 

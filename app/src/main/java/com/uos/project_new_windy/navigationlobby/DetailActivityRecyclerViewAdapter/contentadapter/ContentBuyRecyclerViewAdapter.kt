@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
@@ -88,6 +89,16 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 }
             }
         }
+
+        //뷰페이저 초기화
+        if (data[position].imageDownLoadUriList != null) {
+            holder.binding.itemRecyclerBuyViewpager.adapter =
+                photoAdapter(data[position].imageDownLoadUriList!!, position)
+        }
+
+        //인디케이터 초기화
+        holder.binding.activityPhotoDetailSlideViewIndicator.setViewPager(holder.binding.itemRecyclerBuyViewpager)
+
         //프로필 이미지
         firestore?.collection("profileImages")?.document(contentBuyDTO[position].uid!!)
             ?.get()?.addOnCompleteListener { task ->
@@ -149,11 +160,6 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
         }
 
         //사진
-
-        Glide.with(holder.itemView.context).load(contentBuyDTO!![position].imageUrl)
-            .placeholder(R.drawable.ic_sand_clock)
-            .diskCacheStrategy(DiskCacheStrategy.ALL)
-            .into(holder.binding.itemRecyclerNormalImageviewImage)
 
 
 
@@ -391,5 +397,39 @@ class ContentBuyRecyclerViewAdapter(private val context: Context,var fragmentMan
                 }
 
             }
+    }
+
+    inner class photoAdapter(var photoList : ArrayList<String>, itemPosition : Int) : RecyclerView.Adapter<ViewHolder>(){
+
+        var itemPosition = itemPosition
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
+            ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_content_photo,parent,false))
+
+
+        @RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            Glide.with(context)
+                .load(photoList[position])
+                .placeholder(R.drawable.ic_sand_clock)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .thumbnail(
+                    Glide.with(context).load(photoList[position]).fitCenter()
+                )
+                .into(holder.imageUrl)
+
+            holder.itemView.setOnClickListener {
+                println("으아아아아아아아아")
+                favoriteEvent(itemPosition)
+            }
+
+            println("photoAdapter의 photoUri = " + photoList[position].toString() )
+        }
+
+        override fun getItemCount(): Int = photoList?.size!!
+    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+        val imageUrl : ImageView = view.findViewById(R.id.item_content_photo_imageview)
     }
 }

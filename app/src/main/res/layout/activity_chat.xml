@@ -24,13 +24,14 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
+            android:background="@color/colorDarkGreen"
             >
 
             <ImageButton
                 android:id="@+id/activity_chat_imagebutton_back"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                android:src="@drawable/ic_baseline_arrow_back__white_24"
                 android:background="@android:color/transparent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -43,16 +44,16 @@
                 android:layout_height="match_parent"
                 android:text="nickName"
                 android:gravity="center_vertical"
-                app:layout_constraintLeft_toRightOf="@+id/activity_chat_imagebutton_back"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintBottom_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                android:textColor="@color/colorWhite"
                 android:layout_marginLeft="12dp"
                 />
 
             <ImageButton
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/ic_post_menu_3"
+                android:src="@drawable/ic_bug"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"

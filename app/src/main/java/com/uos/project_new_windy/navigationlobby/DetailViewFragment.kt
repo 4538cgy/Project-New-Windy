@@ -566,46 +566,31 @@ class DetailViewFragment : Fragment() {
         when (state) {
             1 -> {
                 //normal
-                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white_stroke_green_6dp)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
-                binding.fragmentDetailTextviewAll.setTextColor(Color.WHITE)
-                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
             }
             2 -> {
                 //buy
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
-                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white_stroke_green_6dp)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
-                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewBuys.setTextColor(Color.WHITE)
-                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
 
             }
             3 -> {
                 //sell
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
-                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white_stroke_green_6dp)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
-                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewSales.setTextColor(Color.WHITE)
-                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
             }
 
             4 -> {
@@ -613,14 +598,9 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewAll.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
-                binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white_stroke_green_6dp)
                 binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white)
 
-                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewMembership.setTextColor(Color.WHITE)
-                binding.fragmentDetailTextviewShop.setTextColor(Color.BLACK)
             }
 
             5->{
@@ -629,13 +609,8 @@ class DetailViewFragment : Fragment() {
                 binding.fragmentDetailTextviewBuys.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewSales.setBackgroundResource(R.drawable.background_round_white)
                 binding.fragmentDetailTextviewMembership.setBackgroundResource(R.drawable.background_round_white)
-                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_black)
+                binding.fragmentDetailTextviewShop.setBackgroundResource(R.drawable.background_round_white_stroke_green_6dp)
 
-                binding.fragmentDetailTextviewAll.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewBuys.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewSales.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewMembership.setTextColor(Color.BLACK)
-                binding.fragmentDetailTextviewShop.setTextColor(Color.WHITE)
             }
         }
     }

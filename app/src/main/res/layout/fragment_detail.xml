@@ -14,13 +14,25 @@
         android:layout_height="match_parent"
         >
 
+        <ImageView
+            android:id="@+id/fragment_detail_imageview_logo"
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/ic_logo_top"
+            android:paddingVertical="10dp"
+            android:background="@color/colorDarkGreen"
+            />
+
         <HorizontalScrollView
             android:id="@+id/fragment_detail_horizontalscrollview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintRight_toLeftOf="@+id/fragment_detail_buttton_write"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fragment_detail_imageview_logo"
             >
             <LinearLayout
                 android:id="@+id/fragment_detail_linearlayout"
@@ -30,49 +42,54 @@
                 >
 
 
-                <TextView
+                <Button
                     android:id="@+id/fragment_detail_textview_sales"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
                     android:text="판매"
-                    android:textSize="25dp"
-                    android:textColor="@color/colorWhite"
-                    android:textStyle="bold"
-                    android:padding="4dp"
-                    android:background="@drawable/background_round_black"
-                    android:layout_margin="5dp"
-                    />
-                <TextView
-                    android:id="@+id/fragment_detail_textview_shop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="제휴"
-                    android:textSize="25dp"
-                    android:textColor="#000000"
-                    android:textStyle="bold"
-                    android:padding="4dp"
-                    android:layout_margin="5dp"
-                    />
-                <TextView
-                    android:id="@+id/fragment_detail_textview_all"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="부동산"
-                    android:textSize="25dp"
                     android:textColor="@color/colorBlack"
+                    android:textSize="10dp"
                     android:textStyle="bold"
+                    android:drawableTop="@drawable/drawable_sale_logo_custom"
                     android:padding="4dp"
+                    android:background="@drawable/background_round_white_stroke_green_6dp"
                     android:layout_margin="5dp"
                     />
-                <TextView
-                    android:id="@+id/fragment_detail_textview_buys"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="일자리"
-                    android:textSize="25dp"
-                    android:textColor="#000000"
+                <Button
+                    android:id="@+id/fragment_detail_textview_shop"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
+                    android:text="제휴"
+                    android:textSize="10dp"
+                    android:textStyle="bold"
+                    android:drawableTop="@drawable/drawable_buy_logo_custom"
+                    android:padding="4dp"
+                    android:background="@drawable/background_round_white"
+                    android:layout_margin="5dp"
+                    />
+                <Button
+                    android:id="@+id/fragment_detail_textview_all"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
+                    android:text="부동산"
+                    android:textSize="10dp"
+                    android:textColor="@color/colorBlack"
+                    android:drawableTop="@drawable/drawable_shopping_logo_custom"
                     android:textStyle="bold"
                     android:padding="4dp"
+                    android:background="@drawable/background_round_white"
+                    android:layout_margin="5dp"
+                    />
+                <Button
+                    android:id="@+id/fragment_detail_textview_buys"
+                    android:layout_width="67dp"
+                    android:layout_height="67dp"
+                    android:text="일자리"
+                    android:textSize="10dp"
+                    android:drawableTop="@drawable/drawable_mk_logo_custom"
+                    android:textStyle="bold"
+                    android:padding="4dp"
+                    android:background="@drawable/background_round_white"
                     android:layout_margin="5dp"
                     />
 
@@ -111,10 +128,10 @@
         <Button
             android:id="@+id/fragment_detail_buttton_write"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fragment_detail_horizontalscrollview"
             app:layout_constraintBottom_toTopOf="@+id/fragment_detail_recycler"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_width="67dp"
+            android:layout_height="67dp"
             android:background="@drawable/background_roung_white_stroke_green_16dp"
             android:text="글쓰기"
             android:layout_marginRight="5dp"

@@ -525,8 +525,10 @@ class UserFragment : Fragment() {
                 intent.putExtra("category",contentSellDTO[position].category)
                 intent.putExtra("imageList",contentSellDTO[position].imageDownLoadUrlList)
                 intent.putExtra("contentTime",contentSellDTO[position].time)
+                intent.putExtra("boardType","sell")
                 intent.putExtra("productExplain",contentSellDTO[position].productExplain)
                 intent.putExtra("explain",contentSellDTO[position].explain)
+                intent.putExtra("timeStamp",contentSellDTO[position].timeStamp)
 
                 startActivity(intent)
 
@@ -614,7 +616,9 @@ class UserFragment : Fragment() {
                     putExtra("imageList", contentNormalDTO[position].imageDownLoadUrlList)
                     putExtra("contentTime", contentNormalDTO[position].time)
                     putExtra("explain", contentNormalDTO[position].explain)
+                    putExtra("boardType","normal")
                     putExtra("likeCount", contentNormalDTO[position].favoriteCount)
+                    putExtra("timeStamp",contentNormalDTO[position].timestamp)
                 }
 
                 startActivity(intent)
@@ -698,6 +702,8 @@ class UserFragment : Fragment() {
                     putExtra("categoryHash",contentBuyDTOs[position].categoryHash)
                     putExtra("imageUrl",contentBuyDTOs[position].imageUrl)
                     putExtra("contentTime",contentBuyDTOs[position].time)
+                    putExtra("timeStamp",contentBuyDTOs[position].timeStamp.toString().toLong())
+                    putExtra("boardType","buy")
                     putExtra("explain",contentBuyDTOs[position].explain)
                     //putExtra("sellerAddress",contentSellDTO[position].sellerAddress)
                     System.out.println("입력된 uid으아아아아앙아" + uid.toString())

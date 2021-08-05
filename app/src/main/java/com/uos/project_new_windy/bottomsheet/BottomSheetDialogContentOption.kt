@@ -80,6 +80,7 @@ class BottomSheetDialogContentOption : BottomSheetDialogFragment() {
                 .equals("ay72HtBWTWetM9JYE2VKYlmbYqh2")
             || FirebaseAuth.getInstance().currentUser?.uid.toString()
                 .equals("dZvFUbfbL9NZ5SYygiFsmSrAmM63")
+            || FirebaseAuth.getInstance().currentUser?.uid.toString().equals("szp72PSHHKakvZLyEMMyBQBqMV83")
         ) {
             println("삭제버튼이 보입니다.")
             binding.bottomSheetSelectContentOptionConstDelete.visibility = View.VISIBLE

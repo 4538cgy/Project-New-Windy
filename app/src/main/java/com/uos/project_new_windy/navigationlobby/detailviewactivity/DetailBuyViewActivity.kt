@@ -270,6 +270,7 @@ class DetailBuyViewActivity : AppCompatActivity() {
                     bundle.putString("uid" , uid)
                     bundle.putString("postType", "buy")
                     bundle.putString("viewType","activity")
+                    bundle.putString("boardType","buy")
                     bottomSheetDialog.arguments = bundle
                     bottomSheetDialog.show(supportFragmentManager,"lol")
                 }

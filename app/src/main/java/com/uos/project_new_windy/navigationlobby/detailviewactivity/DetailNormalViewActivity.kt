@@ -146,6 +146,7 @@ class DetailNormalViewActivity : AppCompatActivity() {
                     bundle.putString("uid" , auth!!.currentUser?.uid.toString())
                     bundle.putString("postType", "normal")
                     bundle.putString("viewType","activity")
+                    bundle.putString("boardType","normal")
                     bottomSheetDialog.arguments = bundle
                     bottomSheetDialog.show(supportFragmentManager,"lol")
                 }
